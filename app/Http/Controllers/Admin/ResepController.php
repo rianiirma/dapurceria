@@ -9,38 +9,51 @@ use Illuminate\Support\Facades\Storage;
 
 class ResepController extends Controller
 {
-    public function index()
+    // List resep
+    public function index(Request $request)
     {
-        $reseps = Resep::with(['user', 'kategori'])
-            ->withCount(['komentars', 'ratings', 'sukas'])
-            ->latest()
-            ->paginate(10);
+        $query = Resep::with(['user', 'kategori', 'ratings']);
 
-        return view('admin.resep.index', compact('reseps'));
+        // Filter by kategori
+        if ($request->has('kategori') && $request->kategori != '') {
+            $query->where('id_kategori', $request->kategori);
+        }
+
+        // Search
+        if ($request->has('search') && $request->search != '') {
+            $query->where('judul', 'like', '%' . $request->search . '%');
+        }
+
+        $reseps    = $query->latest()->paginate(10);
+        $kategoris = Kategori::all();
+
+        return view('admin.resep.index', compact('reseps', 'kategoris'));
     }
 
+    // Create form
     public function create()
     {
         $kategoris = Kategori::all();
         return view('admin.resep.create', compact('kategoris'));
     }
 
+    // Store
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'kategori_id'       => 'required|exists:kategoris,id',
+            'id_kategori'       => 'required|exists:kategoris,id',
             'judul'             => 'required|string|max:255',
             'deskripsi'         => 'required|string',
             'bahan'             => 'required|string',
             'langkah_langkah'   => 'required|string',
-            'gambar'            => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'gambar'            => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'video_url'         => 'nullable|url',
             'waktu_memasak'     => 'required|integer|min:1',
             'porsi'             => 'required|integer|min:1',
             'tingkat_kesulitan' => 'required|in:mudah,sedang,sulit',
         ]);
 
-        $validated['user_id'] = auth()->id();
+        $validated['id_user'] = auth()->id();
 
         // Upload gambar
         if ($request->hasFile('gambar')) {
@@ -49,31 +62,29 @@ class ResepController extends Controller
 
         Resep::create($validated);
 
-        return redirect()->route('admin.resep.index')
-            ->with('success', 'Resep berhasil ditambahkan!');
+        return redirect()->route('admin.resep.index')->with('success', 'Resep berhasil ditambahkan!');
     }
 
-    public function show(Resep $resep)
+    // Edit form
+    public function edit($id)
     {
-        $resep->load(['user', 'kategori', 'komentars.user', 'ratings.user']);
-        return view('admin.resep.show', compact('resep'));
-    }
-
-    public function edit(Resep $resep)
-    {
+        $resep     = Resep::findOrFail($id);
         $kategoris = Kategori::all();
         return view('admin.resep.edit', compact('resep', 'kategoris'));
     }
 
-    public function update(Request $request, Resep $resep)
+    // Update
+    public function update(Request $request, $id)
     {
+        $resep = Resep::findOrFail($id);
+
         $validated = $request->validate([
-            'kategori_id'       => 'required|exists:kategoris,id',
+            'id_kategori'       => 'required|exists:kategoris,id',
             'judul'             => 'required|string|max:255',
             'deskripsi'         => 'required|string',
             'bahan'             => 'required|string',
             'langkah_langkah'   => 'required|string',
-            'gambar'            => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'gambar'            => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'video_url'         => 'nullable|url',
             'waktu_memasak'     => 'required|integer|min:1',
             'porsi'             => 'required|integer|min:1',
@@ -91,12 +102,14 @@ class ResepController extends Controller
 
         $resep->update($validated);
 
-        return redirect()->route('admin.resep.index')
-            ->with('success', 'Resep berhasil diupdate!');
+        return redirect()->route('admin.resep.index')->with('success', 'Resep berhasil diupdate!');
     }
 
-    public function destroy(Resep $resep)
+    // Delete
+    public function destroy($id)
     {
+        $resep = Resep::findOrFail($id);
+
         // Hapus gambar
         if ($resep->gambar) {
             Storage::disk('public')->delete($resep->gambar);
@@ -104,7 +117,6 @@ class ResepController extends Controller
 
         $resep->delete();
 
-        return redirect()->route('admin.resep.index')
-            ->with('success', 'Resep berhasil dihapus!');
+        return redirect()->route('admin.resep.index')->with('success', 'Resep berhasil dihapus!');
     }
 }

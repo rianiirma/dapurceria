@@ -1,123 +1,186 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="id">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>{{ config('app.name', 'Dapur Ceria') }} - @yield('title', 'Resep Masakan')</title>
-    
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@yield('title', 'Dapur Ceria')</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        /* Navbar */
+        .navbar {
+            background: #ff6b6b;
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .navbar .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .navbar-brand {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: white;
+            text-decoration: none;
+        }
+        .navbar-menu {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+            list-style: none;
+        }
+        .navbar-menu a {
+            color: white;
+            text-decoration: none;
+            transition: opacity 0.3s;
+        }
+        .navbar-menu a:hover {
+            opacity: 0.8;
+        }
+        .btn {
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        .btn-primary {
+            background: #ff6b6b;
+            color: white;
+        }
+        .btn-primary:hover {
+            background: #ee5a52;
+        }
+        .btn-success {
+            background: #51cf66;
+            color: white;
+        }
+        .btn-success:hover {
+            background: #40c057;
+        }
+        .btn-danger {
+            background: #ff6b6b;
+            color: white;
+        }
+        .btn-danger:hover {
+            background: #ee5a52;
+        }
+        .btn-warning {
+            background: #ffd43b;
+            color: #333;
+        }
+        .btn-secondary {
+            background: #868e96;
+            color: white;
+        }
+        .btn-outline {
+            background: transparent;
+            border: 2px solid white;
+            color: white;
+        }
+        .btn-outline:hover {
+            background: white;
+            color: #ff6b6b;
+        }
+        /* Alert */
+        .alert {
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 5px;
+        }
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        /* Content */
+        .content {
+            min-height: calc(100vh - 200px);
+            padding: 2rem 0;
+        }
+        /* Footer */
+        .footer {
+            background: #343a40;
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+    </style>
+    @yield('styles')
 </head>
-<body class="bg-gray-50">
+<body>
     <!-- Navbar -->
-    <nav class="bg-white shadow-lg sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16">
-                <div class="flex items-center">
-                    <a href="{{ route('home') }}" class="flex items-center">
-                        <span class="text-2xl font-bold text-orange-600">🍳 Dapur Ceria</span>
-                    </a>
-                    
-                    <!-- Navigation Links -->
-                    <div class="hidden md:flex ml-10 space-x-8">
-                        <a href="{{ route('home') }}" class="text-gray-700 hover:text-orange-600 px-3 py-2 text-sm font-medium">
-                            Home
-                        </a>
-                        @auth
-                            <a href="{{ route('dashboard') }}" class="text-gray-700 hover:text-orange-600 px-3 py-2 text-sm font-medium">
-                                Dashboard
-                            </a>
-                            <a href="{{ route('user.resep.my-recipes') }}" class="text-gray-700 hover:text-orange-600 px-3 py-2 text-sm font-medium">
-                                Resep Saya
-                            </a>
-                            <a href="{{ route('favorit.index') }}" class="text-gray-700 hover:text-orange-600 px-3 py-2 text-sm font-medium">
-                                Favorit
-                            </a>
-                        @endauth
-                    </div>
-                </div>
-
-                <!-- Search -->
-                <div class="hidden md:flex items-center flex-1 max-w-md mx-8">
-                    <form action="{{ route('resep.search') }}" method="GET" class="w-full">
-                        <input type="text" name="q" placeholder="Cari resep..." 
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-                            value="{{ request('q') }}">
-                    </form>
-                </div>
-
-                <!-- Right Side -->
-                <div class="flex items-center space-x-4">
-                    @auth
-                        <a href="{{ route('user.resep.create') }}" class="bg-orange-600 text-white px-4 py-2 rounded-lg hover:bg-orange-700 text-sm font-medium">
-                            + Upload Resep
-                        </a>
-                        
-                        <!-- Dropdown User -->
-                        <div class="relative" x-data="{ open: false }">
-                            <button @click="open = !open" class="flex items-center space-x-2 text-gray-700 hover:text-orange-600">
-                                <img src="{{ auth()->user()->foto_profil ? asset('storage/' . auth()->user()->foto_profil) : 'https://ui-avatars.com/api/?name=' . urlencode(auth()->user()->name) }}" 
-                                    class="w-8 h-8 rounded-full">
-                                <span class="text-sm font-medium">{{ auth()->user()->name }}</span>
-                            </button>
-                            
-                            <div x-show="open" @click.away="open = false" 
-                                class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50">
-                                @if(auth()->user()->isAdmin())
-                                    <a href="{{ route('admin.dashboard') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                        Admin Dashboard
-                                    </a>
-                                @endif
-                                <a href="{{ route('profile.edit') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                    Profil
-                                </a>
-                                <form method="POST" action="{{ route('logout') }}">
-                                    @csrf
-                                    <button type="submit" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                        Logout
-                                    </button>
-                                </form>
-                            </div>
-                        </div>
-                    @else
-                        <a href="{{ route('login') }}" class="text-gray-700 hover:text-orange-600 px-3 py-2 text-sm font-medium">
-                            Login
-                        </a>
-                        <a href="{{ route('register') }}" class="bg-orange-600 text-white px-4 py-2 rounded-lg hover:bg-orange-700 text-sm font-medium">
-                            Register
-                        </a>
-                    @endauth
-                </div>
-            </div>
+    <nav class="navbar">
+        <div class="container">
+            <a href="{{ route('home') }}" class="navbar-brand">🍳 Dapur Ceria</a>
+            <ul class="navbar-menu">
+                <li><a href="{{ route('home') }}">Beranda</a></li>
+                
+                @auth
+                    <li><a href="{{ route('user.resep.create') }}">Upload Resep</a></li>
+                    <li><a href="{{ route('user.resep.my') }}">Resep Saya</a></li>
+                    <li><a href="{{ route('favorit.index') }}">Favorit</a></li>
+                    <li>
+                        <form action="{{ route('logout') }}" method="POST" style="display: inline;">
+                            @csrf
+                            <button type="submit" class="btn btn-outline">Logout ({{ auth()->user()->name }})</button>
+                        </form>
+                    </li>
+                @else
+                    <li><a href="{{ route('login') }}" class="btn btn-outline">Login</a></li>
+                    <li><a href="{{ route('register') }}" class="btn btn-success">Daftar</a></li>
+                @endauth
+            </ul>
         </div>
     </nav>
 
-    <!-- Alert Messages -->
-    @if(session('success'))
-        <x-alert type="success" :message="session('success')" />
-    @endif
-    
-    @if(session('error'))
-        <x-alert type="error" :message="session('error')" />
-    @endif
+    <!-- Content -->
+    <div class="content">
+        <div class="container">
+            @if(session('success'))
+                <div class="alert alert-success">{{ session('success') }}</div>
+            @endif
 
-    <!-- Main Content -->
-    <main class="py-8">
-        @yield('content')
-    </main>
+            @if(session('error'))
+                <div class="alert alert-error">{{ session('error') }}</div>
+            @endif
+
+            @yield('content')
+        </div>
+    </div>
 
     <!-- Footer -->
-    <footer class="bg-gray-800 text-white mt-16">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            <div class="text-center">
-                <p class="text-lg font-bold">🍳 Dapur Ceria</p>
-                <p class="text-gray-400 mt-2">Platform berbagi resep masakan terbaik</p>
-                <p class="text-gray-400 mt-4">&copy; 2024 Dapur Ceria. All rights reserved.</p>
-            </div>
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 Dapur Ceria. Semua hak dilindungi.</p>
         </div>
     </footer>
 
-    <!-- Alpine.js for dropdown -->
-    {{-- <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script> --}}
+    @yield('scripts')
 </body>
 </html>

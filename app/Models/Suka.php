@@ -8,8 +8,6 @@ class Suka extends Model
 {
     use HasFactory;
 
-    protected $table = 'sukas';
-
     protected $fillable = [
         'id_user',
         'id_resep',
@@ -17,11 +15,11 @@ class Suka extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'id_user');
     }
 
     public function resep()
     {
-        return $this->belongsTo(Resep::class);
+        return $this->belongsTo(Resep::class, 'id_resep');
     }
 }

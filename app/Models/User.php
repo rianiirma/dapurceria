@@ -1,45 +1,58 @@
 <?php
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
-    use Notifiable;
+    use HasFactory, Notifiable;
 
     protected $fillable = [
-        'name', 'email', 'password', 'role', 'foto_profil',
+        'name',
+        'email',
+        'password',
+        'role',
+        'foto_profil',
     ];
 
     protected $hidden = [
-        'password', 'remember_token',
+        'password',
+        'remember_token',
     ];
 
-    // Relationships
+    protected function casts(): array
+    {
+        return [
+            'email_verified_at' => 'datetime',
+            'password'          => 'hashed',
+        ];
+    }
+
     public function reseps()
     {
-        return $this->hasMany(Resep::class);
+        return $this->hasMany(Resep::class, 'id_user');
     }
 
     public function komentars()
     {
-        return $this->hasMany(Komentar::class);
+        return $this->hasMany(Komentar::class, 'id_user');
     }
 
     public function ratings()
     {
-        return $this->hasMany(Rating::class);
+        return $this->hasMany(Rating::class, 'id_user');
     }
 
     public function sukas()
     {
-        return $this->hasMany(Suka::class);
+        return $this->hasMany(Suka::class, 'id_user');
     }
 
     public function favorits()
     {
-        return $this->hasMany(Favorit::class);
+        return $this->hasMany(Favorit::class, 'id_user');
     }
 
     public function isAdmin()

@@ -1,28 +1,38 @@
 <?php
-
 namespace App\Http\Controllers;
 
+use App\Models\Kategori;
+use App\Models\Resep;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
+    // Halaman utama (guest bisa akses)
+    public function index(Request $request)
     {
-        $this->middleware('auth');
+        $query = Resep::with(['user', 'kategori', 'ratings']);
+
+        // Filter by kategori
+        if ($request->has('kategori') && $request->kategori != '') {
+            $query->where('id_kategori', $request->kategori);
+        }
+
+        // Search
+        if ($request->has('search') && $request->search != '') {
+            $query->where('judul', 'like', '%' . $request->search . '%');
+        }
+
+        $reseps    = $query->latest()->paginate(12);
+        $kategoris = Kategori::all();
+
+        return view('home', compact('reseps', 'kategoris'));
     }
 
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
-    public function index()
+    // Detail resep
+    public function show($id)
     {
-        return view('home');
+        $resep = Resep::with(['user', 'kategori', 'komentars.user', 'ratings'])->findOrFail($id);
+
+        return view('resep.show', compact('resep'));
     }
 }
