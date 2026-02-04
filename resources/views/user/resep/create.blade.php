@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Edit Resep - Dapur Ceria')
+@section('title', 'Upload Resep - Dapur Ceria')
 
 @section('styles')
 <style>
@@ -59,28 +59,22 @@
         color: #666;
         margin-top: 0.25rem;
     }
-    .current-image {
-        max-width: 200px;
-        border-radius: 5px;
-        margin-top: 0.5rem;
-    }
 </style>
 @endsection
 
 @section('content')
 <div class="form-container">
     <div class="form-header">
-        <h2>✏️ Edit Resep</h2>
-        <p>Perbarui informasi resep Anda</p>
+        <h2>📝 Upload Resep Baru</h2>
+        <p>Bagikan resep masakan favorit Anda dengan komunitas Dapur Ceria!</p>
     </div>
 
-    <form action="{{ route('user.resep.update', $resep->id) }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('user.resep.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
-        @method('PUT')
 
         <div class="form-group">
             <label for="judul">Judul Resep *</label>
-            <input type="text" name="judul" id="judul" class="form-control" value="{{ old('judul', $resep->judul) }}" required>
+            <input type="text" name="judul" id="judul" class="form-control" value="{{ old('judul') }}" required>
             @error('judul')
                 <span class="error">{{ $message }}</span>
             @enderror
@@ -91,7 +85,7 @@
             <select name="id_kategori" id="id_kategori" class="form-control" required>
                 <option value="">Pilih Kategori</option>
                 @foreach($kategoris as $kategori)
-                    <option value="{{ $kategori->id }}" {{ old('id_kategori', $resep->id_kategori) == $kategori->id ? 'selected' : '' }}>
+                    <option value="{{ $kategori->id }}" {{ old('id_kategori') == $kategori->id ? 'selected' : '' }}>
                         {{ $kategori->nama_kategori }}
                     </option>
                 @endforeach
@@ -103,7 +97,8 @@
 
         <div class="form-group">
             <label for="deskripsi">Deskripsi *</label>
-            <textarea name="deskripsi" id="deskripsi" class="form-control" required>{{ old('deskripsi', $resep->deskripsi) }}</textarea>
+            <textarea name="deskripsi" id="deskripsi" class="form-control" required>{{ old('deskripsi') }}</textarea>
+            <span class="help-text">Jelaskan secara singkat tentang resep ini</span>
             @error('deskripsi')
                 <span class="error">{{ $message }}</span>
             @enderror
@@ -111,7 +106,8 @@
 
         <div class="form-group">
             <label for="bahan">Bahan-bahan *</label>
-            <textarea name="bahan" id="bahan" class="form-control" required>{{ old('bahan', $resep->bahan) }}</textarea>
+            <textarea name="bahan" id="bahan" class="form-control" required>{{ old('bahan') }}</textarea>
+            <span class="help-text">Tulis satu bahan per baris. Contoh:<br>- 500gr daging ayam<br>- 2 siung bawang putih</span>
             @error('bahan')
                 <span class="error">{{ $message }}</span>
             @enderror
@@ -119,7 +115,8 @@
 
         <div class="form-group">
             <label for="langkah_langkah">Langkah-langkah *</label>
-            <textarea name="langkah_langkah" id="langkah_langkah" class="form-control" required>{{ old('langkah_langkah', $resep->langkah_langkah) }}</textarea>
+            <textarea name="langkah_langkah" id="langkah_langkah" class="form-control" required>{{ old('langkah_langkah') }}</textarea>
+            <span class="help-text">Tulis langkah-langkah memasak secara detail</span>
             @error('langkah_langkah')
                 <span class="error">{{ $message }}</span>
             @enderror
@@ -127,12 +124,6 @@
 
         <div class="form-group">
             <label for="gambar">Gambar Resep</label>
-            @if($resep->gambar)
-                <div>
-                    <img src="{{ asset('storage/' . $resep->gambar) }}" alt="Current" class="current-image">
-                    <p class="help-text">Gambar saat ini. Upload gambar baru untuk menggantinya.</p>
-                </div>
-            @endif
             <input type="file" name="gambar" id="gambar" class="form-control" accept="image/*">
             <span class="help-text">Format: JPG, PNG. Maksimal 2MB</span>
             @error('gambar')
@@ -142,7 +133,8 @@
 
         <div class="form-group">
             <label for="video_url">URL Video (YouTube)</label>
-            <input type="url" name="video_url" id="video_url" class="form-control" value="{{ old('video_url', $resep->video_url) }}">
+            <input type="url" name="video_url" id="video_url" class="form-control" value="{{ old('video_url') }}" placeholder="https://www.youtube.com/watch?v=...">
+            <span class="help-text">Opsional: Link video tutorial YouTube</span>
             @error('video_url')
                 <span class="error">{{ $message }}</span>
             @enderror
@@ -150,7 +142,7 @@
 
         <div class="form-group">
             <label for="waktu_memasak">Waktu Memasak (menit) *</label>
-            <input type="number" name="waktu_memasak" id="waktu_memasak" class="form-control" value="{{ old('waktu_memasak', $resep->waktu_memasak) }}" min="1" required>
+            <input type="number" name="waktu_memasak" id="waktu_memasak" class="form-control" value="{{ old('waktu_memasak') }}" min="1" required>
             @error('waktu_memasak')
                 <span class="error">{{ $message }}</span>
             @enderror
@@ -158,7 +150,7 @@
 
         <div class="form-group">
             <label for="porsi">Porsi *</label>
-            <input type="number" name="porsi" id="porsi" class="form-control" value="{{ old('porsi', $resep->porsi) }}" min="1" required>
+            <input type="number" name="porsi" id="porsi" class="form-control" value="{{ old('porsi') }}" min="1" required>
             @error('porsi')
                 <span class="error">{{ $message }}</span>
             @enderror
@@ -168,9 +160,9 @@
             <label for="tingkat_kesulitan">Tingkat Kesulitan *</label>
             <select name="tingkat_kesulitan" id="tingkat_kesulitan" class="form-control" required>
                 <option value="">Pilih Tingkat Kesulitan</option>
-                <option value="mudah" {{ old('tingkat_kesulitan', $resep->tingkat_kesulitan) == 'mudah' ? 'selected' : '' }}>😊 Mudah</option>
-                <option value="sedang" {{ old('tingkat_kesulitan', $resep->tingkat_kesulitan) == 'sedang' ? 'selected' : '' }}>🤔 Sedang</option>
-                <option value="sulit" {{ old('tingkat_kesulitan', $resep->tingkat_kesulitan) == 'sulit' ? 'selected' : '' }}>😰 Sulit</option>
+                <option value="mudah" {{ old('tingkat_kesulitan') == 'mudah' ? 'selected' : '' }}> Mudah</option>
+                <option value="sedang" {{ old('tingkat_kesulitan') == 'sedang' ? 'selected' : '' }}> Sedang</option>
+                <option value="sulit" {{ old('tingkat_kesulitan') == 'sulit' ? 'selected' : '' }}> Sulit</option>
             </select>
             @error('tingkat_kesulitan')
                 <span class="error">{{ $message }}</span>
@@ -178,8 +170,8 @@
         </div>
 
         <div class="form-actions">
-            <button type="submit" class="btn btn-primary">Update Resep</button>
-            <a href="{{ route('user.resep.my') }}" class="btn btn-secondary">Batal</a>
+            <button type="submit" class="btn btn-primary">Upload Resep</button>
+            <a href="{{ route('home') }}" class="btn btn-secondary">Batal</a>
         </div>
     </form>
 </div>

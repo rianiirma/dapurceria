@@ -25,7 +25,7 @@
     .kategori-badge {
         display: inline-block;
         padding: 0.5rem 1rem;
-        background: #ff6b6b;
+        background: #ffd93d;
         color: white;
         border-radius: 20px;
         font-size: 0.875rem;
@@ -68,7 +68,7 @@
         font-size: 1.5rem;
         margin-bottom: 1rem;
         color: #333;
-        border-left: 4px solid #ff6b6b;
+        border-left: 4px solid #ffd93d;
         padding-left: 1rem;
     }
     .video-container {
@@ -99,7 +99,7 @@
     .rating-number {
         font-size: 3rem;
         font-weight: bold;
-        color: #ff6b6b;
+        color: #ffd93d;
     }
     .stars {
         font-size: 2rem;
@@ -118,12 +118,18 @@
         display: none;
     }
     .rating-input label {
-        font-size: 2rem;
+        font-size: 2.5rem;
         cursor: pointer;
-        color: #ddd;
+        color: #e2e8f0;
+        transition: all 0.2s;
+    }
+    .rating-input label:hover,
+    .rating-input label:hover ~ label {
+        color: #ffd93d;
+        transform: scale(1.1);
     }
     .rating-input input:checked ~ label {
-        color: #ffd43b;
+        color: #ffd93d;
     }
     .komentar-section {
         margin-top: 2rem;
@@ -194,9 +200,9 @@
             <div class="meta-item">
                 <span class="meta-label">Tingkat Kesulitan</span>
                 <span class="meta-value">
-                    @if($resep->tingkat_kesulitan == 'mudah') 😊 Mudah
-                    @elseif($resep->tingkat_kesulitan == 'sedang') 🤔 Sedang
-                    @else 😰 Sulit
+                    @if($resep->tingkat_kesulitan == 'mudah')  Mudah
+                    @elseif($resep->tingkat_kesulitan == 'sedang')  Sedang
+                    @else  Sulit
                     @endif
                 </span>
             </div>
@@ -233,7 +239,7 @@
         </div>
         @else
         <p style="background: #f8f9fa; padding: 1rem; border-radius: 5px; margin-bottom: 2rem;">
-            <a href="{{ route('login') }}" style="color: #ff6b6b; font-weight: bold;">Login</a> untuk menyukai, memfavoritkan, dan memberi rating resep ini.
+            <a href="{{ route('login') }}" style="color: #ffd93d; font-weight: bold;">Login</a> untuk menyukai, memfavoritkan, dan memberi rating resep ini.
         </p>
         @endauth
 
@@ -298,7 +304,7 @@
                     <form action="{{ route('rating.store', $resep->id) }}" method="POST">
                         @csrf
                         <div class="rating-input">
-                            @for($i = 5; $i >= 1; $i--)
+                            @for($i = 1; $i <= 5; $i++)
                                 <input type="radio" name="rating" id="star{{ $i }}" value="{{ $i }}" {{ $userRating && $userRating->rating == $i ? 'checked' : '' }} required>
                                 <label for="star{{ $i }}">⭐</label>
                             @endfor
@@ -325,7 +331,7 @@
             </form>
             @else
             <p style="background: #f8f9fa; padding: 1rem; border-radius: 5px; margin-bottom: 2rem;">
-                <a href="{{ route('login') }}" style="color: #ff6b6b; font-weight: bold;">Login</a> untuk berkomentar.
+                <a href="{{ route('login') }}" style="color: #ffd93d; font-weight: bold;">Login</a> untuk berkomentar.
             </p>
             @endauth
 

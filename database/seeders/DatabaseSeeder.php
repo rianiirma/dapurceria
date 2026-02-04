@@ -14,7 +14,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Buat Admin
         $admin = User::create([
             'name'     => 'Admin Dapur Ceria',
             'email'    => 'admin@dapurceria.com',
@@ -22,7 +21,6 @@ class DatabaseSeeder extends Seeder
             'role'     => 'admin',
         ]);
 
-        // Buat User Biasa
         $user1 = User::create([
             'name'     => 'Budi Santoso',
             'email'    => 'budi@gmail.com',
@@ -50,7 +48,6 @@ class DatabaseSeeder extends Seeder
             Kategori::create($kat);
         }
 
-        // Buat Resep Sample
         $reseps = [
             [
                 'id_user'           => $user1->id,

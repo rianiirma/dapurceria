@@ -86,7 +86,7 @@
 
         <!-- Pagination -->
         <div style="padding: 1.5rem; display: flex; justify-content: center;">
-            {{ $reseps->links() }}
+            {{ $reseps->links('pagination::custom') }}  
         </div>
     @else
         <p style="padding: 2rem; text-align: center; color: #999;">Tidak ada resep ditemukan</p>

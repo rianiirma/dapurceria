@@ -11,13 +11,11 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        // Statistik
         $totalUsers     = User::where('role', 'user')->count();
         $totalReseps    = Resep::count();
         $totalKomentars = Komentar::count();
         $avgRating      = Rating::avg('rating') ?? 0;
 
-        // Komentar belum dibaca (notifikasi)
         $unreadKomentars = Komentar::where('is_read', false)
             ->with(['user', 'resep'])
             ->latest()
@@ -26,7 +24,6 @@ class DashboardController extends Controller
 
         $totalUnreadKomentars = Komentar::where('is_read', false)->count();
 
-        // Resep terbaru
         $latestReseps = Resep::with(['user', 'kategori'])
             ->latest()
             ->take(5)

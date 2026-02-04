@@ -6,7 +6,7 @@
 @section('content')
 <div class="card">
     <div class="card-header">
-        <h3>📁 Form Tambah Kategori</h3>
+        <h3>📁 Tambah Kategori</h3>
     </div>
 
     <form action="{{ route('admin.kategori.store') }}" method="POST" style="padding: 1.5rem;">

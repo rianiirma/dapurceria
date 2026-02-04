@@ -7,7 +7,7 @@
 <div class="card">
     <div class="card-header">
         <h3>📁 Daftar Kategori</h3>
-        <a href="{{ route('admin.kategori.create') }}" class="btn btn-primary">+ Tambah Kategori</a>
+        <a href="{{ route('admin.kategori.create') }}" class="btn btn-primary"> Tambah Kategori</a>
     </div>
 
     @if($kategoris->count() > 0)

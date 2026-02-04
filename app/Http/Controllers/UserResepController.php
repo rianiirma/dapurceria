@@ -8,14 +8,12 @@ use Illuminate\Support\Facades\Storage;
 
 class UserResepController extends Controller
 {
-    // Show form create resep
     public function create()
     {
         $kategoris = Kategori::all();
         return view('user.resep.create', compact('kategoris'));
     }
 
-    // Store resep
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -33,7 +31,6 @@ class UserResepController extends Controller
 
         $validated['id_user'] = auth()->id();
 
-        // Upload gambar
         if ($request->hasFile('gambar')) {
             $validated['gambar'] = $request->file('gambar')->store('resep', 'public');
         }
@@ -43,7 +40,6 @@ class UserResepController extends Controller
         return redirect()->route('user.resep.my')->with('success', 'Resep berhasil diupload!');
     }
 
-    // Resep saya
     public function myResep()
     {
         $reseps = Resep::where('id_user', auth()->id())
@@ -54,7 +50,6 @@ class UserResepController extends Controller
         return view('user.resep.my-resep', compact('reseps'));
     }
 
-    // Edit resep
     public function edit($id)
     {
         $resep     = Resep::where('id_user', auth()->id())->findOrFail($id);
@@ -63,7 +58,6 @@ class UserResepController extends Controller
         return view('user.resep.edit', compact('resep', 'kategoris'));
     }
 
-    // Update resep
     public function update(Request $request, $id)
     {
         $resep = Resep::where('id_user', auth()->id())->findOrFail($id);
@@ -81,9 +75,7 @@ class UserResepController extends Controller
             'tingkat_kesulitan' => 'required|in:mudah,sedang,sulit',
         ]);
 
-        // Upload gambar baru
         if ($request->hasFile('gambar')) {
-            // Hapus gambar lama
             if ($resep->gambar) {
                 Storage::disk('public')->delete($resep->gambar);
             }
@@ -95,12 +87,10 @@ class UserResepController extends Controller
         return redirect()->route('user.resep.my')->with('success', 'Resep berhasil diupdate!');
     }
 
-    // Delete resep
     public function destroy($id)
     {
         $resep = Resep::where('id_user', auth()->id())->findOrFail($id);
 
-        // Hapus gambar
         if ($resep->gambar) {
             Storage::disk('public')->delete($resep->gambar);
         }

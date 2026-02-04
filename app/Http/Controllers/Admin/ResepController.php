@@ -9,17 +9,14 @@ use Illuminate\Support\Facades\Storage;
 
 class ResepController extends Controller
 {
-    // List resep
     public function index(Request $request)
     {
         $query = Resep::with(['user', 'kategori', 'ratings']);
 
-        // Filter by kategori
         if ($request->has('kategori') && $request->kategori != '') {
             $query->where('id_kategori', $request->kategori);
         }
 
-        // Search
         if ($request->has('search') && $request->search != '') {
             $query->where('judul', 'like', '%' . $request->search . '%');
         }
@@ -30,14 +27,12 @@ class ResepController extends Controller
         return view('admin.resep.index', compact('reseps', 'kategoris'));
     }
 
-    // Create form
     public function create()
     {
         $kategoris = Kategori::all();
         return view('admin.resep.create', compact('kategoris'));
     }
 
-    // Store
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -55,7 +50,6 @@ class ResepController extends Controller
 
         $validated['id_user'] = auth()->id();
 
-        // Upload gambar
         if ($request->hasFile('gambar')) {
             $validated['gambar'] = $request->file('gambar')->store('resep', 'public');
         }
@@ -65,7 +59,6 @@ class ResepController extends Controller
         return redirect()->route('admin.resep.index')->with('success', 'Resep berhasil ditambahkan!');
     }
 
-    // Edit form
     public function edit($id)
     {
         $resep     = Resep::findOrFail($id);
@@ -73,7 +66,6 @@ class ResepController extends Controller
         return view('admin.resep.edit', compact('resep', 'kategoris'));
     }
 
-    // Update
     public function update(Request $request, $id)
     {
         $resep = Resep::findOrFail($id);
@@ -91,9 +83,7 @@ class ResepController extends Controller
             'tingkat_kesulitan' => 'required|in:mudah,sedang,sulit',
         ]);
 
-        // Upload gambar baru
         if ($request->hasFile('gambar')) {
-            // Hapus gambar lama
             if ($resep->gambar) {
                 Storage::disk('public')->delete($resep->gambar);
             }
@@ -105,12 +95,10 @@ class ResepController extends Controller
         return redirect()->route('admin.resep.index')->with('success', 'Resep berhasil diupdate!');
     }
 
-    // Delete
     public function destroy($id)
     {
         $resep = Resep::findOrFail($id);
 
-        // Hapus gambar
         if ($resep->gambar) {
             Storage::disk('public')->delete($resep->gambar);
         }

@@ -6,21 +6,20 @@ use App\Models\Resep;
 
 class FavoritController extends Controller
 {
-    // Toggle favorit
     public function toggle($resepId)
     {
-        Resep::findOrFail($resepId); // Pastikan resep ada
+        Resep::findOrFail($resepId); 
 
         $favorit = Favorit::where('id_user', auth()->id())
             ->where('id_resep', $resepId)
             ->first();
 
         if ($favorit) {
-            // Sudah favorit, hapus
+            
             $favorit->delete();
             $message = 'Dihapus dari favorit!';
         } else {
-            // Belum favorit, tambah
+           
             Favorit::create([
                 'id_user'  => auth()->id(),
                 'id_resep' => $resepId,
@@ -31,7 +30,7 @@ class FavoritController extends Controller
         return back()->with('success', $message);
     }
 
-    // Lihat daftar favorit
+    
     public function index()
     {
         $favorits = Favorit::where('id_user', auth()->id())

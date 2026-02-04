@@ -6,7 +6,7 @@
 @section('content')
 <div class="card">
     <div class="card-header">
-        <h3>📝 Form Tambah Resep</h3>
+        <h3>📝 Tambah Resep</h3>
     </div>
 
     <form action="{{ route('admin.resep.store') }}" method="POST" enctype="multipart/form-data" style="padding: 1.5rem;">

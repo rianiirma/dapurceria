@@ -8,13 +8,11 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    // Show login form
     public function showLogin()
     {
         return view('auth.login');
     }
 
-    // Process login
     public function login(Request $request)
     {
         $credentials = $request->validate([
@@ -25,7 +23,6 @@ class AuthController extends Controller
         if (Auth::attempt($credentials, $request->filled('remember'))) {
             $request->session()->regenerate();
 
-            // Redirect based on role
             if (Auth::user()->isAdmin()) {
                 return redirect()->route('admin.dashboard')->with('success', 'Selamat datang Admin!');
             }
@@ -38,13 +35,11 @@ class AuthController extends Controller
         ])->onlyInput('email');
     }
 
-    // Show register form
     public function showRegister()
     {
         return view('auth.register');
     }
 
-    // Process register
     public function register(Request $request)
     {
         $validated = $request->validate([
@@ -65,7 +60,6 @@ class AuthController extends Controller
         return redirect()->route('home')->with('success', 'Registrasi berhasil!');
     }
 
-    // Logout
     public function logout(Request $request)
     {
         Auth::logout();

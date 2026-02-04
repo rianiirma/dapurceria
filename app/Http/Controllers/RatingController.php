@@ -7,16 +7,16 @@ use Illuminate\Http\Request;
 
 class RatingController extends Controller
 {
-    // Store/update rating
+    
     public function store(Request $request, $resepId)
     {
         $request->validate([
             'rating' => 'required|integer|min:1|max:5',
         ]);
 
-        Resep::findOrFail($resepId); // Pastikan resep ada
+        Resep::findOrFail($resepId); 
 
-        // Update or create
+        
         Rating::updateOrCreate(
             [
                 'id_user'  => auth()->id(),

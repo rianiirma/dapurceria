@@ -7,14 +7,13 @@ use Illuminate\Http\Request;
 
 class KomentarController extends Controller
 {
-    // Store komentar
     public function store(Request $request, $resepId)
     {
         $request->validate([
             'isi_komentar' => 'required|string|max:1000',
         ]);
 
-        Resep::findOrFail($resepId); // Pastikan resep ada
+        Resep::findOrFail($resepId); 
 
         Komentar::create([
             'id_user'      => auth()->id(),

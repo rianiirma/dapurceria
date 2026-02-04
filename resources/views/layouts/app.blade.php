@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <title>@yield('title', 'Dapur Ceria')</title>
     <style>
         * {
@@ -27,6 +28,9 @@
             color: white;
             padding: 1rem 0;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
         .navbar .container {
             display: flex;
@@ -38,6 +42,9 @@
             font-weight: bold;
             color: white;
             text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
         .navbar-menu {
             display: flex;
@@ -49,19 +56,21 @@
             color: white;
             text-decoration: none;
             transition: opacity 0.3s;
+            font-weight: 500;
         }
         .navbar-menu a:hover {
             opacity: 0.8;
         }
         .btn {
-            padding: 0.5rem 1rem;
-            border-radius: 5px;
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
             text-decoration: none;
             display: inline-block;
             transition: all 0.3s;
             border: none;
             cursor: pointer;
-            font-size: 1rem;
+            font-size: 0.95rem;
+            font-weight: 500;
         }
         .btn-primary {
             background: #ff6b6b;
@@ -69,6 +78,8 @@
         }
         .btn-primary:hover {
             background: #ee5a52;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 107, 107, 0.4);
         }
         .btn-success {
             background: #51cf66;
@@ -76,6 +87,7 @@
         }
         .btn-success:hover {
             background: #40c057;
+            transform: translateY(-2px);
         }
         .btn-danger {
             background: #ff6b6b;
@@ -103,19 +115,20 @@
         }
         /* Alert */
         .alert {
-            padding: 1rem;
+            padding: 1rem 1.5rem;
             margin: 1rem 0;
-            border-radius: 5px;
+            border-radius: 10px;
+            border-left: 4px solid;
         }
         .alert-success {
             background: #d4edda;
             color: #155724;
-            border: 1px solid #c3e6cb;
+            border-color: #51cf66;
         }
         .alert-error {
             background: #f8d7da;
             color: #721c24;
-            border: 1px solid #f5c6cb;
+            border-color: #ff6b6b;
         }
         /* Content */
         .content {
@@ -183,4 +196,4 @@
 
     @yield('scripts')
 </body>
-</html>
+</html>     

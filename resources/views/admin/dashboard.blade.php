@@ -80,7 +80,7 @@
             </div>
         @endif
     @else
-        <p style="padding: 2rem; text-align: center; color: #999;">Semua komentar sudah dibaca! 🎉</p>
+        <p style="padding: 2rem; text-align: center; color: #999;">Semua komentar sudah dibaca! </p>
     @endif
 </div>
 
@@ -113,8 +113,10 @@
                     <td>{{ $resep->created_at->format('d M Y') }}</td>
                     <td>
                         <div style="display: flex; gap: 0.5rem;">
-                            <a href="{{ route('resep.show', $resep->id) }}" class="btn btn-sm btn-secondary">Lihat</a>
-                            <a href="{{ route('admin.resep.edit', $resep->id) }}" class="btn btn-sm btn-warning">Edit</a>
+                            <a href="{{ route('resep.show', $resep->id) }}" class="btn btn-sm btn-secondary">
+                                <i class='bx bx-show'></i></a>
+                            <a href="{{ route('admin.resep.edit', $resep->id) }}" class="btn btn-sm btn-warning">
+                                <i class='bx bx-edit'></i></a>
                         </div>
                     </td>
                 </tr>
