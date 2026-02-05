@@ -113,24 +113,32 @@
         justify-content: center;
         gap: 0.5rem;
         margin-bottom: 1rem;
+        flex-direction: row-reverse;
     }
     .rating-input input {
         display: none;
     }
+    
+    /* Style bintang default - tidak berwarna */
     .rating-input label {
         font-size: 2.5rem;
         cursor: pointer;
-        color: #e2e8f0;
-        transition: all 0.2s;
+        color: #ddd;
+        transition: transform 0.2s ease, color 0.3s ease;
+        position: relative;
+        order: 0;
     }
-    .rating-input label:hover,
-    .rating-input label:hover ~ label {
+    
+    /* Hover effect - scale sedikit */
+    .rating-input label:hover {
+        transform: scale(1.15);
+    }
+    
+    /* Class untuk bintang yang ter-hover atau ter-select */
+    .rating-input label.filled {
         color: #ffd93d;
-        transform: scale(1.1);
     }
-    .rating-input input:checked ~ label {
-        color: #ffd93d;
-    }
+    
     .komentar-section {
         margin-top: 2rem;
     }
@@ -301,12 +309,14 @@
                 @endphp
                 <div class="rating-form">
                     <p><strong>Berikan rating Anda:</strong></p>
-                    <form action="{{ route('rating.store', $resep->id) }}" method="POST">
+                    <form action="{{ route('rating.store', $resep->id) }}" method="POST" id="rating-form">
                         @csrf
-                        <div class="rating-input">
+                        <div class="rating-input" id="star-rating-container">
                             @for($i = 1; $i <= 5; $i++)
                                 <input type="radio" name="rating" id="star{{ $i }}" value="{{ $i }}" {{ $userRating && $userRating->rating == $i ? 'checked' : '' }} required>
-                                <label for="star{{ $i }}"><i class='bx bxs-star' style='color:#ffd93d'></i></label>
+                                <label for="star{{ $i }}" data-value="{{ $i }}" style="order: {{ 6 - $i }}">
+                                    <i class='bx bxs-star'></i>
+                                </label>
                             @endfor
                         </div>
                         <button type="submit" class="btn btn-primary">
@@ -350,4 +360,105 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const container = document.getElementById('star-rating-container');
+    const stars = document.querySelectorAll('.rating-input label');
+    const inputs = document.querySelectorAll('.rating-input input');
+    let selectedValue = 0;
+    
+    // Buat array bintang terurut dari kiri ke kanan (1,2,3,4,5)
+    const starsArray = Array.from(stars).sort((a, b) => {
+        return parseInt(a.dataset.value) - parseInt(b.dataset.value);
+    });
+    
+    // Cek apakah sudah ada rating sebelumnya
+    inputs.forEach(input => {
+        if (input.checked) {
+            selectedValue = parseInt(input.value);
+            fillStars(selectedValue, true);
+        }
+    });
+    
+    // Event hover untuk setiap bintang
+    stars.forEach((star) => {
+        star.addEventListener('mouseenter', function() {
+            const value = parseInt(this.dataset.value);
+            fillStars(value, false);
+        });
+        
+        // Event click untuk select rating
+        star.addEventListener('click', function() {
+            const value = parseInt(this.dataset.value);
+            
+            // Kalau klik bintang yang sama dengan yang sudah dipilih = reset/cancel rating
+            if (selectedValue === value) {
+                selectedValue = 0;
+                clearStars();
+                // Uncheck semua input
+                inputs.forEach(inp => inp.checked = false);
+            } else {
+                selectedValue = value;
+                // Check input radio yang sesuai
+                const input = document.getElementById('star' + value);
+                if (input) {
+                    input.checked = true;
+                }
+                fillStars(value, true);
+            }
+        });
+    });
+    
+    // Event ketika mouse keluar dari container
+    container.addEventListener('mouseleave', function() {
+        // Kalau belum ada yang dipilih, reset semua
+        if (selectedValue === 0) {
+            clearStars();
+        } else {
+            // Kalau sudah ada yang dipilih, tampilkan yang dipilih tanpa animasi
+            fillStars(selectedValue, true);
+        }
+    });
+    
+    // Fungsi untuk mengisi bintang dengan animasi dari kiri ke kanan
+    function fillStars(count, instant = false) {
+        starsArray.forEach((star, index) => {
+            const starValue = parseInt(star.dataset.value);
+            
+            if (starValue <= count) {
+                if (instant) {
+                    // Langsung tanpa animasi (untuk restore state)
+                    star.classList.add('filled');
+                } else {
+                    // Dengan delay animasi dari kiri ke kanan (index 0 = bintang 1)
+                    setTimeout(() => {
+                        star.classList.add('filled');
+                    }, index * 80); // Delay 80ms per bintang dari kiri
+                }
+            } else {
+                star.classList.remove('filled');
+            }
+        });
+    }
+    
+    // Fungsi untuk clear semua bintang
+    function clearStars() {
+        stars.forEach(star => {
+            star.classList.remove('filled');
+        });
+    }
+    
+    // Validasi sebelum submit - pastikan ada rating yang dipilih
+    const form = document.getElementById('rating-form');
+    form.addEventListener('submit', function(e) {
+        if (selectedValue === 0) {
+            e.preventDefault();
+            alert('Silakan pilih rating terlebih dahulu!');
+        }
+    });
+});
+</script>
 @endsection
