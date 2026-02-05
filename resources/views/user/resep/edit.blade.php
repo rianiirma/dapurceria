@@ -70,7 +70,7 @@
 @section('content')
 <div class="form-container">
     <div class="form-header">
-        <h2>✏️ Edit Resep</h2>
+        <h2><i class="bx bx-edit-alt" ></i> Edit Resep</h2>
         <p>Perbarui informasi resep Anda</p>
     </div>
 
