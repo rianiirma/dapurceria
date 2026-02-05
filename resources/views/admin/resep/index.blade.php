@@ -33,7 +33,7 @@
 
 <div class="card">
     <div class="card-header">
-        <h3>🍲 Daftar Resep</h3>
+        <h3><i class='bx bx-food-menu'></i> Daftar Resep</h3>
         <a href="{{ route('admin.resep.create') }}" class="btn btn-primary">+ Tambah Resep</a>
     </div>
 
@@ -66,16 +66,16 @@
                     </td>
                     <td>{{ $resep->kategori->nama_kategori }}</td>
                     <td>{{ $resep->user->name }}</td>
-                    <td>⭐ {{ number_format($resep->averageRating(), 1) }}</td>
-                    <td>❤️ {{ $resep->totalSuka() }}</td>
+                    <td><i class='bx bxs-star' style='color:#ffd93d'></i> {{ number_format($resep->averageRating(), 1) }}</td>
+                    <td><i class='bx bxs-heart' style='color:#ff1515'></i> {{ $resep->totalSuka() }}</td>
                     <td>
                         <div style="display: flex; gap: 0.5rem;">
-                            <a href="{{ route('resep.show', $resep->id) }}" class="btn btn-sm btn-secondary">Lihat</a>
-                            <a href="{{ route('admin.resep.edit', $resep->id) }}" class="btn btn-sm btn-warning">Edit</a>
+                            <a href="{{ route('resep.show', $resep->id) }}" class="btn btn-sm btn-secondary"><i class='bx bx-show'></i></a>
+                            <a href="{{ route('admin.resep.edit', $resep->id) }}" class="btn btn-sm btn-warning"><i class='bx bx-edit-alt'></i></a>
                             <form action="{{ route('admin.resep.destroy', $resep->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus resep ini?')">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-sm btn-danger">Hapus</button>
+                                <button type="submit" class="btn btn-sm btn-danger"><i class='bx bx-trash'></i></button>
                             </form>
                         </div>
                     </td>

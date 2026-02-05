@@ -80,7 +80,7 @@
 
 @section('content')
 <div class="page-header">
-    <h2>⭐ Resep Favorit Saya</h2>
+    <h2><i class='bx bxs-star' style='color:#ffd93d'></i> Resep Favorit Saya</h2>
     <p style="color: #666;">Resep-resep yang Anda favoritkan</p>
 </div>
 
@@ -107,9 +107,9 @@
                         <p style="color: #666; font-size: 0.875rem;">{{ Str::limit($resep->deskripsi, 100) }}</p>
                         
                         <div class="resep-meta">
-                            <span>⏱️ {{ $resep->waktu_memasak }} menit</span>
-                            <span>🍽️ {{ $resep->porsi }} porsi</span>
-                            <span>⭐ {{ number_format($resep->averageRating(), 1) }}</span>
+                            <span><i class='bx bx-time'></i> {{ $resep->waktu_memasak }} menit</span>
+                            <span><i class='bx bx-dish'></i> {{ $resep->porsi }} porsi</span>
+                            <span><i class='bx bxs-star' style='color:#ffd93d'></i> {{ number_format($resep->averageRating(), 1) }}</span>
                         </div>
                         <div style="margin-top: 0.5rem; font-size: 0.875rem; color: #999;">
                             Oleh: {{ $resep->user->name }}

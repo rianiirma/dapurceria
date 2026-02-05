@@ -6,7 +6,7 @@
 @section('content')
 <div class="card">
     <div class="card-header">
-        <h3>👥 Daftar Pengguna</h3>
+        <h3><i class='bx bx-group'></i> Daftar Pengguna</h3>
     </div>
 
     @if($users->count() > 0)
@@ -33,7 +33,7 @@
                         <form action="{{ route('admin.user.destroy', $user->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus user ini? Semua resep dan aktivitasnya akan ikut terhapus.')">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="btn btn-sm btn-danger">Hapus</button>
+                            <button type="submit" class="btn btn-sm btn-danger"><i class='bx bx-trash'></i></button>
                         </form>
                     </td>
                 </tr>

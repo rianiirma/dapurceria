@@ -190,7 +190,7 @@
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
-            <p>&copy; 2024 Dapur Ceria. Semua hak dilindungi.</p>
+            <p>&copy; 2026 Dapur Ceria. Semua hak dilindungi.</p>
         </div>
     </footer>
 

@@ -6,7 +6,7 @@
 @section('content')
 <div class="card">
     <div class="card-header">
-        <h3>📁 Daftar Kategori</h3>
+        <h3><i class='bx bx-category-alt'></i> Daftar Kategori</h3>
         <a href="{{ route('admin.kategori.create') }}" class="btn btn-primary"> Tambah Kategori</a>
     </div>
 
@@ -30,11 +30,11 @@
                     <td>{{ $kategori->reseps_count }} resep</td>
                     <td>
                         <div style="display: flex; gap: 0.5rem;">
-                            <a href="{{ route('admin.kategori.edit', $kategori->id) }}" class="btn btn-sm btn-warning">Edit</a>
+                            <a href="{{ route('admin.kategori.edit', $kategori->id) }}" class="btn btn-sm btn-warning"><i class='bx bx-edit-alt'></i></a>
                             <form action="{{ route('admin.kategori.destroy', $kategori->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus kategori ini?')">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-sm btn-danger">Hapus</button>
+                                <button type="submit" class="btn btn-sm btn-danger"><i class='bx bx-trash'></i></button>
                             </form>
                         </div>
                     </td>

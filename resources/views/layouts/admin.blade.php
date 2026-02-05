@@ -260,15 +260,14 @@
         <aside class="sidebar">
             <div class="sidebar-brand">
                 <h2>🍳 Dapur Ceria</h2>
-                <p style="font-size: 0.875rem; color: #cbd5e0; margin-top: 0.5rem;">Admin Panel</p>
             </div>
             <ul class="sidebar-menu">
-                <li><a href="{{ route('admin.dashboard') }}" class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">📊 Dashboard</a></li>
-                <li><a href="{{ route('admin.kategori.index') }}" class="{{ request()->routeIs('admin.kategori.*') ? 'active' : '' }}">📁 Kategori</a></li>
-                <li><a href="{{ route('admin.resep.index') }}" class="{{ request()->routeIs('admin.resep.*') ? 'active' : '' }}">🍲 Resep</a></li>
-                <li><a href="{{ route('admin.komentar.index') }}" class="{{ request()->routeIs('admin.komentar.*') ? 'active' : '' }}">💬 Komentar</a></li>
-                <li><a href="{{ route('admin.user.index') }}" class="{{ request()->routeIs('admin.user.*') ? 'active' : '' }}">👥 Pengguna</a></li>
-                <li><a href="{{ route('home') }}">🏠 Lihat Website</a></li>
+                <li><a href="{{ route('admin.dashboard') }}" class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}"><i class='bx bx-home-alt'></i> Dashboard</a></li>
+                <li><a href="{{ route('admin.kategori.index') }}" class="{{ request()->routeIs('admin.kategori.*') ? 'active' : '' }}"><i class='bx bx-category'></i> Kategori</a></li>
+                <li><a href="{{ route('admin.resep.index') }}" class="{{ request()->routeIs('admin.resep.*') ? 'active' : '' }}"><i class='bx bx-food-menu'></i> Resep</a></li>
+                <li><a href="{{ route('admin.komentar.index') }}" class="{{ request()->routeIs('admin.komentar.*') ? 'active' : '' }}"><i class='bx bx-message-square-dots'></i> Komentar</a></li>
+                <li><a href="{{ route('admin.user.index') }}" class="{{ request()->routeIs('admin.user.*') ? 'active' : '' }}"><i class='bx bx-group'></i> Pengguna</a></li>
+                <li><a href="{{ route('home') }}"><i class='bx bx-globe'></i> Lihat Website</a></li>
             </ul>
         </aside>
 

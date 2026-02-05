@@ -19,27 +19,27 @@
 }
 
 .pagination-dots .arrow-btn.active {
-    background-color: #ed3a85;
+    background-color: #ff6b6b;
     color: white;
 }
 
 .pagination-dots .arrow-btn.active:hover {
-    background-color: #d9286c;
+    background-color: #ff6b6b;
 }
 
 .pagination-dots .arrow-btn.disabled {
     background-color: #ebe5ea;
-    color: #af9cab;
+    color: #e7d1d1;
     cursor: not-allowed;
 }
 
 .pagination-dots .arrow-btn:not(.disabled):not(.active) {
     background-color: #dbd1d8;
-    color: #513741;
+    color: #decdcd;
 }
 
 .pagination-dots .arrow-btn:not(.disabled):not(.active):hover {
-    background-color: #af9ca3;
+    background-color: #b7a2a2;
 }
 
 .pagination-dots .dots-container {
@@ -59,7 +59,7 @@
 .pagination-dots .dot.active {
     width: 12px;
     height: 12px;
-    background-color: #ed3a88;
+    background-color: #ff6b6b;
 }
 
 .pagination-dots .dot:not(.active) {
@@ -67,7 +67,7 @@
 }
 
 .pagination-dots .dot:not(.active):hover {
-    background-color: #fa8bc8;
+    background-color: #ff6b6b;
 }
 </style>
 

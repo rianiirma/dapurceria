@@ -65,7 +65,7 @@
 @section('content')
 <div class="form-container">
     <div class="form-header">
-        <h2>📝 Upload Resep Baru</h2>
+        <h2><i class="bx bxs-book-bookmark"></i> Upload Resep Baru</h2>
         <p>Bagikan resep masakan favorit Anda dengan komunitas Dapur Ceria!</p>
     </div>
 

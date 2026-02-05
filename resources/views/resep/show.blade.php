@@ -25,8 +25,8 @@
     .kategori-badge {
         display: inline-block;
         padding: 0.5rem 1rem;
-        background: #ffd93d;
-        color: white;
+        background: #ff6b6b;
+        color: rgb(255, 255, 255);
         border-radius: 20px;
         font-size: 0.875rem;
         margin-bottom: 1rem;
@@ -176,7 +176,7 @@
         @if($resep->gambar)
             <img src="{{ asset('storage/' . $resep->gambar) }}" alt="{{ $resep->judul }}" class="detail-image">
         @else
-            <div class="detail-image" style="display: flex; align-items: center; justify-content: center; font-size: 5rem;">🍲</div>
+            <div class="detail-image" style="display: flex; align-items: center; justify-content: center; font-size: 5rem;"><i class='bx bx-food-menu'></i></div>
         @endif
     </div>
 
@@ -191,11 +191,11 @@
         <div class="detail-meta">
             <div class="meta-item">
                 <span class="meta-label">Waktu Memasak</span>
-                <span class="meta-value">⏱️ {{ $resep->waktu_memasak }} menit</span>
+                <span class="meta-value"><i class='bx bx-time'></i> {{ $resep->waktu_memasak }} menit</span>
             </div>
             <div class="meta-item">
                 <span class="meta-label">Porsi</span>
-                <span class="meta-value">🍽️ {{ $resep->porsi }} porsi</span>
+                <span class="meta-value"><i class='bx bx-dish'></i> {{ $resep->porsi }} porsi</span>
             </div>
             <div class="meta-item">
                 <span class="meta-label">Tingkat Kesulitan</span>
@@ -208,11 +208,11 @@
             </div>
             <div class="meta-item">
                 <span class="meta-label">Rating</span>
-                <span class="meta-value">⭐ {{ number_format($resep->averageRating(), 1) }}</span>
+                <span class="meta-value"><i class='bx bxs-star' style='color:#ffd93d'></i> {{ number_format($resep->averageRating(), 1) }}</span>
             </div>
             <div class="meta-item">
                 <span class="meta-label">Disukai</span>
-                <span class="meta-value">❤️ {{ $resep->totalSuka() }}</span>
+                <span class="meta-value"><i class='bx bxs-heart' style="color: red "></i> {{ $resep->totalSuka() }}</span>
             </div>
         </div>
 
@@ -246,7 +246,7 @@
         <!-- Video (if available) -->
         @if($resep->video_url)
         <div class="section">
-            <h2 class="section-title">📹 Video Tutorial</h2>
+            <h2 class="section-title"><i class='bx bx-video'></i> Video Tutorial</h2>
             <div class="video-container">
                 @php
                     $videoId = '';
@@ -268,27 +268,27 @@
 
         <!-- Bahan-bahan -->
         <div class="section">
-            <h2 class="section-title">🥘 Bahan-bahan</h2>
+            <h2 class="section-title"><i class='bx bx-bowl-hot'></i> Bahan-bahan</h2>
             <div style="white-space: pre-line; line-height: 1.8;">{{ $resep->bahan }}</div>
         </div>
 
         <!-- Langkah-langkah -->
         <div class="section">
-            <h2 class="section-title">📝 Langkah-langkah</h2>
+            <h2 class="section-title"><i class='bx bx-detail'></i> Langkah-langkah</h2>
             <div style="white-space: pre-line; line-height: 1.8;">{{ $resep->langkah_langkah }}</div>
         </div>
 
         <!-- Rating Section -->
         <div class="rating-section">
-            <h2 class="section-title">⭐ Rating & Ulasan</h2>
+            <h2 class="section-title"><i class='bx bxs-star' style='color:#ffd93d'></i> Rating & Ulasan</h2>
             <div class="rating-display">
                 <div class="rating-number">{{ number_format($resep->averageRating(), 1) }}</div>
                 <div class="stars">
                     @for($i = 1; $i <= 5; $i++)
                         @if($i <= round($resep->averageRating()))
-                            ⭐
+                            <i class='bx bxs-star' style='color:#ffd93d'></i>
                         @else
-                            ☆
+                            <i class='bx bx-star' style='color:#ffd93d'></i>
                         @endif
                     @endfor
                 </div>
@@ -306,7 +306,7 @@
                         <div class="rating-input">
                             @for($i = 1; $i <= 5; $i++)
                                 <input type="radio" name="rating" id="star{{ $i }}" value="{{ $i }}" {{ $userRating && $userRating->rating == $i ? 'checked' : '' }} required>
-                                <label for="star{{ $i }}">⭐</label>
+                                <label for="star{{ $i }}"><i class='bx bxs-star' style='color:#ffd93d'></i></label>
                             @endfor
                         </div>
                         <button type="submit" class="btn btn-primary">
@@ -319,7 +319,7 @@
 
         <!-- Komentar Section -->
         <div class="komentar-section">
-            <h2 class="section-title">💬 Komentar ({{ $resep->totalKomentar() }})</h2>
+            <h2 class="section-title"><i class='bx bx-message-dots'></i> Komentar ({{ $resep->totalKomentar() }})</h2>
 
             @auth
             <form action="{{ route('komentar.store', $resep->id) }}" method="POST" style="margin-bottom: 2rem;">

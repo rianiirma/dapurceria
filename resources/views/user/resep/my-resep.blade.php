@@ -75,7 +75,7 @@
 
 @section('content')
 <div class="page-header">
-    <h2>📚 Resep Saya</h2>
+    <h2><i class='bx bx-book-bookmark'></i> Resep Saya</h2>
     <a href="{{ route('user.resep.create') }}" class="btn btn-primary">+ Upload Resep Baru</a>
 </div>
 
@@ -111,9 +111,9 @@
                         </div>
                     </td>
                     <td>{{ $resep->kategori->nama_kategori }}</td>
-                    <td>⭐ {{ number_format($resep->averageRating(), 1) }}</td>
-                    <td>❤️ {{ $resep->totalSuka() }}</td>
-                    <td>💬 {{ $resep->totalKomentar() }}</td>
+                    <td><i class='bx bxs-star' style='color:#ffd93d'></i> {{ number_format($resep->averageRating(), 1) }}</td>
+                    <td><i class='bx bxs-heart' style="color: red"></i> {{ $resep->totalSuka() }}</td>
+                    <td><i class='bx bx-message-dots'></i> {{ $resep->totalKomentar() }}</td>
                     <td>
                         @if($resep->tingkat_kesulitan == 'mudah')
                             <span class="badge badge-success">Mudah</span>
@@ -125,12 +125,12 @@
                     </td>
                     <td>
                         <div class="actions">
-                            <a href="{{ route('resep.show', $resep->id) }}" class="btn btn-sm btn-secondary">Lihat</a>
-                            <a href="{{ route('user.resep.edit', $resep->id) }}" class="btn btn-sm btn-warning">Edit</a>
+                            <a href="{{ route('resep.show', $resep->id) }}" class="btn btn-sm btn-secondary"><i class='bx bx-show-alt'></i></a>
+                            <a href="{{ route('user.resep.edit', $resep->id) }}" class="btn btn-sm btn-warning"><i class='bx bx-edit'></i></a>
                             <form action="{{ route('user.resep.destroy', $resep->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus resep ini?')">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-sm btn-danger">Hapus</button>
+                                <button type="submit" class="btn btn-sm btn-danger"><i class='bx bx-trash-alt'></i></button>
                             </form>
                         </div>
                     </td>

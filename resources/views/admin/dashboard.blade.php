@@ -34,7 +34,7 @@
 <!-- Notifikasi Komentar Baru -->
 <div class="card">
     <div class="card-header">
-        <h3>💬 Komentar Belum Dibaca ({{ $totalUnreadKomentars }})</h3>
+        <h3><i class='bx bx-message-square-dots'></i> Komentar Belum Dibaca ({{ $totalUnreadKomentars }})</h3>
         @if($totalUnreadKomentars > 0)
             <form action="{{ route('admin.komentar.readAll') }}" method="POST">
                 @csrf
@@ -87,7 +87,7 @@
 <!-- Resep Terbaru -->
 <div class="card">
     <div class="card-header">
-        <h3>🍲 Resep Terbaru</h3>
+        <h3><i class='bx bx-food-menu'></i> Resep Terbaru</h3>
         <a href="{{ route('admin.resep.index') }}" class="btn btn-sm btn-primary">Lihat Semua</a>
     </div>
 
@@ -109,14 +109,14 @@
                     <td><strong>{{ $resep->judul }}</strong></td>
                     <td>{{ $resep->kategori->nama_kategori }}</td>
                     <td>{{ $resep->user->name }}</td>
-                    <td>⭐ {{ number_format($resep->averageRating(), 1) }}</td>
+                    <td><i class='bx bxs-star' style='color:#ffd93d'></i> {{ number_format($resep->averageRating(), 1) }}</td>
                     <td>{{ $resep->created_at->format('d M Y') }}</td>
                     <td>
                         <div style="display: flex; gap: 0.5rem;">
                             <a href="{{ route('resep.show', $resep->id) }}" class="btn btn-sm btn-secondary">
-                                <i class='bx bx-show'></i></a>
+                                <i class='bx bx-show-alt'></i></a>
                             <a href="{{ route('admin.resep.edit', $resep->id) }}" class="btn btn-sm btn-warning">
-                                <i class='bx bx-edit'></i></a>
+                                <i class='bx bx-edit-alt'></i></a>
                         </div>
                     </td>
                 </tr>

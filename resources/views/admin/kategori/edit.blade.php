@@ -6,7 +6,7 @@
 @section('content')
 <div class="card">
     <div class="card-header">
-        <h3>✏️ Edit Kategori</h3>
+        <h3><i class="bx bx-edit-alt" ></i> Edit Kategori</h3>
     </div>
 
     <form action="{{ route('admin.kategori.update', $kategori->id) }}" method="POST" style="padding: 1.5rem;">

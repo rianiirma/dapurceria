@@ -6,7 +6,7 @@
 @section('content')
 <div class="card">
     <div class="card-header">
-        <h3>💬 Daftar Komentar</h3>
+        <h3><i class='bx bx-message-square-dots'></i> Daftar Komentar</h3>
         <form action="{{ route('admin.komentar.readAll') }}" method="POST">
             @csrf
             <button type="submit" class="btn btn-success">Tandai Semua Sudah Dibaca</button>
@@ -48,7 +48,7 @@
                     <td>{{ $komentar->created_at->diffForHumans() }}</td>
                     <td>
                         <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
-                            <a href="{{ route('resep.show', $komentar->resep->id) }}" class="btn btn-sm btn-secondary">Lihat</a>
+                            <a href="{{ route('resep.show', $komentar->resep->id) }}" class="btn btn-sm btn-secondary"><i class='bx bx-show-alt'></i></a>
                             
                             @if(!$komentar->is_read)
                             <form action="{{ route('admin.komentar.read', $komentar->id) }}" method="POST">
@@ -60,7 +60,7 @@
                             <form action="{{ route('admin.komentar.destroy', $komentar->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus komentar ini?')">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-sm btn-danger">Hapus</button>
+                                <button type="submit" class="btn btn-sm btn-danger"><i class='bx bx-trash'></i></button>
                             </form>
                         </div>
                     </td>
