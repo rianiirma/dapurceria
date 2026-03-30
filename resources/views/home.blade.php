@@ -5,7 +5,7 @@
 @section('styles')
     <style>
         .hero {
-            background: linear-gradient(135deg, #ff6b6b, #ffa07a);
+            background: linear-gradient(135deg, #F59E0B, #FBBF24);
             color: white;
             padding: 3rem 0;
             text-align: center;
@@ -23,7 +23,7 @@
             padding: 1.5rem;
             border-radius: 8px;
             margin-bottom: 2rem;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 2px 5px rgba(245, 158, 11, 0.1);
         }
 
         .filter-form {
@@ -40,13 +40,20 @@
             display: block;
             margin-bottom: 0.5rem;
             font-weight: 600;
+            color: #D97706;
         }
 
         .form-control {
             width: 100%;
             padding: 0.75rem;
-            border: 1px solid #ddd;
+            border: 1px solid #FCD34D;
             border-radius: 5px;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #F59E0B;
+            box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1);
         }
 
         .resep-grid {
@@ -59,23 +66,25 @@
             background: white;
             border-radius: 8px;
             overflow: hidden;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 10px rgba(245, 158, 11, 0.15);
             transition: transform 0.3s;
             text-decoration: none;
             color: inherit;
             display: block;
+            border: 2px solid transparent;
         }
 
         .resep-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 5px 20px rgba(245, 158, 11, 0.3);
+            border-color: #FBBF24;
         }
 
         .resep-image {
             width: 100%;
             height: 200px;
             object-fit: cover;
-            background: #f0f0f0;
+            background: #FEF3C7;
         }
 
         .resep-content {
@@ -86,31 +95,32 @@
             font-size: 1.25rem;
             font-weight: bold;
             margin-bottom: 0.5rem;
-            color: #333;
+            color: #78350F;
         }
 
         .resep-meta {
             display: flex;
             gap: 1rem;
             font-size: 0.875rem;
-            color: #666;
+            color: #92400E;
             margin-top: 1rem;
         }
 
         .kategori-badge {
             display: inline-block;
             padding: 0.25rem 0.75rem;
-            background: #ff6b6b;
+            background: linear-gradient(135deg, #F59E0B, #FBBF24);
             color: white;
             border-radius: 12px;
             font-size: 0.75rem;
             margin-bottom: 0.5rem;
+            font-weight: 600;
         }
 
         .empty-state {
             text-align: center;
             padding: 3rem;
-            color: #999;
+            color: #D97706;
         }
 
         .pagination {
@@ -123,16 +133,50 @@
         .pagination a,
         .pagination span {
             padding: 0.5rem 1rem;
-            border: 1px solid #ddd;
+            border: 1px solid #FCD34D;
             border-radius: 5px;
             text-decoration: none;
-            color: #333;
+            color: #D97706;
+        }
+
+        .pagination a:hover {
+            background: #FEF3C7;
+            border-color: #F59E0B;
         }
 
         .pagination .active {
-            background: #ff6b6b;
+            background: linear-gradient(135deg, #F59E0B, #FBBF24);
             color: white;
-            border-color: #ff6b6b;
+            border-color: #F59E0B;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #F59E0B, #FBBF24);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #D97706, #F59E0B);
+        }
+
+        .btn-secondary {
+            background: #FEF3C7;
+            color: #D97706;
+            border: 2px solid #FCD34D;
+        }
+
+        .btn-secondary:hover {
+            background: #FCD34D;
         }
     </style>
 @endsection
@@ -185,15 +229,15 @@
                     <div class="resep-content">
                         <span class="kategori-badge">{{ $resep->kategori->nama_kategori }}</span>
                         <h3 class="resep-title">{{ $resep->judul }}</h3>
-                        <p style="color: #666; font-size: 0.875rem;">{{ Str::limit($resep->deskripsi, 100) }}</p>
+                        <p style="color: #92400E; font-size: 0.875rem;">{{ Str::limit($resep->deskripsi, 100) }}</p>
 
                         <div class="resep-meta">
                             <span><i class="bx bx-time"></i> {{ $resep->waktu_memasak }} menit</span>
                             <span><i class='bx bx-dish'></i> {{ $resep->porsi }} porsi</span>
-                            <span><i class='bx bxs-star' style='color:#ffd93d'></i>
+                            <span><i class='bx bxs-star' style='color:#FBBF24'></i>
                                 {{ number_format($resep->averageRating(), 1) }}</span>
                         </div>
-                        <div style="margin-top: 0.5rem; font-size: 0.875rem; color: #999;">
+                        <div style="margin-top: 0.5rem; font-size: 0.875rem; color: #D97706;">
                             Oleh: {{ $resep->user->name }}
                         </div>
                     </div>

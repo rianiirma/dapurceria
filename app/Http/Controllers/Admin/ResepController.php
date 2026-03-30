@@ -49,6 +49,7 @@ class ResepController extends Controller
         ]);
 
         $validated['id_user'] = auth()->id();
+        $validated['status']  = 'approved'; // Admin upload langsung approved
 
         if ($request->hasFile('gambar')) {
             $validated['gambar'] = $request->file('gambar')->store('resep', 'public');
@@ -106,5 +107,53 @@ class ResepController extends Controller
         $resep->delete();
 
         return redirect()->route('admin.resep.index')->with('success', 'Resep berhasil dihapus!');
+    }
+
+    // ============================================
+    // FITUR PERSETUJUAN RESEP
+    // ============================================
+
+    public function pending()
+    {
+        $pendingReseps = Resep::where('status', 'pending')
+            ->with(['user', 'kategori'])
+            ->latest()
+            ->paginate(10);
+
+        return view('admin.resep.pending', compact('pendingReseps'));
+    }
+
+    public function approve($id)
+    {
+        $resep = Resep::findOrFail($id);
+        $resep->update([
+            'status'       => 'approved',
+            'alasan_tolak' => null,
+        ]);
+
+        return back()->with('success', "Resep \"{$resep->judul}\" berhasil disetujui!");
+    }
+
+    public function reject(Request $request, $id)
+    {
+        $request->validate([
+            'alasan_tolak' => 'required|string|max:500',
+        ]);
+
+        $resep = Resep::findOrFail($id);
+        $resep->update([
+            'status'       => 'rejected',
+            'alasan_tolak' => $request->alasan_tolak,
+        ]);
+
+        return back()->with('success', "Resep \"{$resep->judul}\" berhasil ditolak.");
+    }
+
+    public function approveAll()
+    {
+        $count = Resep::where('status', 'pending')->count();
+        Resep::where('status', 'pending')->update(['status' => 'approved']);
+
+        return back()->with('success', "{$count} resep berhasil disetujui semua!");
     }
 }

@@ -83,6 +83,11 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::put('/resep/{id}', [AdminResepController::class, 'update'])->name('resep.update');
     Route::delete('/resep/{id}', [AdminResepController::class, 'destroy'])->name('resep.destroy');
 
+    Route::get('/resep/pending', [AdminResepController::class, 'pending'])->name('resep.pending');
+    Route::post('/resep/approve-all', [AdminResepController::class, 'approveAll'])->name('resep.approveAll');
+    Route::post('/resep/{id}/approve', [AdminResepController::class, 'approve'])->name('resep.approve');
+    Route::post('/resep/{id}/reject', [AdminResepController::class, 'reject'])->name('resep.reject');
+
     // Komentar
     Route::get('/komentar', [AdminKomentarController::class, 'index'])->name('komentar.index');
     Route::post('/komentar/{id}/read', [AdminKomentarController::class, 'markAsRead'])->name('komentar.read');

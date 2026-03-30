@@ -11,264 +11,594 @@
             padding: 0;
             box-sizing: border-box;
         }
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f5f5f5;
+            background: #FEF3C7;
             color: #333;
+            line-height: 1.6;
         }
+
         .admin-wrapper {
             display: flex;
             min-height: 100vh;
         }
-        /* Sidebar */
+
+        /* =====================
+           SIDEBAR
+        ===================== */
         .sidebar {
             width: 250px;
-            background: #2d3748;
+            background: linear-gradient(180deg, #78350F 0%, #92400E 100%);
             color: white;
-            padding: 2rem 0;
             position: fixed;
             height: 100vh;
             overflow-y: auto;
+            z-index: 100;
         }
+
         .sidebar-brand {
-            padding: 0 1.5rem;
-            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, #F59E0B, #FBBF24);
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
+
         .sidebar-brand h2 {
-            font-size: 1.5rem;
-            color: #ff6b6b;
+            font-size: 1.25rem;
+            color: white;
+            font-weight: 700;
         }
+
+        .sidebar-section {
+            padding: 1rem 1.5rem 0.4rem;
+            font-size: 10px;
+            font-weight: 700;
+            color: #D97706;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
         .sidebar-menu {
             list-style: none;
+            padding: 0.5rem 0;
         }
+
         .sidebar-menu li a {
-            display: block;
-            padding: 1rem 1.5rem;
-            color: #cbd5e0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 0.75rem 1.5rem;
+            color: #FEF3C7;
             text-decoration: none;
-            transition: all 0.3s;
+            font-size: 0.9rem;
+            transition: all 0.2s;
         }
-        .sidebar-menu li a:hover,
+
+        .sidebar-menu li a i {
+            font-size: 1.1rem;
+            width: 20px;
+        }
+
+        .sidebar-menu li a:hover {
+            background: rgba(245, 158, 11, 0.2);
+            color: #FBBF24;
+        }
+
         .sidebar-menu li a.active {
-            background: #374151;
-            color: white;
-            border-left: 4px solid #ff6b6b;
+            background: rgba(245, 158, 11, 0.25);
+            color: #FCD34D;
+            border-left: 3px solid #FBBF24;
+            font-weight: 600;
         }
-        /* Main Content */
+
+        .sidebar-menu li a .badge-count {
+            margin-left: auto;
+            background: #EF4444;
+            color: white;
+            border-radius: 99px;
+            font-size: 10px;
+            font-weight: 700;
+            min-width: 18px;
+            height: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 5px;
+        }
+
+        .sidebar-divider {
+            border: none;
+            border-top: 1px solid rgba(245, 158, 11, 0.2);
+            margin: 0.75rem 1.5rem;
+        }
+
+        .sidebar-footer {
+            padding: 1rem 1.5rem;
+            border-top: 1px solid rgba(245, 158, 11, 0.2);
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            background: #78350F;
+        }
+
+        .sidebar-footer a {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #FEF3C7;
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: color 0.2s;
+        }
+
+        .sidebar-footer a:hover {
+            color: #FBBF24;
+        }
+
+        .sidebar::-webkit-scrollbar { width: 4px; }
+        .sidebar::-webkit-scrollbar-track { background: transparent; }
+        .sidebar::-webkit-scrollbar-thumb { background: #D97706; border-radius: 99px; }
+
+        /* =====================
+           MAIN CONTENT
+        ===================== */
         .main-content {
             margin-left: 250px;
             flex: 1;
             padding: 2rem;
+            padding-bottom: 4rem;
         }
+
+        /* =====================
+           TOPBAR
+        ===================== */
         .topbar {
-            background: white;
-            padding: 1rem 2rem;
+            background: linear-gradient(135deg, #F59E0B, #FBBF24);
+            padding: 1rem 1.5rem;
             margin: -2rem -2rem 2rem -2rem;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 10px rgba(245, 158, 11, 0.3);
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
+
         .topbar h1 {
-            font-size: 1.5rem;
-            color: #2d3748;
+            font-size: 1.25rem;
+            color: white;
+            font-weight: 600;
         }
+
         .user-info {
             display: flex;
             align-items: center;
-            gap: 1rem;
+            gap: 0.75rem;
         }
-        /* Cards */
+
+        .user-avatar {
+            width: 34px;
+            height: 34px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 13px;
+            border: 2px solid rgba(255,255,255,0.5);
+        }
+
+        .user-name {
+            font-size: 0.875rem;
+            color: white;
+            font-weight: 500;
+        }
+
+        /* =====================
+           CARDS
+        ===================== */
         .card {
             background: white;
-            border-radius: 8px;
-            padding: 1.5rem;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(245, 158, 11, 0.1);
             margin-bottom: 1.5rem;
+            border: 1px solid #FDE68A;
+            overflow: hidden;
         }
+
         .card-header {
-            border-bottom: 2px solid #f1f1f1;
-            padding-bottom: 1rem;
-            margin-bottom: 1rem;
+            border-bottom: 1px solid #FDE68A;
+            padding: 1rem 1.5rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            background: linear-gradient(135deg, #FFFBEB, #FEF3C7);
         }
+
         .card-header h3 {
-            font-size: 1.25rem;
-            color: #2d3748;
+            font-size: 1rem;
+            color: #78350F;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
-        /* Stats */
+
+        .card-header h3 i {
+            color: #F59E0B;
+            font-size: 1.1rem;
+        }
+
+        /* =====================
+           STATS GRID
+        ===================== */
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
         }
+
         .stat-card {
             background: white;
-            padding: 1.5rem;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-            border-left: 4px solid #ff6b6b;
+            padding: 1.25rem 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(245, 158, 11, 0.1);
+            border-left: 4px solid #F59E0B;
+            border-top: 1px solid #FDE68A;
+            transition: transform 0.2s, box-shadow 0.2s;
         }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.2);
+        }
+
         .stat-card h4 {
-            color: #718096;
-            font-size: 0.875rem;
+            color: #92400E;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
             margin-bottom: 0.5rem;
         }
+
         .stat-card .stat-value {
-            font-size: 2rem;
-            font-weight: bold;
-            color: #2d3748;
+            font-size: 1.875rem;
+            font-weight: 700;
+            color: #78350F;
+            line-height: 1;
         }
-        /* Table */
+
+        .stat-card p {
+            color: #A8A29E;
+            font-size: 0.75rem;
+            margin-top: 0.4rem;
+        }
+
+        /* =====================
+           TABLE
+        ===================== */
         .table {
             width: 100%;
             border-collapse: collapse;
-            background: white;
         }
-        .table th,
-        .table td {
-            padding: 1rem;
-            text-align: left;
-            border-bottom: 1px solid #e2e8f0;
-        }
+
         .table th {
-            background: #f7fafc;
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid #FDE68A;
+            background: #FFFBEB;
             font-weight: 600;
-            color: #2d3748;
+            font-size: 0.75rem;
+            color: #92400E;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
         }
-        .table tr:hover {
-            background: #f7fafc;
+
+        .table td {
+            padding: 0.875rem 1rem;
+            border-bottom: 1px solid #FEF9EE;
+            font-size: 0.875rem;
+            color: #44403C;
+            vertical-align: middle;
         }
-        /* Buttons */
+
+        .table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .table tr:hover td {
+            background: #FFFBEB;
+        }
+
+        /* =====================
+           BUTTONS
+        ===================== */
         .btn {
             padding: 0.5rem 1rem;
-            border-radius: 5px;
+            border-radius: 8px;
             text-decoration: none;
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
             transition: all 0.3s;
             border: none;
             cursor: pointer;
             font-size: 0.875rem;
+            font-weight: 500;
+            font-family: inherit;
         }
+
         .btn-primary {
-            background: #ff6b6b;
+            background: linear-gradient(135deg, #F59E0B, #FBBF24);
             color: white;
+            box-shadow: 0 2px 5px rgba(245, 158, 11, 0.3);
         }
+
         .btn-primary:hover {
-            background: #ee5a52;
+            background: linear-gradient(135deg, #D97706, #F59E0B);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4);
+            color: white;
         }
+
         .btn-success {
-            background: #51cf66;
+            background: linear-gradient(135deg, #10B981, #34D399);
             color: white;
         }
+
         .btn-success:hover {
-            background: #40c057;
+            background: linear-gradient(135deg, #059669, #10B981);
+            transform: translateY(-1px);
+            color: white;
         }
+
         .btn-danger {
-            background: #ff6b6b;
+            background: linear-gradient(135deg, #EF4444, #F87171);
             color: white;
         }
+
         .btn-danger:hover {
-            background: #ee5a52;
-        }
-        .btn-warning {
-            background: #ffd43b;
-            color: #333;
-        }
-        .btn-secondary {
-            background: #868e96;
+            background: linear-gradient(135deg, #DC2626, #EF4444);
             color: white;
         }
-        .btn-sm {
-            padding: 0.25rem 0.5rem;
-            font-size: 0.75rem;
+
+        .btn-warning {
+            background: linear-gradient(135deg, #FBBF24, #FCD34D);
+            color: #78350F;
         }
-        /* Forms */
+
+        .btn-warning:hover {
+            background: linear-gradient(135deg, #F59E0B, #FBBF24);
+            color: #78350F;
+        }
+
+        .btn-secondary {
+            background: #92400E;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #78350F;
+            color: white;
+        }
+
+        .btn-sm {
+            padding: 0.3rem 0.65rem;
+            font-size: 0.75rem;
+            border-radius: 6px;
+        }
+
+        /* =====================
+           FORMS
+        ===================== */
         .form-group {
             margin-bottom: 1.5rem;
         }
+
         .form-group label {
             display: block;
             margin-bottom: 0.5rem;
             font-weight: 600;
-            color: #2d3748;
+            font-size: 0.875rem;
+            color: #78350F;
         }
+
         .form-control {
             width: 100%;
-            padding: 0.75rem;
-            border: 1px solid #e2e8f0;
-            border-radius: 5px;
-            font-size: 1rem;
+            padding: 0.625rem 0.875rem;
+            border: 1px solid #FDE68A;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-family: inherit;
+            color: #333;
+            background: white;
+            transition: border-color 0.2s, box-shadow 0.2s;
         }
+
         .form-control:focus {
             outline: none;
-            border-color: #ff6b6b;
+            border-color: #F59E0B;
+            box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.15);
         }
+
         textarea.form-control {
             resize: vertical;
             min-height: 100px;
         }
-        /* Alert */
+
+        /* =====================
+           ALERTS
+        ===================== */
         .alert {
-            padding: 1rem;
-            margin-bottom: 1.5rem;
-            border-radius: 5px;
+            padding: 0.875rem 1.25rem;
+            margin-bottom: 1.25rem;
+            border-radius: 10px;
+            font-size: 0.875rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-left: 4px solid;
         }
+
         .alert-success {
-            background: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
+            background: #D1FAE5;
+            color: #065F46;
+            border-color: #10B981;
         }
+
         .alert-error {
-            background: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
+            background: #FEE2E2;
+            color: #991B1B;
+            border-color: #EF4444;
         }
-        /* Badge */
+
+        .alert-warning {
+            background: #FEF3C7;
+            color: #92400E;
+            border-color: #F59E0B;
+        }
+
+        /* =====================
+           BADGE
+        ===================== */
         .badge {
             display: inline-block;
-            padding: 0.25rem 0.75rem;
-            border-radius: 12px;
-            font-size: 0.75rem;
+            padding: 0.2rem 0.65rem;
+            border-radius: 99px;
+            font-size: 0.7rem;
             font-weight: 600;
         }
+
         .badge-success {
-            background: #d4edda;
-            color: #155724;
+            background: #D1FAE5;
+            color: #065F46;
+            border: 1px solid #6EE7B7;
         }
+
         .badge-danger {
-            background: #f8d7da;
-            color: #721c24;
+            background: #FEE2E2;
+            color: #991B1B;
+            border: 1px solid #FCA5A5;
         }
+
         .badge-warning {
-            background: #fff3cd;
-            color: #856404;
+            background: #FEF3C7;
+            color: #92400E;
+            border: 1px solid #FCD34D;
         }
+
         .badge-primary {
-            background: #cfe2ff;
-            color: #084298;
+            background: #FDE68A;
+            color: #78350F;
+            border: 1px solid #FBBF24;
+        }
+
+        /* =====================
+           PAGINATION
+        ===================== */
+        .pagination {
+            display: flex;
+            gap: 4px;
+            justify-content: center;
+            padding: 1rem;
+            border-top: 1px solid #FDE68A;
+        }
+
+        .pagination .page-link {
+            padding: 6px 12px;
+            border-radius: 6px;
+            border: 1px solid #FDE68A;
+            color: #92400E;
+            text-decoration: none;
+            font-size: 13px;
+            transition: all 0.2s;
+        }
+
+        .pagination .page-link:hover,
+        .pagination .page-item.active .page-link {
+            background: linear-gradient(135deg, #F59E0B, #FBBF24);
+            border-color: #F59E0B;
+            color: white;
         }
     </style>
     @yield('styles')
 </head>
 <body>
     <div class="admin-wrapper">
+
         <!-- Sidebar -->
         <aside class="sidebar">
             <div class="sidebar-brand">
-                <h2>🍳 Dapur Ceria</h2>
+                <span style="font-size:1.5rem;">🍳</span>
+                <h2>Dapur Ceria</h2>
             </div>
+
+            <p class="sidebar-section">Menu Utama</p>
             <ul class="sidebar-menu">
-                <li><a href="{{ route('admin.dashboard') }}" class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}"><i class='bx bx-home-alt'></i> Dashboard</a></li>
-                <li><a href="{{ route('admin.kategori.index') }}" class="{{ request()->routeIs('admin.kategori.*') ? 'active' : '' }}"><i class='bx bx-category'></i> Kategori</a></li>
-                <li><a href="{{ route('admin.resep.index') }}" class="{{ request()->routeIs('admin.resep.*') ? 'active' : '' }}"><i class='bx bx-food-menu'></i> Resep</a></li>
-                <li><a href="{{ route('admin.komentar.index') }}" class="{{ request()->routeIs('admin.komentar.*') ? 'active' : '' }}"><i class='bx bx-message-square-dots'></i> Komentar</a></li>
-                <li><a href="{{ route('admin.user.index') }}" class="{{ request()->routeIs('admin.user.*') ? 'active' : '' }}"><i class='bx bx-group'></i> Pengguna</a></li>
-                <li><a href="{{ route('home') }}"><i class='bx bx-globe'></i> Lihat Website</a></li>
+                <li>
+                    <a href="{{ route('admin.dashboard') }}"
+                        class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
+                        <i class='bx bx-home-alt'></i> Dashboard
+                        @php $pendingCount = \App\Models\Resep::where('status','pending')->count(); @endphp
+                        @if($pendingCount > 0)
+                            <span class="badge-count">{{ $pendingCount }}</span>
+                        @endif
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('admin.resep.index') }}"
+                        class="{{ request()->routeIs('admin.resep.*') ? 'active' : '' }}">
+                        <i class='bx bx-food-menu'></i> Resep
+                        @if($pendingCount > 0)
+                            <span class="badge-count">{{ $pendingCount }}</span>
+                        @endif
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('admin.kategori.index') }}"
+                        class="{{ request()->routeIs('admin.kategori.*') ? 'active' : '' }}">
+                        <i class='bx bx-category'></i> Kategori
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('admin.komentar.index') }}"
+                        class="{{ request()->routeIs('admin.komentar.*') ? 'active' : '' }}">
+                        <i class='bx bx-message-square-dots'></i> Komentar
+                        @php $unreadCount = \App\Models\Komentar::where('is_read', false)->count(); @endphp
+                        @if($unreadCount > 0)
+                            <span class="badge-count">{{ $unreadCount }}</span>
+                        @endif
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('admin.user.index') }}"
+                        class="{{ request()->routeIs('admin.user.*') ? 'active' : '' }}">
+                        <i class='bx bx-group'></i> Pengguna
+                    </a>
+                </li>
             </ul>
+
+            <hr class="sidebar-divider">
+
+            <p class="sidebar-section">Lainnya</p>
+            <ul class="sidebar-menu">
+                <li>
+                    <a href="{{ route('home') }}" target="_blank">
+                        <i class='bx bx-globe'></i> Lihat Website
+                    </a>
+                </li>
+            </ul>
+
+            <div class="sidebar-footer">
+                <a href="#">
+                    <i class='bx bx-user-circle' style="font-size:1.1rem"></i>
+                    {{ auth()->user()->name }}
+                </a>
+            </div>
         </aside>
 
         <!-- Main Content -->
@@ -276,26 +606,42 @@
             <div class="topbar">
                 <h1>@yield('page-title', 'Dashboard')</h1>
                 <div class="user-info">
-                    <span>{{ auth()->user()->name }}</span>
-                    <form action="{{ route('logout') }}" method="POST" style="display: inline;">
+                    <div class="user-avatar">
+                        {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
+                    </div>
+                    <span class="user-name">{{ auth()->user()->name }}</span>
+                    <form action="{{ route('logout') }}" method="POST">
                         @csrf
-                        <button type="submit" class="btn btn-danger btn-sm">Logout</button>
+                        <button type="submit" class="btn btn-outline" 
+                            style="border:2px solid white; color:white; background:transparent; padding:0.3rem 0.75rem; font-size:0.8rem;">
+                            <i class='bx bx-log-out'></i> Logout
+                        </button>
                     </form>
                 </div>
             </div>
 
             @if(session('success'))
-                <div class="alert alert-success">{{ session('success') }}</div>
+                <div class="alert alert-success">
+                    <i class='bx bx-check-circle'></i> {{ session('success') }}
+                </div>
             @endif
 
             @if(session('error'))
-                <div class="alert alert-error">{{ session('error') }}</div>
+                <div class="alert alert-error">
+                    <i class='bx bx-error-circle'></i> {{ session('error') }}
+                </div>
+            @endif
+
+            @if(session('warning'))
+                <div class="alert alert-warning">
+                    <i class='bx bx-info-circle'></i> {{ session('warning') }}
+                </div>
             @endif
 
             @yield('content')
         </main>
     </div>
 
-    @yield('scripts')
+    @stack('scripts')
 </body>
 </html>

@@ -15,7 +15,7 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
             color: #333;
-            background: #f5f5f5;
+            background: #FEF3C7;
         }
         .container {
             max-width: 1200px;
@@ -24,10 +24,10 @@
         }
         /* Navbar */
         .navbar {
-            background: #ff6b6b;
+            background: linear-gradient(135deg, #F59E0B, #FBBF24);
             color: white;
             padding: 1rem 0;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 10px rgba(245, 158, 11, 0.3);
             position: sticky;
             top: 0;
             z-index: 1000;
@@ -55,11 +55,12 @@
         .navbar-menu a {
             color: white;
             text-decoration: none;
-            transition: opacity 0.3s;
+            transition: all 0.3s;
             font-weight: 500;
         }
         .navbar-menu a:hover {
-            opacity: 0.8;
+            color: #FEF3C7;
+            transform: translateY(-2px);
         }
         .btn {
             padding: 0.6rem 1.2rem;
@@ -73,36 +74,42 @@
             font-weight: 500;
         }
         .btn-primary {
-            background: #ff6b6b;
+            background: linear-gradient(135deg, #F59E0B, #FBBF24);
             color: white;
         }
         .btn-primary:hover {
-            background: #ee5a52;
+            background: linear-gradient(135deg, #D97706, #F59E0B);
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(255, 107, 107, 0.4);
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4);
         }
         .btn-success {
-            background: #51cf66;
+            background: linear-gradient(135deg, #10B981, #34D399);
             color: white;
         }
         .btn-success:hover {
-            background: #40c057;
+            background: linear-gradient(135deg, #059669, #10B981);
             transform: translateY(-2px);
         }
         .btn-danger {
-            background: #ff6b6b;
+            background: linear-gradient(135deg, #EF4444, #F87171);
             color: white;
         }
         .btn-danger:hover {
-            background: #ee5a52;
+            background: linear-gradient(135deg, #DC2626, #EF4444);
         }
         .btn-warning {
-            background: #ffd43b;
-            color: #333;
+            background: linear-gradient(135deg, #FBBF24, #FCD34D);
+            color: #78350F;
+        }
+        .btn-warning:hover {
+            background: linear-gradient(135deg, #F59E0B, #FBBF24);
         }
         .btn-secondary {
-            background: #868e96;
+            background: #92400E;
             color: white;
+        }
+        .btn-secondary:hover {
+            background: #78350F;
         }
         .btn-outline {
             background: transparent;
@@ -111,7 +118,7 @@
         }
         .btn-outline:hover {
             background: white;
-            color: #ff6b6b;
+            color: #F59E0B;
         }
         /* Alert */
         .alert {
@@ -121,14 +128,14 @@
             border-left: 4px solid;
         }
         .alert-success {
-            background: #d4edda;
-            color: #155724;
-            border-color: #51cf66;
+            background: #D1FAE5;
+            color: #065F46;
+            border-color: #10B981;
         }
         .alert-error {
-            background: #f8d7da;
-            color: #721c24;
-            border-color: #ff6b6b;
+            background: #FEE2E2;
+            color: #991B1B;
+            border-color: #EF4444;
         }
         /* Content */
         .content {
@@ -137,7 +144,7 @@
         }
         /* Footer */
         .footer {
-            background: #343a40;
+            background: linear-gradient(135deg, #F59E0B, #D97706);
             color: white;
             text-align: center;
             padding: 2rem 0;
@@ -196,4 +203,4 @@
 
     @yield('scripts')
 </body>
-</html>     
+</html>
