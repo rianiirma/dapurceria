@@ -20,6 +20,8 @@ class Resep extends Model
         'waktu_memasak',
         'porsi',
         'tingkat_kesulitan',
+        'status',       
+        'alasan_tolak', 
     ];
 
     public function user()
@@ -75,5 +77,20 @@ class Resep extends Model
     public function isFavoritBy($userId)
     {
         return $this->favorits()->where('id_user', $userId)->exists();
+    }
+
+    public function isPending()
+    {
+        return $this->status === 'pending';
+    }
+
+    public function isApproved()
+    {
+        return $this->status === 'approved';
+    }
+
+    public function isRejected()
+    {
+        return $this->status === 'rejected';
     }
 }

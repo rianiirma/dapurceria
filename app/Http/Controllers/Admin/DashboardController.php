@@ -18,6 +18,8 @@ class DashboardController extends Controller
 
         // Resep pending persetujuan
         $pendingReseps = Resep::where('status', 'pending')
+            ->whereHas('user')
+            ->whereHas('kategori')
             ->with(['user', 'kategori'])
             ->latest()
             ->take(5)
@@ -27,6 +29,8 @@ class DashboardController extends Controller
 
         // Komentar belum dibaca
         $unreadKomentars = Komentar::where('is_read', false)
+            ->whereHas('user')
+            ->whereHas('resep')
             ->with(['user', 'resep'])
             ->latest()
             ->take(5)
@@ -35,7 +39,9 @@ class DashboardController extends Controller
         $totalUnreadKomentars = Komentar::where('is_read', false)->count();
 
         // Resep terbaru (semua status)
-        $latestReseps = Resep::with(['user', 'kategori'])
+        $latestReseps = Resep::with(['user', 'kategori', 'ratings'])
+            ->whereHas('user')
+            ->whereHas('kategori')
             ->latest()
             ->take(5)
             ->get();

@@ -30,6 +30,7 @@ class UserResepController extends Controller
         ]);
 
         $validated['id_user'] = auth()->id();
+        $validated['status']  = 'pending';
 
         if ($request->hasFile('gambar')) {
             $validated['gambar'] = $request->file('gambar')->store('resep', 'public');
@@ -37,7 +38,8 @@ class UserResepController extends Controller
 
         Resep::create($validated);
 
-        return redirect()->route('user.resep.my')->with('success', 'Resep berhasil diupload!');
+        return redirect()->route('user.resep.my')
+            ->with('success', '🎉 Resep berhasil diupload! Menunggu persetujuan admin.');
     }
 
     public function myResep()
@@ -75,6 +77,9 @@ class UserResepController extends Controller
             'tingkat_kesulitan' => 'required|in:mudah,sedang,sulit',
         ]);
 
+        $validated['status']       = 'pending';
+        $validated['alasan_tolak'] = null;
+
         if ($request->hasFile('gambar')) {
             if ($resep->gambar) {
                 Storage::disk('public')->delete($resep->gambar);
@@ -84,7 +89,8 @@ class UserResepController extends Controller
 
         $resep->update($validated);
 
-        return redirect()->route('user.resep.my')->with('success', 'Resep berhasil diupdate!');
+        return redirect()->route('user.resep.my')
+            ->with('success', '✏️ Resep berhasil diupdate! Menunggu persetujuan admin kembali.');
     }
 
     public function destroy($id)
@@ -97,6 +103,7 @@ class UserResepController extends Controller
 
         $resep->delete();
 
-        return redirect()->route('user.resep.my')->with('success', 'Resep berhasil dihapus!');
+        return redirect()->route('user.resep.my')
+            ->with('success', 'Resep berhasil dihapus!');
     }
 }

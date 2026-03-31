@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -24,9 +25,6 @@
             min-height: 100vh;
         }
 
-        /* =====================
-           SIDEBAR
-        ===================== */
         .sidebar {
             width: 250px;
             background: linear-gradient(180deg, #78350F 0%, #92400E 100%);
@@ -137,13 +135,19 @@
             color: #FBBF24;
         }
 
-        .sidebar::-webkit-scrollbar { width: 4px; }
-        .sidebar::-webkit-scrollbar-track { background: transparent; }
-        .sidebar::-webkit-scrollbar-thumb { background: #D97706; border-radius: 99px; }
+        .sidebar::-webkit-scrollbar {
+            width: 4px;
+        }
 
-        /* =====================
-           MAIN CONTENT
-        ===================== */
+        .sidebar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background: #D97706;
+            border-radius: 99px;
+        }
+
         .main-content {
             margin-left: 250px;
             flex: 1;
@@ -151,9 +155,6 @@
             padding-bottom: 4rem;
         }
 
-        /* =====================
-           TOPBAR
-        ===================== */
         .topbar {
             background: linear-gradient(135deg, #F59E0B, #FBBF24);
             padding: 1rem 1.5rem;
@@ -179,7 +180,7 @@
         .user-avatar {
             width: 34px;
             height: 34px;
-            background: rgba(255,255,255,0.3);
+            background: rgba(255, 255, 255, 0.3);
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -187,7 +188,14 @@
             color: white;
             font-weight: 700;
             font-size: 13px;
-            border: 2px solid rgba(255,255,255,0.5);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            overflow: hidden;
+        }
+
+        .user-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         .user-name {
@@ -196,9 +204,6 @@
             font-weight: 500;
         }
 
-        /* =====================
-           CARDS
-        ===================== */
         .card {
             background: white;
             border-radius: 10px;
@@ -231,9 +236,6 @@
             font-size: 1.1rem;
         }
 
-        /* =====================
-           STATS GRID
-        ===================== */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -278,9 +280,6 @@
             margin-top: 0.4rem;
         }
 
-        /* =====================
-           TABLE
-        ===================== */
         .table {
             width: 100%;
             border-collapse: collapse;
@@ -314,9 +313,6 @@
             background: #FFFBEB;
         }
 
-        /* =====================
-           BUTTONS
-        ===================== */
         .btn {
             padding: 0.5rem 1rem;
             border-radius: 8px;
@@ -392,9 +388,6 @@
             border-radius: 6px;
         }
 
-        /* =====================
-           FORMS
-        ===================== */
         .form-group {
             margin-bottom: 1.5rem;
         }
@@ -430,9 +423,6 @@
             min-height: 100px;
         }
 
-        /* =====================
-           ALERTS
-        ===================== */
         .alert {
             padding: 0.875rem 1.25rem;
             margin-bottom: 1.25rem;
@@ -462,9 +452,6 @@
             border-color: #F59E0B;
         }
 
-        /* =====================
-           BADGE
-        ===================== */
         .badge {
             display: inline-block;
             padding: 0.2rem 0.65rem;
@@ -497,9 +484,6 @@
             border: 1px solid #FBBF24;
         }
 
-        /* =====================
-           PAGINATION
-        ===================== */
         .pagination {
             display: flex;
             gap: 4px;
@@ -527,10 +511,9 @@
     </style>
     @yield('styles')
 </head>
+
 <body>
     <div class="admin-wrapper">
-
-        <!-- Sidebar -->
         <aside class="sidebar">
             <div class="sidebar-brand">
                 <span style="font-size:1.5rem;">🍳</span>
@@ -544,7 +527,7 @@
                         class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
                         <i class='bx bx-home-alt'></i> Dashboard
                         @php $pendingCount = \App\Models\Resep::where('status','pending')->count(); @endphp
-                        @if($pendingCount > 0)
+                        @if ($pendingCount > 0)
                             <span class="badge-count">{{ $pendingCount }}</span>
                         @endif
                     </a>
@@ -553,7 +536,7 @@
                     <a href="{{ route('admin.resep.index') }}"
                         class="{{ request()->routeIs('admin.resep.*') ? 'active' : '' }}">
                         <i class='bx bx-food-menu'></i> Resep
-                        @if($pendingCount > 0)
+                        @if ($pendingCount > 0)
                             <span class="badge-count">{{ $pendingCount }}</span>
                         @endif
                     </a>
@@ -569,7 +552,7 @@
                         class="{{ request()->routeIs('admin.komentar.*') ? 'active' : '' }}">
                         <i class='bx bx-message-square-dots'></i> Komentar
                         @php $unreadCount = \App\Models\Komentar::where('is_read', false)->count(); @endphp
-                        @if($unreadCount > 0)
+                        @if ($unreadCount > 0)
                             <span class="badge-count">{{ $unreadCount }}</span>
                         @endif
                     </a>
@@ -591,28 +574,50 @@
                         <i class='bx bx-globe'></i> Lihat Website
                     </a>
                 </li>
+                <li>
+                    <a href="{{ route('profile.show') }}"
+                        class="{{ request()->routeIs('profile.*') ? 'active' : '' }}">
+                        <i class='bx bx-user-circle'></i> Profil Saya
+                    </a>
+                </li>
             </ul>
 
             <div class="sidebar-footer">
-                <a href="#">
-                    <i class='bx bx-user-circle' style="font-size:1.1rem"></i>
-                    {{ auth()->user()->name }}
+                <a href="{{ route('profile.show') }}">
+                    {{-- Foto profil kalau ada, inisial kalau tidak --}}
+                    @if (auth()->user()->foto_profil)
+                        <img src="{{ asset('storage/' . auth()->user()->foto_profil) }}"
+                            style="width:28px; height:28px; border-radius:50%; object-fit:cover; border:2px solid #FBBF24;">
+                    @else
+                        <div
+                            style="width:28px; height:28px; border-radius:50%; background:linear-gradient(135deg,#F59E0B,#FBBF24); display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; color:white; flex-shrink:0;">
+                            {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
+                        </div>
+                    @endif
+                    <span
+                        style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">{{ auth()->user()->name }}</span>
                 </a>
             </div>
         </aside>
 
-        <!-- Main Content -->
         <main class="main-content">
             <div class="topbar">
                 <h1>@yield('page-title', 'Dashboard')</h1>
                 <div class="user-info">
-                    <div class="user-avatar">
-                        {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
-                    </div>
-                    <span class="user-name">{{ auth()->user()->name }}</span>
+                    <a href="{{ route('profile.show') }}"
+                        style="text-decoration:none; display:flex; align-items:center; gap:8px;">
+                        <div class="user-avatar">
+                            @if (auth()->user()->foto_profil)
+                                <img src="{{ asset('storage/' . auth()->user()->foto_profil) }}" alt="foto">
+                            @else
+                                {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
+                            @endif
+                        </div>
+                        <span class="user-name">{{ auth()->user()->name }}</span>
+                    </a>
                     <form action="{{ route('logout') }}" method="POST">
                         @csrf
-                        <button type="submit" class="btn btn-outline" 
+                        <button type="submit" class="btn btn-outline"
                             style="border:2px solid white; color:white; background:transparent; padding:0.3rem 0.75rem; font-size:0.8rem;">
                             <i class='bx bx-log-out'></i> Logout
                         </button>
@@ -620,19 +625,17 @@
                 </div>
             </div>
 
-            @if(session('success'))
+            @if (session('success'))
                 <div class="alert alert-success">
                     <i class='bx bx-check-circle'></i> {{ session('success') }}
                 </div>
             @endif
-
-            @if(session('error'))
+            @if (session('error'))
                 <div class="alert alert-error">
                     <i class='bx bx-error-circle'></i> {{ session('error') }}
                 </div>
             @endif
-
-            @if(session('warning'))
+            @if (session('warning'))
                 <div class="alert alert-warning">
                     <i class='bx bx-info-circle'></i> {{ session('warning') }}
                 </div>
@@ -644,4 +647,5 @@
 
     @stack('scripts')
 </body>
+
 </html>

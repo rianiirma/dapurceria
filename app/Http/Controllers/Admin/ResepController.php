@@ -11,13 +11,14 @@ class ResepController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Resep::with(['user', 'kategori', 'ratings']);
+        $query = Resep::with(['user', 'kategori'])
+            ->withCount(['komentars', 'ratings', 'sukas']);
 
-        if ($request->has('kategori') && $request->kategori != '') {
+        if ($request->filled('kategori')) {
             $query->where('id_kategori', $request->kategori);
         }
 
-        if ($request->has('search') && $request->search != '') {
+        if ($request->filled('search')) {
             $query->where('judul', 'like', '%' . $request->search . '%');
         }
 
@@ -109,9 +110,7 @@ class ResepController extends Controller
         return redirect()->route('admin.resep.index')->with('success', 'Resep berhasil dihapus!');
     }
 
-    // ============================================
     // FITUR PERSETUJUAN RESEP
-    // ============================================
 
     public function pending()
     {
