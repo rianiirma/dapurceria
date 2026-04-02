@@ -39,7 +39,7 @@ class UserResepController extends Controller
         Resep::create($validated);
 
         return redirect()->route('user.resep.my')
-            ->with('success', '🎉 Resep berhasil diupload! Menunggu persetujuan admin.');
+            ->with('success', ' Resep berhasil diupload! Menunggu persetujuan admin.');
     }
 
     public function myResep()
@@ -90,7 +90,7 @@ class UserResepController extends Controller
         $resep->update($validated);
 
         return redirect()->route('user.resep.my')
-            ->with('success', '✏️ Resep berhasil diupdate! Menunggu persetujuan admin kembali.');
+            ->with('success', ' Resep berhasil diupdate! Menunggu persetujuan admin kembali.');
     }
 
     public function destroy($id)

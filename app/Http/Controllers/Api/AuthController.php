@@ -5,31 +5,35 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
     public function register(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'name'     => 'required|string|max:255',
-            'email'    => 'required|string|max:255|unique:users',
+            'email'    => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8',
         ]);
 
         $user = User::create([
-            'name'     => $request->name,
-            'email'    => $request->email,
-            'password' => Hash::make($request->password),
+            'name'     => $validated['name'],
+            'email'    => $validated['email'],
+            'password' => Hash::make($validated['password']),
+            'role'     => 'user',
         ]);
 
-        $token = $user->createToken('auth_token')->plainTextToken;
+        $token = $user->createToken('mobile-app')->plainTextToken;
 
         return response()->json([
-            'message'      => 'Register success',
-            'access_token' => $token,
-            'token_type'   => 'Bearer',
-            'user'         => $user,
-        ]);
+            'success' => true,
+            'message' => 'Registrasi berhasil',
+            'data'    => [
+                'user'  => $user,
+                'token' => $token,
+            ],
+        ], 201);
     }
 
     public function login(Request $request)
@@ -42,18 +46,20 @@ class AuthController extends Controller
         $user = User::where('email', $request->email)->first();
 
         if (! $user || ! Hash::check($request->password, $user->password)) {
-            return response()->json([
-                'message' => 'Unauthorized',
-            ], 401);
+            throw ValidationException::withMessages([
+                'email' => ['Email atau password salah.'],
+            ]);
         }
 
-        $token = $user->createToken('auth_token')->plainTextToken;
+        $token = $user->createToken('mobile-app')->plainTextToken;
 
         return response()->json([
-            'message'      => 'Login success',
-            'access_token' => $token,
-            'token_type'   => 'Bearer',
-            'user'         => $user,
+            'success' => true,
+            'message' => 'Login berhasil',
+            'data'    => [
+                'user'  => $user,
+                'token' => $token,
+            ],
         ]);
     }
 
@@ -62,8 +68,16 @@ class AuthController extends Controller
         $request->user()->currentAccessToken()->delete();
 
         return response()->json([
-            'status' => true,
-            'message' => 'Logout success',
-        ], 200);
+            'success' => true,
+            'message' => 'Logout berhasil',
+        ]);
+    }
+
+    public function user(Request $request)
+    {
+        return response()->json([
+            'success' => true,
+            'data'    => $request->user(),
+        ]);
     }
 }
