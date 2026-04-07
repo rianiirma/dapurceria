@@ -20,8 +20,8 @@ class Resep extends Model
         'waktu_memasak',
         'porsi',
         'tingkat_kesulitan',
-        'status',       
-        'alasan_tolak', 
+        'status',
+        'alasan_tolak',
     ];
 
     public function user()
@@ -47,6 +47,11 @@ class Resep extends Model
     public function sukas()
     {
         return $this->hasMany(Suka::class, 'id_resep');
+    }
+
+    public function totalRating()
+    {
+        return $this->ratings()->count();
     }
 
     public function favorits()

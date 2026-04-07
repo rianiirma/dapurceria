@@ -1,10 +1,8 @@
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <title>@yield('title', 'Dapur Ceria')</title>
     <style>
         * {
@@ -12,237 +10,161 @@
             padding: 0;
             box-sizing: border-box;
         }
-
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
             color: #333;
-            background: #FEF3C7;
+            background: #fffbf5;
         }
-
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 20px;
         }
-
+        /* Navbar */
         .navbar {
-            background: linear-gradient(135deg, #F59E0B, #FBBF24);
+            background: linear-gradient(135deg, #ff9800 0%, #ffc107 100%);
             color: white;
             padding: 1rem 0;
-            box-shadow: 0 2px 10px rgba(245, 158, 11, 0.3);
+            box-shadow: 0 2px 10px rgba(255,152,0,0.3);
             position: sticky;
             top: 0;
             z-index: 1000;
         }
-
         .navbar .container {
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
-
         .navbar-brand {
-            font-size: 1.5rem;
-            font-weight: bold;
+            font-size: 1.8rem;
+            font-weight: 800;
             color: white;
             text-decoration: none;
             display: flex;
             align-items: center;
             gap: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
         }
-
+        .navbar-brand .logo-icon {
+            font-size: 2rem;
+        }
         .navbar-menu {
             display: flex;
             gap: 1.5rem;
             align-items: center;
             list-style: none;
         }
-
         .navbar-menu a {
             color: white;
             text-decoration: none;
-            transition: all 0.3s;
+            transition: opacity 0.3s;
             font-weight: 500;
         }
-
         .navbar-menu a:hover {
-            color: #FEF3C7;
-            transform: translateY(-2px);
+            opacity: 0.8;
         }
-
         .btn {
             padding: 0.6rem 1.2rem;
             border-radius: 8px;
             text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
+            display: inline-block;
             transition: all 0.3s;
             border: none;
             cursor: pointer;
             font-size: 0.95rem;
             font-weight: 500;
-            font-family: inherit;
         }
-
         .btn-primary {
-            background: linear-gradient(135deg, #F59E0B, #FBBF24);
+            background: linear-gradient(135deg, #ff9800 0%, #ffc107 100%);
             color: white;
         }
-
         .btn-primary:hover {
-            background: linear-gradient(135deg, #D97706, #F59E0B);
+            background: linear-gradient(135deg, #f57c00 0%, #ffa000 100%);
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4);
+            box-shadow: 0 4px 12px rgba(255, 152, 0, 0.4);
         }
-
         .btn-success {
-            background: linear-gradient(135deg, #10B981, #34D399);
+            background: linear-gradient(135deg, #66bb6a 0%, #43a047 100%);
             color: white;
         }
-
         .btn-success:hover {
-            background: linear-gradient(135deg, #059669, #10B981);
+            background: linear-gradient(135deg, #43a047 0%, #2e7d32 100%);
             transform: translateY(-2px);
         }
-
         .btn-danger {
-            background: linear-gradient(135deg, #EF4444, #F87171);
+            background: linear-gradient(135deg, #ef5350 0%, #e53935 100%);
             color: white;
         }
-
         .btn-danger:hover {
-            background: linear-gradient(135deg, #DC2626, #EF4444);
+            background: linear-gradient(135deg, #e53935 0%, #c62828 100%);
         }
-
         .btn-warning {
-            background: linear-gradient(135deg, #FBBF24, #FCD34D);
-            color: #78350F;
+            background: #ffc107;
+            color: #333;
         }
-
-        .btn-warning:hover {
-            background: linear-gradient(135deg, #F59E0B, #FBBF24);
-        }
-
         .btn-secondary {
-            background: #92400E;
+            background: #868e96;
             color: white;
         }
-
-        .btn-secondary:hover {
-            background: #78350F;
-        }
-
         .btn-outline {
             background: transparent;
             border: 2px solid white;
             color: white;
         }
-
         .btn-outline:hover {
             background: white;
-            color: #F59E0B;
+            color: #ff9800;
         }
-
-        .btn-sm {
-            padding: 0.3rem 0.65rem;
-            font-size: 0.8rem;
-            border-radius: 6px;
-        }
-
+        /* Alert */
         .alert {
             padding: 1rem 1.5rem;
             margin: 1rem 0;
             border-radius: 10px;
             border-left: 4px solid;
         }
-
         .alert-success {
-            background: #D1FAE5;
-            color: #065F46;
-            border-color: #10B981;
+            background: #d4edda;
+            color: #155724;
+            border-color: #51cf66;
         }
-
         .alert-error {
-            background: #FEE2E2;
-            color: #991B1B;
-            border-color: #EF4444;
+            background: #f8d7da;
+            color: #721c24;
+            border-color: #ff6b6b;
         }
-
+        /* Content */
         .content {
             min-height: calc(100vh - 200px);
             padding: 2rem 0;
         }
-
+        /* Footer */
         .footer {
-            background: linear-gradient(135deg, #F59E0B, #D97706);
+            background: #343a40;
             color: white;
             text-align: center;
             padding: 2rem 0;
             margin-top: 3rem;
-            box-shadow: 0 -2px 10px rgba(245, 158, 11, 0.2);
-        }
-
-        /* Avatar navbar */
-        .nav-avatar {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid rgba(255, 255, 255, 0.7);
-        }
-
-        .nav-avatar-initial {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.3);
-            border: 2px solid rgba(255, 255, 255, 0.7);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 13px;
-            font-weight: 700;
-            color: white;
         }
     </style>
     @yield('styles')
 </head>
-
 <body>
+    <!-- Navbar -->
     <nav class="navbar">
         <div class="container">
             <a href="{{ route('home') }}" class="navbar-brand">🍳 Dapur Ceria</a>
             <ul class="navbar-menu">
                 <li><a href="{{ route('home') }}">Beranda</a></li>
-
+                
                 @auth
                     <li><a href="{{ route('user.resep.create') }}">Upload Resep</a></li>
                     <li><a href="{{ route('user.resep.my') }}">Resep Saya</a></li>
                     <li><a href="{{ route('favorit.index') }}">Favorit</a></li>
-
-                    {{-- Link Profil dengan Avatar --}}
                     <li>
-                        <a href="{{ route('profile.show') }}" style="display:flex; align-items:center; gap:6px;">
-                            @if (auth()->user()->foto_profil)
-                                <img src="{{ asset('storage/' . auth()->user()->foto_profil) }}" class="nav-avatar"
-                                    alt="foto">
-                            @else
-                                <div class="nav-avatar-initial">
-                                    {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
-                                </div>
-                            @endif
-                            Profil
-                        </a>
-                    </li>
-
-                    <li>
-                        <form action="{{ route('logout') }}" method="POST" style="display:inline;">
+                        <form action="{{ route('logout') }}" method="POST" style="display: inline;">
                             @csrf
-                            <button type="submit" class="btn btn-outline">
-                                <i class='bx bx-log-out'></i> Logout
-                            </button>
+                            <button type="submit" class="btn btn-outline">Logout ({{ auth()->user()->name }})</button>
                         </form>
                     </li>
                 @else
@@ -253,12 +175,14 @@
         </div>
     </nav>
 
+    <!-- Content -->
     <div class="content">
         <div class="container">
-            @if (session('success'))
+            @if(session('success'))
                 <div class="alert alert-success">{{ session('success') }}</div>
             @endif
-            @if (session('error'))
+
+            @if(session('error'))
                 <div class="alert alert-error">{{ session('error') }}</div>
             @endif
 
@@ -266,14 +190,13 @@
         </div>
     </div>
 
+    <!-- Footer -->
     <footer class="footer">
         <div class="container">
-            <p>&copy; 2026 Dapur Ceria. Semua hak dilindungi.</p>
+            <p>&copy; 2024 Dapur Ceria. Semua hak dilindungi.</p>
         </div>
     </footer>
 
-    @stack('scripts')
     @yield('scripts')
 </body>
-
 </html>
