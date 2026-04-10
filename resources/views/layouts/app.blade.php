@@ -3,200 +3,351 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'Dapur Ceria')</title>
+    <title>@yield('title', 'DapurCeria')</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        /* ── RESET & BASE ── */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Plus Jakarta Sans', 'Segoe UI', sans-serif;
+            background: #FDF6EC;
+            color: #3D2010;
             line-height: 1.6;
-            color: #333;
-            background: #fffbf5;
         }
+
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 20px;
         }
-        /* Navbar */
+
+        /* ── NAVBAR ── */
         .navbar {
-            background: linear-gradient(135deg, #ff9800 0%, #ffc107 100%);
-            color: white;
-            padding: 1rem 0;
-            box-shadow: 0 2px 10px rgba(255,152,0,0.3);
+            background: #3D2010;
+            padding: 0;
             position: sticky;
             top: 0;
             z-index: 1000;
+            border-bottom: 1px solid rgba(255,255,255,.07);
         }
+
         .navbar .container {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            height: 60px;
         }
+
         .navbar-brand {
-            font-size: 1.8rem;
-            font-weight: 800;
-            color: white;
+            font-family: 'Playfair Display', serif;
+            font-size: 20px;
+            font-weight: 700;
+            color: #fff;
             text-decoration: none;
             display: flex;
             align-items: center;
-            gap: 0.5rem;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            gap: 8px;
         }
-        .navbar-brand .logo-icon {
-            font-size: 2rem;
+
+        .navbar-brand-dot {
+            width: 8px;
+            height: 8px;
+            background: #F9946A;
+            border-radius: 50%;
+            flex-shrink: 0;
         }
+
         .navbar-menu {
             display: flex;
-            gap: 1.5rem;
             align-items: center;
+            gap: 6px;
             list-style: none;
         }
+
         .navbar-menu a {
-            color: white;
+            color: rgba(255,255,255,.7);
             text-decoration: none;
-            transition: opacity 0.3s;
+            font-size: 13px;
             font-weight: 500;
-        }
-        .navbar-menu a:hover {
-            opacity: 0.8;
-        }
-        .btn {
-            padding: 0.6rem 1.2rem;
+            padding: 6px 10px;
             border-radius: 8px;
-            text-decoration: none;
-            display: inline-block;
-            transition: all 0.3s;
-            border: none;
+            transition: color .2s, background .2s;
+        }
+
+        .navbar-menu a:hover {
+            color: #fff;
+            background: rgba(255,255,255,.08);
+        }
+
+        /* nav buttons */
+        .btn-nav-outline {
+            padding: 6px 16px;
+            border: 1.5px solid rgba(255,255,255,.4);
+            border-radius: 20px;
+            color: rgba(255,255,255,.85) !important;
+            font-size: 12px !important;
+            font-weight: 600 !important;
+            background: none;
             cursor: pointer;
-            font-size: 0.95rem;
-            font-weight: 500;
+            font-family: inherit;
+            transition: all .2s;
         }
-        .btn-primary {
-            background: linear-gradient(135deg, #ff9800 0%, #ffc107 100%);
-            color: white;
+
+        .btn-nav-outline:hover {
+            border-color: #fff;
+            color: #fff !important;
+            background: rgba(255,255,255,.1) !important;
         }
-        .btn-primary:hover {
-            background: linear-gradient(135deg, #f57c00 0%, #ffa000 100%);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(255, 152, 0, 0.4);
+
+        .btn-nav-fill {
+            padding: 6px 16px;
+            border: 1.5px solid #E8621A;
+            border-radius: 20px;
+            background: #E8621A;
+            color: #fff !important;
+            font-size: 12px !important;
+            font-weight: 600 !important;
+            text-decoration: none;
+            cursor: pointer;
+            font-family: inherit;
+            transition: background .2s;
         }
-        .btn-success {
-            background: linear-gradient(135deg, #66bb6a 0%, #43a047 100%);
-            color: white;
+
+        .btn-nav-fill:hover {
+            background: #C84E0E !important;
+            border-color: #C84E0E;
         }
-        .btn-success:hover {
-            background: linear-gradient(135deg, #43a047 0%, #2e7d32 100%);
-            transform: translateY(-2px);
+
+        /* user dropdown area */
+        .nav-user {
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
-        .btn-danger {
-            background: linear-gradient(135deg, #ef5350 0%, #e53935 100%);
-            color: white;
+
+        .nav-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #E8621A;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 700;
+            border: 2px solid rgba(255,255,255,.25);
+            flex-shrink: 0;
         }
-        .btn-danger:hover {
-            background: linear-gradient(135deg, #e53935 0%, #c62828 100%);
+
+        .nav-user-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: rgba(255,255,255,.85);
         }
-        .btn-warning {
-            background: #ffc107;
-            color: #333;
+
+        /* admin badge in nav */
+        .nav-admin-badge {
+            background: #E8621A;
+            color: #fff;
+            font-size: 9px;
+            font-weight: 700;
+            padding: 2px 7px;
+            border-radius: 8px;
+            letter-spacing: .5px;
         }
-        .btn-secondary {
-            background: #868e96;
-            color: white;
+
+        /* logout form inline */
+        .logout-form { display: inline; }
+
+        /* ── GLOBAL ALERTS ── */
+        .global-alerts {
+            padding: 12px 0 0;
         }
-        .btn-outline {
-            background: transparent;
-            border: 2px solid white;
-            color: white;
-        }
-        .btn-outline:hover {
-            background: white;
-            color: #ff9800;
-        }
-        /* Alert */
+
         .alert {
-            padding: 1rem 1.5rem;
-            margin: 1rem 0;
-            border-radius: 10px;
+            padding: 12px 18px;
+            border-radius: 12px;
             border-left: 4px solid;
+            font-size: 13px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
         }
+
         .alert-success {
-            background: #d4edda;
-            color: #155724;
-            border-color: #51cf66;
+            background: #D4F0E0;
+            color: #1A6B3A;
+            border-color: #2E7D32;
         }
+
         .alert-error {
-            background: #f8d7da;
-            color: #721c24;
-            border-color: #ff6b6b;
+            background: #FDDEDE;
+            color: #8B1A1A;
+            border-color: #C62828;
         }
-        /* Content */
+
+        .alert-warning {
+            background: #FEF3C0;
+            color: #856404;
+            border-color: #B08010;
+        }
+
+        /* ── CONTENT ── */
         .content {
-            min-height: calc(100vh - 200px);
-            padding: 2rem 0;
+            min-height: calc(100vh - 60px - 64px);
         }
-        /* Footer */
+
+        /* ── BUTTONS (global helpers) ── */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 9px 18px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            border: none;
+            text-decoration: none;
+            transition: all .2s;
+        }
+
+        .btn-primary   { background: #E8621A; color: #fff; }
+        .btn-primary:hover { background: #C84E0E; }
+
+        .btn-success   { background: #2E7D32; color: #fff; }
+        .btn-success:hover { background: #1B5E20; }
+
+        .btn-danger    { background: #C62828; color: #fff; }
+        .btn-danger:hover { background: #8B1A1A; }
+
+        .btn-warning   { background: #B08010; color: #fff; }
+        .btn-secondary { background: #7A3D1A; color: #fff; }
+        .btn-outline-br {
+            background: none;
+            border: 1.5px solid #E0D0C0;
+            color: #7A3D1A;
+        }
+
+        /* ── FOOTER ── */
         .footer {
-            background: #343a40;
-            color: white;
+            background: #3D2010;
+            color: rgba(255,255,255,.5);
             text-align: center;
-            padding: 2rem 0;
-            margin-top: 3rem;
+            padding: 20px 0;
+            font-size: 12px;
+        }
+
+        .footer a {
+            color: #F9946A;
+            text-decoration: none;
+        }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 680px) {
+            .navbar-menu .nav-hide-sm { display: none; }
+            .navbar-brand { font-size: 17px; }
         }
     </style>
-    @yield('styles')
+
+    {{-- Per-page styles --}}
+    @stack('styles')
 </head>
 <body>
-    <!-- Navbar -->
+
+    {{-- ── NAVBAR ── --}}
     <nav class="navbar">
         <div class="container">
-            <a href="{{ route('home') }}" class="navbar-brand">🍳 Dapur Ceria</a>
+            <a href="{{ route('home') }}" class="navbar-brand">
+                <div class="navbar-brand-dot"></div>
+                DapurCeria
+            </a>
+
             <ul class="navbar-menu">
-                <li><a href="{{ route('home') }}">Beranda</a></li>
-                
+                <li class="nav-hide-sm"><a href="{{ route('home') }}">Beranda</a></li>
+
                 @auth
-                    <li><a href="{{ route('user.resep.create') }}">Upload Resep</a></li>
-                    <li><a href="{{ route('user.resep.my') }}">Resep Saya</a></li>
-                    <li><a href="{{ route('favorit.index') }}">Favorit</a></li>
+                    {{-- Admin menu --}}
+                    @if(auth()->user()->role === 'admin')
+                        <li class="nav-hide-sm"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
+                        <li class="nav-hide-sm"><a href="{{ route('admin.resep.index') }}">Kelola Resep</a></li>
+                        <li class="nav-hide-sm"><a href="{{ route('admin.users.index') }}">Kelola User</a></li>
+                        <li><span class="nav-admin-badge">ADMIN</span></li>
+                    @else
+                        {{-- User menu --}}
+                        <li class="nav-hide-sm"><a href="{{ route('user.resep.create') }}">Upload Resep</a></li>
+                        <li class="nav-hide-sm"><a href="{{ route('user.resep.my') }}">Resep Saya</a></li>
+                        <li class="nav-hide-sm"><a href="{{ route('favorit.index') }}">Favorit</a></li>
+                    @endif
+
+                    {{-- User info + logout --}}
                     <li>
-                        <form action="{{ route('logout') }}" method="POST" style="display: inline;">
+                        <div class="nav-user">
+                            <div class="nav-avatar">
+                                {{ strtoupper(substr(auth()->user()->name, 0, 2)) }}
+                            </div>
+                            <span class="nav-user-name nav-hide-sm">
+                                {{ auth()->user()->name }}
+                            </span>
+                        </div>
+                    </li>
+                    <li>
+                        <form action="{{ route('logout') }}" method="POST" class="logout-form">
                             @csrf
-                            <button type="submit" class="btn btn-outline">Logout ({{ auth()->user()->name }})</button>
+                            <button type="submit" class="btn-nav-outline">Keluar</button>
                         </form>
                     </li>
                 @else
-                    <li><a href="{{ route('login') }}" class="btn btn-outline">Login</a></li>
-                    <li><a href="{{ route('register') }}" class="btn btn-success">Daftar</a></li>
+                    <li><a href="{{ route('login') }}" class="btn-nav-outline">Masuk</a></li>
+                    <li><a href="{{ route('register') }}" class="btn-nav-fill">Daftar</a></li>
                 @endauth
             </ul>
         </div>
     </nav>
 
-    <!-- Content -->
+    {{-- ── CONTENT ── --}}
     <div class="content">
         <div class="container">
+
+            {{-- Global flash messages --}}
             @if(session('success'))
-                <div class="alert alert-success">{{ session('success') }}</div>
+                <div class="global-alerts">
+                    <div class="alert alert-success">✓ {{ session('success') }}</div>
+                </div>
             @endif
 
             @if(session('error'))
-                <div class="alert alert-error">{{ session('error') }}</div>
+                <div class="global-alerts">
+                    <div class="alert alert-error">⚠ {{ session('error') }}</div>
+                </div>
             @endif
 
-            @yield('content')
+            @if(session('warning'))
+                <div class="global-alerts">
+                    <div class="alert alert-warning">⚠ {{ session('warning') }}</div>
+                </div>
+            @endif
+
         </div>
+
+        {{-- Content tanpa container (full-width pages bisa atur sendiri) --}}
+        @yield('content')
     </div>
 
-    <!-- Footer -->
+    {{-- ── FOOTER ── --}}
     <footer class="footer">
         <div class="container">
-            <p>&copy; 2024 Dapur Ceria. Semua hak dilindungi.</p>
+            <p>&copy; 2024 DapurCeria. Semua hak dilindungi.</p>
         </div>
     </footer>
 
-    @yield('scripts')
+    {{-- Per-page scripts --}}
+    @stack('scripts')
 </body>
 </html>

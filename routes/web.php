@@ -33,6 +33,58 @@ Route::middleware('guest')->group(function () {
 
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
 
+// ============================================
+// RESET PASSWORD (TAMBAHAN)
+// ============================================
+
+// Halaman lupa password
+Route::get('/lupa-password', function () {
+    return view('auth.forgot-password');
+})->name('password.request');
+
+// Kirim link reset ke email
+Route::post('/lupa-password', function (\Illuminate\Http\Request $request) {
+    $request->validate([
+        'email' => 'required|email',
+    ]);
+
+    $status = \Illuminate\Support\Facades\Password::sendResetLink(
+        $request->only('email')
+    );
+
+    return $status === \Illuminate\Support\Facades\Password::RESET_LINK_SENT
+        ? back()->with('status', 'Link reset password sudah dikirim ke email kamu!')
+        : back()->withErrors(['email' => 'Email tidak ditemukan.']);
+})->name('password.email');
+
+// Form reset password
+Route::get('/reset-password/{token}', function (string $token) {
+    return view('auth.reset-password', ['token' => $token]);
+})->name('password.reset');
+
+// Proses reset password
+Route::post('/reset-password', function (\Illuminate\Http\Request $request) {
+    $request->validate([
+        'token'    => 'required',
+        'email'    => 'required|email',
+        'password' => 'required|min:8|confirmed',
+    ]);
+
+    $status = \Illuminate\Support\Facades\Password::reset(
+        $request->only('email', 'password', 'password_confirmation', 'token'),
+        function (\App\Models\User $user, string $password) {
+            $user->forceFill([
+                'password' => \Illuminate\Support\Facades\Hash::make($password),
+            ])->save();
+        }
+    );
+
+    return $status === \Illuminate\Support\Facades\Password::PASSWORD_RESET
+        ? redirect()->route('login')->with('status', 'Password berhasil direset! Silakan login.')
+        : back()->withErrors(['email' => __($status)]);
+})->name('password.update');
+
+
 // Profile (user & admin)
 Route::middleware(['auth'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');

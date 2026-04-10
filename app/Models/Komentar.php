@@ -28,4 +28,9 @@ class Komentar extends Model
     {
         return $this->belongsTo(Resep::class, 'id_resep');
     }
+
+    public function scopeUnread($query)
+    {
+        return $query->where('is_read', false);
+    }
 }

@@ -11,37 +11,34 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        $totalUsers     = User::where('role', 'user')->count();
-        $totalReseps    = Resep::where('status', 'approved')->count();
+        // STATISTIK
+        $totalUsers = User::where('role', 'user')->count();
+        $totalReseps = Resep::approved()->count();
         $totalKomentars = Komentar::count();
-        $avgRating      = Rating::avg('rating') ?? 0;
+        $avgRating = round(Rating::avg('rating') ?? 0, 1);
 
-        // Resep pending persetujuan
-        $pendingReseps = Resep::where('status', 'pending')
-            ->whereHas('user')
-            ->whereHas('kategori')
-            ->with(['user', 'kategori'])
-            ->latest()
-            ->take(5)
-            ->get();
+        // RESEP PENDING
+        $pendingResepsQuery = Resep::pending()
+            ->with(['user:id,name', 'kategori:id,nama_kategori'])
+            ->latest();
 
-        $totalPendingReseps = Resep::where('status', 'pending')->count();
+        $pendingReseps = $pendingResepsQuery->take(5)->get();
+        $totalPendingReseps = $pendingResepsQuery->count();
 
-        // Komentar belum dibaca
-        $unreadKomentars = Komentar::where('is_read', false)
-            ->whereHas('user')
-            ->whereHas('resep')
-            ->with(['user', 'resep'])
-            ->latest()
-            ->take(5)
-            ->get();
+        // KOMENTAR BELUM DIBACA
+        $unreadKomentarsQuery = Komentar::unread()
+            ->with(['user:id,name', 'resep:id,judul'])
+            ->latest();
 
-        $totalUnreadKomentars = Komentar::where('is_read', false)->count();
+        $unreadKomentars = $unreadKomentarsQuery->take(5)->get();
+        $totalUnreadKomentars = $unreadKomentarsQuery->count();
 
-        // Resep terbaru (semua status)
-        $latestReseps = Resep::with(['user', 'kategori', 'ratings'])
-            ->whereHas('user')
-            ->whereHas('kategori')
+        // RESEP TERBARU
+        $latestReseps = Resep::with([
+            'user:id,name',
+            'kategori:id,nama_kategori',
+            'ratings',
+        ])
             ->latest()
             ->take(5)
             ->get();

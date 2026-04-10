@@ -22,6 +22,10 @@ class ResepController extends Controller
             $query->where('judul', 'like', '%' . $request->search . '%');
         }
 
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
         $reseps    = $query->latest()->paginate(10);
         $kategoris = Kategori::all();
 
@@ -102,6 +106,10 @@ class ResepController extends Controller
         $resep = Resep::findOrFail($id);
 
         if ($resep->gambar) {
+            Storage::disk('public')->delete($resep->gambar);
+        }
+
+        if ($resep->gambar && Storage::disk('public')->exists($resep->gambar)) {
             Storage::disk('public')->delete($resep->gambar);
         }
 
