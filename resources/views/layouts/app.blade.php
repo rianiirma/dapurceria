@@ -276,9 +276,6 @@
                     {{-- Admin menu --}}
                     @if(auth()->user()->role === 'admin')
                         <li class="nav-hide-sm"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-                        <li class="nav-hide-sm"><a href="{{ route('admin.resep.index') }}">Kelola Resep</a></li>
-                        <li class="nav-hide-sm"><a href="{{ route('admin.users.index') }}">Kelola User</a></li>
-                        <li><span class="nav-admin-badge">ADMIN</span></li>
                     @else
                         {{-- User menu --}}
                         <li class="nav-hide-sm"><a href="{{ route('user.resep.create') }}">Upload Resep</a></li>

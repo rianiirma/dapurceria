@@ -24,6 +24,16 @@ class Resep extends Model
         'alasan_tolak',
     ];
 
+    public function scopeApproved($query)
+    {
+        return $query->where('status', 'approved');
+    }
+
+    public function scopePending($query)
+    {
+        return $query->where('status', 'pending');
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class, 'id_user');
