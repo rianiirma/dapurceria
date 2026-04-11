@@ -546,13 +546,14 @@
                     @endif
 
                     <li>
-                        <div class="nav-user">
+                        <a href="{{ route('profile.show') }}" class="nav-user" style="text-decoration:none;">
                             <div class="nav-avatar">
                                 {{ strtoupper(substr(auth()->user()->name, 0, 2)) }}
                             </div>
                             <span class="nav-user-name">{{ auth()->user()->name }}</span>
-                        </div>
+                        </a>
                     </li>
+
                     <li>
                         <form action="{{ route('logout') }}" method="POST" class="logout-form">
                             @csrf

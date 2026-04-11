@@ -7,21 +7,22 @@
 
 <style>
     .edit-profile-wrap {
-        max-width: 600px;
+        max-width: 500px;
         margin: 0 auto;
     }
 
     .edit-profile-card {
         background: #fff;
-        border-radius: 20px;
+        border-radius: 16px;
         border: 1px solid #FDE68A;
-        box-shadow: 0 2px 16px rgba(245,158,11,0.08);
+        box-shadow: 0 2px 12px rgba(245,158,11,0.08);
         overflow: hidden;
     }
 
     .edit-card-header {
         padding: 1rem 1.5rem;
         border-bottom: 1px solid #FEF3C7;
+        background: #FFFBEB;
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -29,39 +30,38 @@
     }
 
     .edit-card-title {
-        font-size: 15px;
+        font-size: 14px;
         font-weight: 700;
         color: #1C1917;
         display: flex;
         align-items: center;
-        gap: 8px;
+        gap: 7px;
         margin: 0;
     }
 
-    .edit-card-title i { font-size: 18px; color: #D97706; }
+    .edit-card-title i { font-size: 17px; color: #D97706; }
 
     .btn-back {
-        background: #FFFBEB;
+        background: white;
         color: #92400E;
         border: 1px solid #FDE68A;
-        padding: 7px 12px;
-        border-radius: 8px;
-        font-size: 13px;
+        padding: 6px 12px;
+        border-radius: 7px;
+        font-size: 12px;
         font-weight: 600;
         text-decoration: none;
         display: inline-flex;
         align-items: center;
-        gap: 5px;
+        gap: 4px;
         white-space: nowrap;
-        transition: all 0.15s;
         flex-shrink: 0;
+        transition: all 0.15s;
     }
 
     .btn-back:hover {
         background: #FEF3C7;
-        border-color: #FCD34D;
-        color: #78350F;
         text-decoration: none;
+        color: #78350F;
     }
 
     .edit-card-body { padding: 1.5rem; }
@@ -69,8 +69,8 @@
     /* AVATAR */
     .avatar-section {
         display: flex;
-        flex-direction: column;
         align-items: center;
+        gap: 16px;
         margin-bottom: 1.5rem;
         padding-bottom: 1.5rem;
         border-bottom: 1px solid #FEF3C7;
@@ -78,24 +78,23 @@
 
     .avatar-container {
         position: relative;
-        width: 100px;
-        height: 100px;
-        margin-bottom: 10px;
+        width: 72px;
+        height: 72px;
+        flex-shrink: 0;
     }
 
     .avatar-display {
-        width: 100px;
-        height: 100px;
+        width: 72px;
+        height: 72px;
         border-radius: 50%;
         background: linear-gradient(135deg, #F59E0B, #FBBF24);
-        border: 4px solid #FDE68A;
+        border: 3px solid #FDE68A;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 2rem;
+        font-size: 1.4rem;
         color: #fff;
         font-weight: 700;
-        box-shadow: 0 4px 14px rgba(0,0,0,0.12);
         overflow: hidden;
     }
 
@@ -110,8 +109,8 @@
         position: absolute;
         bottom: 0;
         right: 0;
-        width: 30px;
-        height: 30px;
+        width: 24px;
+        height: 24px;
         background: #F59E0B;
         border-radius: 50%;
         border: 2px solid #fff;
@@ -119,52 +118,62 @@
         align-items: center;
         justify-content: center;
         cursor: pointer;
-        box-shadow: 0 2px 6px rgba(0,0,0,0.15);
         transition: background 0.15s;
     }
 
     .avatar-overlay:hover { background: #D97706; }
-    .avatar-overlay i { font-size: 15px; color: #fff; }
+    .avatar-overlay i { font-size: 12px; color: #fff; }
+
+    .avatar-info { flex: 1; }
+
+    .avatar-info-name {
+        font-size: 15px;
+        font-weight: 700;
+        color: #1C1917;
+        margin-bottom: 4px;
+    }
 
     .change-photo-label {
-        font-size: 13px;
+        font-size: 12px;
         color: #D97706;
         font-weight: 600;
         cursor: pointer;
         display: inline-flex;
         align-items: center;
-        gap: 5px;
+        gap: 4px;
         background: none;
         border: none;
         padding: 0;
+        transition: color 0.15s;
     }
 
     .change-photo-label:hover { color: #B45309; }
 
-    /* FORM — stack vertikal di semua ukuran layar */
-    .form-field {
-        margin-bottom: 1rem;
-    }
+    /* FORM */
+    .form-field { margin-bottom: 1rem; }
 
     .form-field-label {
         display: block;
-        font-size: 13px;
+        font-size: 12px;
         font-weight: 600;
         color: #57534E;
-        margin-bottom: 6px;
+        margin-bottom: 5px;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
     }
 
     .form-input-custom {
         width: 100%;
         border: 1.5px solid #E7E5E4;
-        border-radius: 10px;
-        padding: 10px 14px;
+        border-radius: 8px;
+        padding: 9px 13px;
         font-size: 14px;
         color: #1C1917;
         background: #FAFAF9;
         transition: border-color 0.15s;
         outline: none;
         box-sizing: border-box;
+        font-family: inherit;
     }
 
     .form-input-custom:focus {
@@ -179,16 +188,17 @@
         background: #FFFBEB;
         color: #92400E;
         border: 1.5px solid #FDE68A;
-        border-radius: 10px;
-        padding: 10px 14px;
+        border-radius: 8px;
+        padding: 9px 13px;
         font-size: 14px;
         font-weight: 600;
         box-sizing: border-box;
+        cursor: not-allowed;
     }
 
     .error-text {
         color: #EF4444;
-        font-size: 12px;
+        font-size: 11px;
         margin-top: 4px;
         display: block;
     }
@@ -200,40 +210,34 @@
     }
 
     /* TOMBOL */
-    .btn-row {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        margin-top: 1.25rem;
-    }
-
     .btn-submit-custom {
         width: 100%;
-        background: #F59E0B;
+        background: linear-gradient(135deg, #F59E0B, #FBBF24);
         color: #fff;
         border: none;
-        padding: 12px;
-        border-radius: 10px;
+        padding: 11px;
+        border-radius: 8px;
         font-size: 14px;
         font-weight: 700;
         cursor: pointer;
         display: flex;
         align-items: center;
         justify-content: center;
-        gap: 7px;
-        transition: background 0.15s;
+        gap: 6px;
+        transition: opacity 0.15s;
+        font-family: inherit;
+        margin-bottom: 8px;
     }
 
-    .btn-submit-custom:hover { background: #D97706; }
-    .btn-submit-custom i { font-size: 16px; }
+    .btn-submit-custom:hover { opacity: 0.9; }
 
     .btn-cancel-custom {
         width: 100%;
         background: #fff;
         color: #78716C;
         border: 1.5px solid #E7E5E4;
-        padding: 12px;
-        border-radius: 10px;
+        padding: 10px;
+        border-radius: 8px;
         font-size: 14px;
         font-weight: 600;
         text-decoration: none;
@@ -241,6 +245,7 @@
         align-items: center;
         justify-content: center;
         transition: all 0.15s;
+        font-family: inherit;
     }
 
     .btn-cancel-custom:hover {
@@ -248,10 +253,16 @@
         color: #57534E;
         text-decoration: none;
     }
+
+    @media (max-width: 480px) {
+        .edit-card-body { padding: 1.25rem; }
+        .avatar-section { gap: 12px; }
+    }
 </style>
 
 <div class="edit-profile-wrap">
     <div class="edit-profile-card">
+
         <div class="edit-card-header">
             <h3 class="edit-card-title">
                 <i class='bx bx-user-circle'></i> Edit Profil
@@ -266,10 +277,10 @@
                 @csrf
                 @method('PUT')
 
-                {{-- AVATAR --}}
+                {{-- AVATAR -- rata kiri, info nama di kanan avatar --}}
                 <div class="avatar-section">
                     <div class="avatar-container">
-                        <div class="avatar-display" id="avatar-display">
+                        <div class="avatar-display">
                             @if($user->foto_profil)
                                 <img id="preview" src="{{ asset('storage/' . $user->foto_profil) }}" alt="Foto Profil">
                             @else
@@ -281,9 +292,12 @@
                             <i class='bx bx-camera'></i>
                         </label>
                     </div>
-                    <label for="foto_profil" class="change-photo-label">
-                        <i class='bx bx-camera'></i> Ganti Foto
-                    </label>
+                    <div class="avatar-info">
+                        <div class="avatar-info-name">{{ $user->name }}</div>
+                        <label for="foto_profil" class="change-photo-label">
+                            <i class='bx bx-camera'></i> Ganti Foto Profil
+                        </label>
+                    </div>
                     <input type="file" id="foto_profil" name="foto_profil" accept="image/*"
                            style="display:none;" onchange="previewFoto(this)">
                 </div>
@@ -314,18 +328,16 @@
                 <div class="form-field">
                     <label class="form-field-label">Role</label>
                     <div class="form-input-disabled">
-                        {{ $user->role === 'admin' ? 'Administrator' : 'Member' }}
+                        {{ $user->role === 'admin' ? '👑 Administrator' : '✓ Member' }}
                     </div>
                 </div>
 
                 <hr class="form-divider">
 
-                <div class="btn-row">
-                    <button type="submit" class="btn-submit-custom">
-                        <i class='bx bx-save'></i> Simpan Perubahan
-                    </button>
-                    <a href="{{ route('profile.show') }}" class="btn-cancel-custom">Batal</a>
-                </div>
+                <button type="submit" class="btn-submit-custom">
+                    <i class='bx bx-save'></i> Simpan Perubahan
+                </button>
+                <a href="{{ route('profile.show') }}" class="btn-cancel-custom">Batal</a>
 
             </form>
         </div>
