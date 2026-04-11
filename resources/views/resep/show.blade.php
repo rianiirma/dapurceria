@@ -1,464 +1,746 @@
 @extends('layouts.app')
+@section('title', $resep->judul . ' - DapurCeria')
 
-@section('title', $resep->judul . ' - Dapur Ceria')
-
-@section('styles')
+@push('styles')
 <style>
-    .detail-container {
-        background: white;
-        border-radius: 8px;
-        overflow: hidden;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    }
-    .detail-header {
-        position: relative;
-    }
-    .detail-image {
+    body { background: #FDF6EC; }
+
+    /* ── HERO IMAGE ── */
+    .detail-hero {
         width: 100%;
-        height: 400px;
+        height: 340px;
+        position: relative;
+        overflow: hidden;
+        background: #F0E8DC;
+    }
+
+    .detail-hero img {
+        width: 100%; height: 100%;
         object-fit: cover;
-        background: #f0f0f0;
     }
-    .detail-content {
-        padding: 2rem;
+
+    .detail-hero-fallback {
+        width: 100%; height: 100%;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 72px;
+        background: linear-gradient(135deg, #FFB870, #E05010);
     }
-    .kategori-badge {
-        display: inline-block;
-        padding: 0.5rem 1rem;
-        background: #ff6b6b;
-        color: rgb(255, 255, 255);
-        border-radius: 20px;
-        font-size: 0.875rem;
-        margin-bottom: 1rem;
+
+    .detail-hero-overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(to top, rgba(61,32,16,.7) 0%, transparent 50%);
     }
+
+    .detail-hero-badge {
+        position: absolute;
+        top: 16px; left: 16px;
+        background: #E8621A;
+        color: #fff;
+        font-size: 11px; font-weight: 700;
+        padding: 5px 14px;
+        border-radius: 14px;
+        letter-spacing: .3px;
+    }
+
+    .detail-hero-back {
+        position: absolute;
+        top: 16px; right: 16px;
+        background: rgba(255,255,255,.2);
+        backdrop-filter: blur(8px);
+        color: #fff;
+        border: none;
+        width: 36px; height: 36px;
+        border-radius: 50%;
+        font-size: 18px;
+        display: flex; align-items: center; justify-content: center;
+        cursor: pointer;
+        text-decoration: none;
+        transition: background .2s;
+    }
+
+    .detail-hero-back:hover { background: rgba(255,255,255,.35); }
+
+    /* ── MAIN CARD ── */
+    .detail-card {
+        background: #FFFBF5;
+        border-radius: 24px 24px 0 0;
+        margin-top: -24px;
+        position: relative;
+        z-index: 2;
+        padding: 28px 20px 0;
+        min-height: 80vh;
+    }
+
+    /* ── TITLE AREA ── */
     .detail-title {
-        font-size: 2rem;
-        margin-bottom: 1rem;
-        color: #333;
+        font-family: 'Playfair Display', serif;
+        font-size: 24px;
+        line-height: 1.3;
+        color: #3D2010;
+        margin-bottom: 8px;
     }
-    .detail-meta {
+
+    .detail-author-row {
         display: flex;
-        gap: 2rem;
-        margin-bottom: 2rem;
-        padding-bottom: 2rem;
-        border-bottom: 2px solid #f0f0f0;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 20px;
     }
-    .meta-item {
+
+    .author-avatar {
+        width: 28px; height: 28px;
+        border-radius: 50%;
+        background: #E8621A;
+        color: #fff;
+        font-size: 11px; font-weight: 700;
+        display: flex; align-items: center; justify-content: center;
+        flex-shrink: 0;
+    }
+
+    .author-name {
+        font-size: 13px;
+        color: #9A8070;
+        font-weight: 500;
+    }
+
+    .author-time {
+        font-size: 12px;
+        color: #C0A090;
+        margin-left: auto;
+    }
+
+    /* ── STATS ROW ── */
+    .stats-row {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+
+    .stat-chip {
+        background: #F5EDE3;
+        border-radius: 12px;
+        padding: 10px 8px;
+        text-align: center;
+    }
+
+    .stat-chip-icon { font-size: 18px; }
+
+    .stat-chip-val {
+        font-size: 13px;
+        font-weight: 700;
+        color: #3D2010;
+        margin-top: 3px;
+    }
+
+    .stat-chip-lbl {
+        font-size: 10px;
+        color: #9A8070;
+        margin-top: 1px;
+    }
+
+    /* difficulty badge */
+    .diff-badge {
+        display: inline-block;
+        font-size: 10px;
+        font-weight: 700;
+        padding: 3px 10px;
+        border-radius: 10px;
+    }
+
+    .diff-mudah  { background: #D4F0E0; color: #1A6B3A; }
+    .diff-sedang { background: #FEF3C0; color: #856404; }
+    .diff-sulit  { background: #FDDEDE; color: #8B1A1A; }
+
+    /* ── DESCRIPTION ── */
+    .detail-desc {
+        font-size: 14px;
+        color: #7A6050;
+        line-height: 1.7;
+        margin-bottom: 20px;
+        padding-bottom: 20px;
+        border-bottom: 1px solid #EDE3D8;
+    }
+
+    /* ── ACTION BUTTONS ── */
+    .action-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin-bottom: 24px;
+    }
+
+    .action-btn {
+        padding: 12px;
+        border-radius: 14px;
+        border: 1.5px solid #E0D0C0;
+        background: #fff;
+        font-size: 13px;
+        font-weight: 600;
+        font-family: inherit;
+        color: #7A3D1A;
+        cursor: pointer;
         display: flex;
-        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        transition: all .2s;
+        width: 100%;
     }
-    .meta-label {
-        font-size: 0.875rem;
-        color: #666;
+
+    .action-btn:hover { background: #FEF0E6; border-color: #E8621A; }
+
+    .action-btn.active-suka  { background: #FDDEDE; border-color: #C62828; color: #8B1A1A; }
+    .action-btn.active-favorit { background: #FEF3C0; border-color: #B08010; color: #856404; }
+
+    .login-notice {
+        background: #FDE8D0;
+        border-radius: 14px;
+        padding: 14px 16px;
+        font-size: 13px;
+        color: #7A3D1A;
+        margin-bottom: 24px;
+        text-align: center;
+        line-height: 1.6;
     }
-    .meta-value {
-        font-size: 1.25rem;
-        font-weight: bold;
-        color: #333;
+
+    .login-notice a {
+        color: #E8621A;
+        font-weight: 700;
+        text-decoration: none;
     }
-    .action-buttons {
+
+    /* ── SECTION BLOCKS ── */
+    .section-block {
+        margin-bottom: 28px;
+    }
+
+    .section-block-title {
+        font-family: 'Playfair Display', serif;
+        font-size: 18px;
+        color: #3D2010;
+        margin-bottom: 14px;
         display: flex;
-        gap: 1rem;
-        margin: 1.5rem 0;
+        align-items: center;
+        gap: 10px;
     }
-    .section {
-        margin-bottom: 2rem;
+
+    .section-block-title::after {
+        content: '';
+        flex: 1;
+        height: 1px;
+        background: #EDE3D8;
     }
-    .section-title {
-        font-size: 1.5rem;
-        margin-bottom: 1rem;
-        color: #333;
-        border-left: 4px solid #ffd93d;
-        padding-left: 1rem;
-    }
-    .video-container {
+
+    /* ── VIDEO ── */
+    .video-wrap {
         position: relative;
         padding-bottom: 56.25%;
         height: 0;
         overflow: hidden;
-        margin-bottom: 2rem;
-        border-radius: 8px;
+        border-radius: 16px;
+        margin-bottom: 4px;
     }
-    .video-container iframe {
+
+    .video-wrap iframe {
         position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        border: none;
     }
-    .rating-section {
-        background: #f8f9fa;
-        padding: 1.5rem;
-        border-radius: 8px;
-        margin-bottom: 2rem;
+
+    /* ── BAHAN ── */
+    .bahan-card {
+        background: #fff;
+        border: 1px solid #EDE3D8;
+        border-radius: 14px;
+        padding: 16px 18px;
     }
-    .rating-display {
-        text-align: center;
-        margin-bottom: 1rem;
+
+    .bahan-text {
+        font-size: 13px;
+        color: #5A3A20;
+        line-height: 2;
+        white-space: pre-line;
     }
-    .rating-number {
-        font-size: 3rem;
-        font-weight: bold;
-        color: #ffd93d;
-    }
-    .stars {
-        font-size: 2rem;
-        color: #ffd43b;
-    }
-    .rating-form {
-        text-align: center;
-    }
-    .rating-input {
+
+    /* ── LANGKAH ── */
+    .langkah-list {
         display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .langkah-item {
+        background: #fff;
+        border: 1px solid #EDE3D8;
+        border-radius: 14px;
+        padding: 14px 16px;
+        display: flex;
+        gap: 14px;
+        align-items: flex-start;
+    }
+
+    .langkah-num {
+        width: 28px; height: 28px;
+        border-radius: 50%;
+        background: #E8621A;
+        color: #fff;
+        font-size: 12px;
+        font-weight: 700;
+        display: flex; align-items: center; justify-content: center;
+        flex-shrink: 0;
+        margin-top: 1px;
+    }
+
+    .langkah-text {
+        font-size: 13px;
+        color: #5A3A20;
+        line-height: 1.7;
+        flex: 1;
+    }
+
+    /* ── RATING SECTION ── */
+    .rating-card {
+        background: #fff;
+        border: 1px solid #EDE3D8;
+        border-radius: 16px;
+        padding: 20px;
+    }
+
+    .rating-summary {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        margin-bottom: 20px;
+        padding-bottom: 16px;
+        border-bottom: 1px solid #EDE3D8;
+    }
+
+    .rating-big {
+        font-family: 'Playfair Display', serif;
+        font-size: 44px;
+        font-weight: 700;
+        color: #3D2010;
+        line-height: 1;
+    }
+
+    .rating-stars-display { font-size: 18px; color: #F0C840; margin-bottom: 4px; }
+    .rating-count { font-size: 12px; color: #9A8070; }
+
+    /* star input */
+    .star-input-row {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 14px;
         justify-content: center;
-        gap: 0.5rem;
-        margin-bottom: 1rem;
-        flex-direction: row-reverse;
     }
-    .rating-input input {
-        display: none;
-    }
-    
-    /* Style bintang default - tidak berwarna */
-    .rating-input label {
-        font-size: 2.5rem;
+
+    .star-input-row input { display: none; }
+
+    .star-label {
+        font-size: 32px;
         cursor: pointer;
-        color: #ddd;
-        transition: transform 0.2s ease, color 0.3s ease;
-        position: relative;
-        order: 0;
+        color: #E0D0C0;
+        transition: color .2s, transform .15s;
+        line-height: 1;
     }
-    
-    /* Hover effect - scale sedikit */
-    .rating-input label:hover {
-        transform: scale(1.15);
+
+    .star-label:hover,
+    .star-label.filled { color: #F0C840; }
+
+    .star-label:hover { transform: scale(1.15); }
+
+    .rating-submit {
+        width: 100%;
+        padding: 11px;
+        background: #E8621A;
+        color: #fff;
+        border: none;
+        border-radius: 12px;
+        font-size: 13px;
+        font-weight: 700;
+        font-family: inherit;
+        cursor: pointer;
+        transition: background .2s;
     }
-    
-    /* Class untuk bintang yang ter-hover atau ter-select */
-    .rating-input label.filled {
-        color: #ffd93d;
+
+    .rating-submit:hover { background: #C84E0E; }
+
+    /* ── KOMENTAR ── */
+    .komentar-input-wrap {
+        background: #fff;
+        border: 1.5px solid #E0D0C0;
+        border-radius: 14px;
+        overflow: hidden;
+        margin-bottom: 16px;
     }
-    
-    .komentar-section {
-        margin-top: 2rem;
+
+    .komentar-textarea {
+        width: 100%;
+        padding: 14px 16px;
+        border: none;
+        outline: none;
+        font-size: 13px;
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        color: #3D2010;
+        background: transparent;
+        resize: none;
+        min-height: 90px;
     }
+
+    .komentar-textarea::placeholder { color: #C0A090; }
+
+    .komentar-submit {
+        width: 100%;
+        padding: 11px;
+        background: #E8621A;
+        color: #fff;
+        border: none;
+        border-radius: 12px;
+        font-size: 13px;
+        font-weight: 700;
+        font-family: inherit;
+        cursor: pointer;
+        margin-bottom: 20px;
+        transition: background .2s;
+    }
+
+    .komentar-submit:hover { background: #C84E0E; }
+
     .komentar-item {
-        padding: 1rem;
-        border: 1px solid #eee;
-        border-radius: 8px;
-        margin-bottom: 1rem;
+        background: #fff;
+        border: 1px solid #EDE3D8;
+        border-radius: 14px;
+        padding: 14px 16px;
+        margin-bottom: 10px;
     }
+
     .komentar-header {
         display: flex;
-        justify-content: space-between;
-        margin-bottom: 0.5rem;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 8px;
     }
-    .komentar-user {
-        font-weight: bold;
-        color: #333;
+
+    .komentar-avatar {
+        width: 30px; height: 30px;
+        border-radius: 50%;
+        background: #E8621A;
+        color: #fff;
+        font-size: 11px; font-weight: 700;
+        display: flex; align-items: center; justify-content: center;
+        flex-shrink: 0;
     }
-    .komentar-date {
-        font-size: 0.875rem;
-        color: #999;
+
+    .komentar-name {
+        font-size: 13px;
+        font-weight: 600;
+        color: #3D2010;
     }
-    .form-group {
-        margin-bottom: 1rem;
+
+    .komentar-time {
+        font-size: 11px;
+        color: #C0A090;
+        margin-left: auto;
     }
-    .form-control {
-        width: 100%;
-        padding: 0.75rem;
-        border: 1px solid #ddd;
-        border-radius: 5px;
+
+    .komentar-isi {
+        font-size: 13px;
+        color: #7A6050;
+        line-height: 1.6;
+        margin: 0;
     }
-    textarea.form-control {
-        min-height: 100px;
-        resize: vertical;
+
+    .empty-komentar {
+        text-align: center;
+        padding: 32px 0;
+        color: #C0A090;
+        font-size: 13px;
+    }
+
+    .empty-komentar-icon { font-size: 36px; margin-bottom: 8px; }
+
+    /* ── RESPONSIVE ── */
+    @media (min-width: 640px) {
+        .detail-card { padding: 32px 32px 0; max-width: 720px; margin: -24px auto 0; }
+        .detail-hero { height: 420px; }
     }
 </style>
-@endsection
+@endpush
 
 @section('content')
-<div class="detail-container">
-    <!-- Header with Image -->
-    <div class="detail-header">
-        @if($resep->gambar)
-            <img src="{{ asset('storage/' . $resep->gambar) }}" alt="{{ $resep->judul }}" class="detail-image">
-        @else
-            <div class="detail-image" style="display: flex; align-items: center; justify-content: center; font-size: 5rem;"><i class='bx bx-food-menu'></i></div>
-        @endif
+
+{{-- HERO --}}
+<div class="detail-hero">
+    @if($resep->gambar)
+        <img src="{{ asset('storage/' . $resep->gambar) }}" alt="{{ $resep->judul }}" loading="eager">
+    @else
+        <div class="detail-hero-fallback">🍳</div>
+    @endif
+    <div class="detail-hero-overlay"></div>
+    <span class="detail-hero-badge">{{ $resep->kategori->nama_kategori }}</span>
+    <a href="{{ url()->previous() }}" class="detail-hero-back">←</a>
+</div>
+
+{{-- MAIN CARD --}}
+<div class="detail-card">
+
+    {{-- Title --}}
+    <h1 class="detail-title">{{ $resep->judul }}</h1>
+
+    {{-- Author row --}}
+    <div class="detail-author-row">
+        <div class="author-avatar">{{ strtoupper(substr($resep->user->name, 0, 2)) }}</div>
+        <span class="author-name">{{ $resep->user->name }}</span>
+        <span class="author-time">{{ $resep->created_at->diffForHumans() }}</span>
     </div>
 
-    <div class="detail-content">
-        <span class="kategori-badge">{{ $resep->kategori->nama_kategori }}</span>
-        
-        <h1 class="detail-title">{{ $resep->judul }}</h1>
-        
-        <p style="color: #666; font-size: 1.1rem; margin-bottom: 2rem;">{{ $resep->deskripsi }}</p>
-
-        <!-- Meta Info -->
-        <div class="detail-meta">
-            <div class="meta-item">
-                <span class="meta-label">Waktu Memasak</span>
-                <span class="meta-value"><i class='bx bx-time'></i> {{ $resep->waktu_memasak }} menit</span>
-            </div>
-            <div class="meta-item">
-                <span class="meta-label">Porsi</span>
-                <span class="meta-value"><i class='bx bx-dish'></i> {{ $resep->porsi }} porsi</span>
-            </div>
-            <div class="meta-item">
-                <span class="meta-label">Tingkat Kesulitan</span>
-                <span class="meta-value">
-                    @if($resep->tingkat_kesulitan == 'mudah')  Mudah
-                    @elseif($resep->tingkat_kesulitan == 'sedang')  Sedang
-                    @else  Sulit
-                    @endif
-                </span>
-            </div>
-            <div class="meta-item">
-                <span class="meta-label">Rating</span>
-                <span class="meta-value"><i class='bx bxs-star' style='color:#ffd93d'></i> {{ number_format($resep->averageRating(), 1) }}</span>
-            </div>
-            <div class="meta-item">
-                <span class="meta-label">Disukai</span>
-                <span class="meta-value"><i class='bx bxs-heart' style="color: red "></i> {{ $resep->totalSuka() }}</span>
-            </div>
+    {{-- Stats --}}
+    <div class="stats-row">
+        <div class="stat-chip">
+            <div class="stat-chip-icon">⏱</div>
+            <div class="stat-chip-val">{{ $resep->waktu_memasak }}</div>
+            <div class="stat-chip-lbl">Menit</div>
         </div>
-
-        <div style="margin-bottom: 2rem; padding-bottom: 2rem; border-bottom: 2px solid #f0f0f0;">
-            <p style="color: #999;">Dibuat oleh: <strong>{{ $resep->user->name }}</strong></p>
-            <p style="color: #999;">{{ $resep->created_at->diffForHumans() }}</p>
+        <div class="stat-chip">
+            <div class="stat-chip-icon">🍽</div>
+            <div class="stat-chip-val">{{ $resep->porsi }}</div>
+            <div class="stat-chip-lbl">Porsi</div>
         </div>
-
-        <!-- Action Buttons -->
-        @auth
-        <div class="action-buttons">
-            <form action="{{ route('suka.toggle', $resep->id) }}" method="POST">
-                @csrf
-                <button type="submit" class="btn {{ $resep->isSukaBy(auth()->id()) ? 'btn-danger' : 'btn-secondary' }}">
-                    {{ $resep->isSukaBy(auth()->id()) ? '❤️ Disukai' : '🤍 Suka' }}
-                </button>
-            </form>
-            <form action="{{ route('favorit.toggle', $resep->id) }}" method="POST">
-                @csrf
-                <button type="submit" class="btn {{ $resep->isFavoritBy(auth()->id()) ? 'btn-warning' : 'btn-secondary' }}">
-                    {{ $resep->isFavoritBy(auth()->id()) ? '⭐ Difavoritkan' : '☆ Favorit' }}
-                </button>
-            </form>
+        <div class="stat-chip">
+            <div class="stat-chip-icon">⭐</div>
+            <div class="stat-chip-val">{{ number_format($resep->averageRating(), 1) }}</div>
+            <div class="stat-chip-lbl">Rating</div>
         </div>
+        <div class="stat-chip">
+            <div class="stat-chip-icon">❤️</div>
+            <div class="stat-chip-val">{{ $resep->totalSuka() }}</div>
+            <div class="stat-chip-lbl">Suka</div>
+        </div>
+    </div>
+
+    {{-- Difficulty --}}
+    <div style="margin-bottom:16px;">
+        @php $d = $resep->tingkat_kesulitan; @endphp
+        <span class="diff-badge diff-{{ $d }}">
+            {{ $d === 'mudah' ? '✓ Mudah' : ($d === 'sedang' ? '~ Sedang' : '↑ Sulit') }}
+        </span>
+    </div>
+
+    {{-- Description --}}
+    <p class="detail-desc">{{ $resep->deskripsi }}</p>
+
+    {{-- Action Buttons --}}
+    @auth
+    <div class="action-row">
+        <form action="{{ route('suka.toggle', $resep->id) }}" method="POST">
+            @csrf
+            <button type="submit" class="action-btn {{ $resep->isSukaBy(auth()->id()) ? 'active-suka' : '' }}">
+                {{ $resep->isSukaBy(auth()->id()) ? '❤️ Disukai' : '🤍 Suka' }}
+            </button>
+        </form>
+        <form action="{{ route('favorit.toggle', $resep->id) }}" method="POST">
+            @csrf
+            <button type="submit" class="action-btn {{ $resep->isFavoritBy(auth()->id()) ? 'active-favorit' : '' }}">
+                {{ $resep->isFavoritBy(auth()->id()) ? '⭐ Favorit' : '☆ Favorit' }}
+            </button>
+        </form>
+    </div>
+    @else
+    <div class="login-notice">
+        <a href="{{ route('login') }}">Login</a> untuk menyukai, menyimpan favorit, memberi rating & berkomentar
+    </div>
+    @endauth
+
+    {{-- Video --}}
+    @if($resep->video_url)
+    <div class="section-block">
+        <div class="section-block-title">🎬 Video Tutorial</div>
+        @php
+            $videoId = '';
+            if (strpos($resep->video_url, 'youtube.com') !== false) {
+                parse_str(parse_url($resep->video_url, PHP_URL_QUERY), $params);
+                $videoId = $params['v'] ?? '';
+            } elseif (strpos($resep->video_url, 'youtu.be') !== false) {
+                $videoId = basename(parse_url($resep->video_url, PHP_URL_PATH));
+            }
+        @endphp
+        @if($videoId)
+            <div class="video-wrap">
+                <iframe src="https://www.youtube.com/embed/{{ $videoId }}"
+                        allowfullscreen loading="lazy"></iframe>
+            </div>
         @else
-        <p style="background: #f8f9fa; padding: 1rem; border-radius: 5px; margin-bottom: 2rem;">
-            <a href="{{ route('login') }}" style="color: #ffd93d; font-weight: bold;">Login</a> untuk menyukai, memfavoritkan, dan memberi rating resep ini.
-        </p>
+            <a href="{{ $resep->video_url }}" target="_blank" class="action-btn" style="display:inline-flex;">
+                ▶ Tonton Video
+            </a>
+        @endif
+    </div>
+    @endif
+
+    {{-- Bahan-bahan --}}
+    <div class="section-block">
+        <div class="section-block-title">🛒 Bahan-bahan</div>
+        <div class="bahan-card">
+            @php
+                $bahanLines = array_filter(array_map('trim', explode("\n", $resep->bahan)));
+            @endphp
+            @if(count($bahanLines))
+                <ul style="margin:0;padding-left:18px;list-style:disc;">
+                    @foreach($bahanLines as $bahan)
+                        @if(trim($bahan))
+                            <li class="bahan-text" style="padding:2px 0;">{{ trim($bahan, '-• ') }}</li>
+                        @endif
+                    @endforeach
+                </ul>
+            @else
+                <p class="bahan-text">{{ $resep->bahan }}</p>
+            @endif
+        </div>
+    </div>
+
+    {{-- Langkah-langkah --}}
+    <div class="section-block">
+        <div class="section-block-title">👨‍🍳 Langkah Memasak</div>
+        <div class="langkah-list">
+            @php
+                $langkahLines = array_values(array_filter(
+                    array_map('trim', explode("\n", $resep->langkah_langkah))
+                ));
+                $step = 1;
+            @endphp
+            @foreach($langkahLines as $langkah)
+                @if(trim($langkah))
+                    @php $clean = preg_replace('/^[\d]+[\.\)]\s*/', '', trim($langkah)); @endphp
+                    <div class="langkah-item">
+                        <div class="langkah-num">{{ $step }}</div>
+                        <p class="langkah-text">{{ $clean }}</p>
+                    </div>
+                    @php $step++; @endphp
+                @endif
+            @endforeach
+        </div>
+    </div>
+
+    {{-- Rating --}}
+    <div class="section-block">
+        <div class="section-block-title">⭐ Rating & Ulasan</div>
+        <div class="rating-card">
+            <div class="rating-summary">
+                <div class="rating-big">{{ number_format($resep->averageRating(), 1) }}</div>
+                <div>
+                    <div class="rating-stars-display">
+                        @for($i = 1; $i <= 5; $i++)
+                            {{ $i <= round($resep->averageRating()) ? '★' : '☆' }}
+                        @endfor
+                    </div>
+                    <div class="rating-count">{{ $resep->ratings->count() }} ulasan</div>
+                </div>
+            </div>
+
+            @auth
+                @php $userRating = $resep->ratings()->where('id_user', auth()->id())->first(); @endphp
+                <p style="text-align:center;font-size:13px;font-weight:600;color:#7A3D1A;margin-bottom:10px;">
+                    {{ $userRating ? 'Update rating kamu:' : 'Berikan rating kamu:' }}
+                </p>
+                <form action="{{ route('rating.store', $resep->id) }}" method="POST" id="ratingForm">
+                    @csrf
+                    <div class="star-input-row" id="starContainer">
+                        @for($i = 1; $i <= 5; $i++)
+                            <input type="radio" name="rating" id="s{{ $i }}" value="{{ $i }}"
+                                {{ $userRating && $userRating->rating == $i ? 'checked' : '' }}>
+                            <label class="star-label {{ ($userRating && $userRating->rating >= $i) ? 'filled' : '' }}"
+                                   for="s{{ $i }}" data-val="{{ $i }}">★</label>
+                        @endfor
+                    </div>
+                    <button type="submit" class="rating-submit">
+                        {{ $userRating ? 'Update Rating' : 'Beri Rating' }}
+                    </button>
+                </form>
+            @else
+                <p style="text-align:center;font-size:13px;color:#9A8070;">
+                    <a href="{{ route('login') }}" style="color:#E8621A;font-weight:700;">Login</a> untuk memberi rating
+                </p>
+            @endauth
+        </div>
+    </div>
+
+    {{-- Komentar --}}
+    <div class="section-block" style="padding-bottom:40px;">
+        <div class="section-block-title">💬 Komentar ({{ $resep->totalKomentar() }})</div>
+
+        @auth
+        <form action="{{ route('komentar.store', $resep->id) }}" method="POST">
+            @csrf
+            <div class="komentar-input-wrap">
+                <textarea name="isi_komentar" class="komentar-textarea"
+                          placeholder="Bagikan pengalamanmu memasak resep ini..." required></textarea>
+            </div>
+            <button type="submit" class="komentar-submit">Kirim Komentar</button>
+        </form>
+        @else
+        <div class="login-notice" style="margin-bottom:20px;">
+            <a href="{{ route('login') }}">Login</a> untuk ikut berkomentar
+        </div>
         @endauth
 
-        <!-- Video (if available) -->
-        @if($resep->video_url)
-        <div class="section">
-            <h2 class="section-title"><i class='bx bx-video'></i> Video Tutorial</h2>
-            <div class="video-container">
-                @php
-                    $videoId = '';
-                    if (strpos($resep->video_url, 'youtube.com') !== false) {
-                        parse_str(parse_url($resep->video_url, PHP_URL_QUERY), $params);
-                        $videoId = $params['v'] ?? '';
-                    } elseif (strpos($resep->video_url, 'youtu.be') !== false) {
-                        $videoId = basename(parse_url($resep->video_url, PHP_URL_PATH));
-                    }
-                @endphp
-                @if($videoId)
-                    <iframe src="https://www.youtube.com/embed/{{ $videoId }}" frameborder="0" allowfullscreen></iframe>
-                @else
-                    <a href="{{ $resep->video_url }}" target="_blank" class="btn btn-primary">Tonton Video</a>
-                @endif
+        {{-- List komentar --}}
+        @forelse($resep->komentars()->with('user')->latest()->get() as $k)
+        <div class="komentar-item">
+            <div class="komentar-header">
+                <div class="komentar-avatar">{{ strtoupper(substr($k->user->name, 0, 2)) }}</div>
+                <span class="komentar-name">{{ $k->user->name }}</span>
+                <span class="komentar-time">{{ $k->created_at->diffForHumans() }}</span>
             </div>
+            <p class="komentar-isi">{{ $k->isi_komentar }}</p>
         </div>
-        @endif
-
-        <!-- Bahan-bahan -->
-        <div class="section">
-            <h2 class="section-title"><i class='bx bx-bowl-hot'></i> Bahan-bahan</h2>
-            <div style="white-space: pre-line; line-height: 1.8;">{{ $resep->bahan }}</div>
+        @empty
+        <div class="empty-komentar">
+            <div class="empty-komentar-icon">💬</div>
+            <p>Belum ada komentar. Jadilah yang pertama!</p>
         </div>
-
-        <!-- Langkah-langkah -->
-        <div class="section">
-            <h2 class="section-title"><i class='bx bx-detail'></i> Langkah-langkah</h2>
-            <div style="white-space: pre-line; line-height: 1.8;">{{ $resep->langkah_langkah }}</div>
-        </div>
-
-        <!-- Rating Section -->
-        <div class="rating-section">
-            <h2 class="section-title"><i class='bx bxs-star' style='color:#ffd93d'></i> Rating & Ulasan</h2>
-            <div class="rating-display">
-                <div class="rating-number">{{ number_format($resep->averageRating(), 1) }}</div>
-                <div class="stars">
-                    @for($i = 1; $i <= 5; $i++)
-                        @if($i <= round($resep->averageRating()))
-                            <i class='bx bxs-star' style='color:#ffd93d'></i>
-                        @else
-                            <i class='bx bx-star' style='color:#ffd93d'></i>
-                        @endif
-                    @endfor
-                </div>
-                <p>{{ $resep->ratings->count() }} rating</p>
-            </div>
-
-            @auth
-                @php
-                    $userRating = $resep->ratings()->where('id_user', auth()->id())->first();
-                @endphp
-                <div class="rating-form">
-                    <p><strong>Berikan rating Anda:</strong></p>
-                    <form action="{{ route('rating.store', $resep->id) }}" method="POST" id="rating-form">
-                        @csrf
-                        <div class="rating-input" id="star-rating-container">
-                            @for($i = 1; $i <= 5; $i++)
-                                <input type="radio" name="rating" id="star{{ $i }}" value="{{ $i }}" {{ $userRating && $userRating->rating == $i ? 'checked' : '' }} required>
-                                <label for="star{{ $i }}" data-value="{{ $i }}" style="order: {{ 6 - $i }}">
-                                    <i class='bx bxs-star'></i>
-                                </label>
-                            @endfor
-                        </div>
-                        <button type="submit" class="btn btn-primary">
-                            {{ $userRating ? 'Update Rating' : 'Beri Rating' }}
-                        </button>
-                    </form>
-                </div>
-            @endauth
-        </div>
-
-        <!-- Komentar Section -->
-        <div class="komentar-section">
-            <h2 class="section-title"><i class='bx bx-message-dots'></i> Komentar ({{ $resep->totalKomentar() }})</h2>
-
-            @auth
-            <form action="{{ route('komentar.store', $resep->id) }}" method="POST" style="margin-bottom: 2rem;">
-                @csrf
-                <div class="form-group">
-                    <textarea name="isi_komentar" class="form-control" placeholder="Tulis komentar Anda..." required></textarea>
-                </div>
-                <button type="submit" class="btn btn-primary">Kirim Komentar</button>
-            </form>
-            @else
-            <p style="background: #f8f9fa; padding: 1rem; border-radius: 5px; margin-bottom: 2rem;">
-                <a href="{{ route('login') }}" style="color: #ffd93d; font-weight: bold;">Login</a> untuk berkomentar.
-            </p>
-            @endauth
-
-            <!-- List Komentar -->
-            @forelse($resep->komentars()->latest()->get() as $komentar)
-            <div class="komentar-item">
-                <div class="komentar-header">
-                    <span class="komentar-user">{{ $komentar->user->name }}</span>
-                    <span class="komentar-date">{{ $komentar->created_at->diffForHumans() }}</span>
-                </div>
-                <p style="margin: 0;">{{ $komentar->isi_komentar }}</p>
-            </div>
-            @empty
-            <p style="text-align: center; color: #999; padding: 2rem;">Belum ada komentar. Jadilah yang pertama!</p>
-            @endforelse
-        </div>
+        @endforelse
     </div>
-</div>
-@endsection
 
-@section('scripts')
+</div>{{-- /detail-card --}}
+
+@push('scripts')
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const container = document.getElementById('star-rating-container');
-    const stars = document.querySelectorAll('.rating-input label');
-    const inputs = document.querySelectorAll('.rating-input input');
-    let selectedValue = 0;
-    
-    // Buat array bintang terurut dari kiri ke kanan (1,2,3,4,5)
-    const starsArray = Array.from(stars).sort((a, b) => {
-        return parseInt(a.dataset.value) - parseInt(b.dataset.value);
-    });
-    
-    // Cek apakah sudah ada rating sebelumnya
-    inputs.forEach(input => {
-        if (input.checked) {
-            selectedValue = parseInt(input.value);
-            fillStars(selectedValue, true);
-        }
-    });
-    
-    // Event hover untuk setiap bintang
-    stars.forEach((star) => {
-        star.addEventListener('mouseenter', function() {
-            const value = parseInt(this.dataset.value);
-            fillStars(value, false);
-        });
-        
-        // Event click untuk select rating
-        star.addEventListener('click', function() {
-            const value = parseInt(this.dataset.value);
-            
-            // Kalau klik bintang yang sama dengan yang sudah dipilih = reset/cancel rating
-            if (selectedValue === value) {
-                selectedValue = 0;
-                clearStars();
-                // Uncheck semua input
-                inputs.forEach(inp => inp.checked = false);
-            } else {
-                selectedValue = value;
-                // Check input radio yang sesuai
-                const input = document.getElementById('star' + value);
-                if (input) {
-                    input.checked = true;
-                }
-                fillStars(value, true);
-            }
+document.addEventListener('DOMContentLoaded', function () {
+    const labels = document.querySelectorAll('.star-label');
+    const inputs = document.querySelectorAll('#ratingForm input[type=radio]');
+    if (!labels.length) return;
+
+    let selected = 0;
+
+    // Init dari checked
+    inputs.forEach(inp => { if (inp.checked) selected = parseInt(inp.value); });
+
+    labels.forEach((lbl, idx) => {
+        const val = parseInt(lbl.dataset.val);
+
+        lbl.addEventListener('mouseenter', () => paint(val, false));
+        lbl.addEventListener('mouseleave', () => paint(selected, false));
+        lbl.addEventListener('click', () => {
+            selected = (selected === val) ? 0 : val;
+            inputs.forEach(inp => { inp.checked = parseInt(inp.value) === selected; });
+            paint(selected, false);
         });
     });
-    
-    // Event ketika mouse keluar dari container
-    container.addEventListener('mouseleave', function() {
-        // Kalau belum ada yang dipilih, reset semua
-        if (selectedValue === 0) {
-            clearStars();
-        } else {
-            // Kalau sudah ada yang dipilih, tampilkan yang dipilih tanpa animasi
-            fillStars(selectedValue, true);
-        }
-    });
-    
-    // Fungsi untuk mengisi bintang dengan animasi dari kiri ke kanan
-    function fillStars(count, instant = false) {
-        starsArray.forEach((star, index) => {
-            const starValue = parseInt(star.dataset.value);
-            
-            if (starValue <= count) {
-                if (instant) {
-                    // Langsung tanpa animasi (untuk restore state)
-                    star.classList.add('filled');
-                } else {
-                    // Dengan delay animasi dari kiri ke kanan (index 0 = bintang 1)
-                    setTimeout(() => {
-                        star.classList.add('filled');
-                    }, index * 80); // Delay 80ms per bintang dari kiri
-                }
-            } else {
-                star.classList.remove('filled');
-            }
+
+    function paint(count, _) {
+        labels.forEach(lbl => {
+            lbl.classList.toggle('filled', parseInt(lbl.dataset.val) <= count);
         });
     }
-    
-    // Fungsi untuk clear semua bintang
-    function clearStars() {
-        stars.forEach(star => {
-            star.classList.remove('filled');
-        });
-    }
-    
-    // Validasi sebelum submit - pastikan ada rating yang dipilih
-    const form = document.getElementById('rating-form');
-    form.addEventListener('submit', function(e) {
-        if (selectedValue === 0) {
-            e.preventDefault();
-            alert('Silakan pilih rating terlebih dahulu!');
-        }
+
+    document.getElementById('ratingForm').addEventListener('submit', function (e) {
+        if (selected === 0) { e.preventDefault(); alert('Pilih rating dulu ya!'); }
     });
 });
 </script>
+@endpush
+
 @endsection

@@ -275,12 +275,27 @@
                 @auth
                     {{-- Admin menu --}}
                     @if(auth()->user()->role === 'admin')
-                        <li class="nav-hide-sm"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
+                        @if(Route::has('admin.dashboard'))
+                            <li class="nav-hide-sm"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
+                        @endif
+                        @if(Route::has('admin.resep.index'))
+                            <li class="nav-hide-sm"><a href="{{ route('admin.resep.index') }}">Kelola Resep</a></li>
+                        @endif
+                        @if(Route::has('admin.resep.pending'))
+                            <li class="nav-hide-sm"><a href="{{ route('admin.resep.pending') }}">Approval</a></li>
+                        @endif
+                        <li><span class="nav-admin-badge">ADMIN</span></li>
                     @else
                         {{-- User menu --}}
-                        <li class="nav-hide-sm"><a href="{{ route('user.resep.create') }}">Upload Resep</a></li>
-                        <li class="nav-hide-sm"><a href="{{ route('user.resep.my') }}">Resep Saya</a></li>
-                        <li class="nav-hide-sm"><a href="{{ route('favorit.index') }}">Favorit</a></li>
+                        @if(Route::has('user.resep.create'))
+                            <li class="nav-hide-sm"><a href="{{ route('user.resep.create') }}">Upload Resep</a></li>
+                        @endif
+                        @if(Route::has('user.resep.my'))
+                            <li class="nav-hide-sm"><a href="{{ route('user.resep.my') }}">Resep Saya</a></li>
+                        @endif
+                        @if(Route::has('favorit.index'))
+                            <li class="nav-hide-sm"><a href="{{ route('favorit.index') }}">Favorit</a></li>
+                        @endif
                     @endif
 
                     {{-- User info + logout --}}
