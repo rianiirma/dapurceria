@@ -1,294 +1,444 @@
 @extends('layouts.app')
+@section('title', 'Resep Saya - DapurCeria')
 
-@section('title', 'Resep Saya - Dapur Ceria')
-
-@section('styles')
+@push('styles')
 <style>
-    .page-header {
-        margin-bottom: 2rem;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-    .resep-table {
-        background: white;
-        border-radius: 8px;
-        overflow: hidden;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    }
-    .table {
-        width: 100%;
-        border-collapse: collapse;
-    }
-    .table th,
-    .table td {
-        padding: 1rem;
-        text-align: left;
-        border-bottom: 1px solid #f0f0f0;
-    }
-    .table th {
-        background: #f8f9fa;
-        font-weight: 600;
-        color: #333;
-    }
-    .table tr:hover {
-        background: #fafafa;
-    }
-    .resep-thumb {
-        width: 80px;
-        height: 60px;
-        object-fit: cover;
-        border-radius: 5px;
-    }
-    .actions {
-        display: flex;
-        gap: 0.5rem;
-        align-items: center;
-    }
-    .empty-state {
-        text-align: center;
-        padding: 3rem;
-        color: #999;
+    body { background: #FDF6EC; }
+
+    .my-page {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 32px 20px 60px;
     }
 
-    /* STATUS BADGES */
-    .status-badge {
+    /* ── HEADER ── */
+    .my-header {
+        background: #3D2010;
+        border-radius: 20px;
+        padding: 24px 24px 20px;
+        margin-bottom: 20px;
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+    }
+
+    .my-header::before {
+        content: '';
+        position: absolute;
+        width: 160px; height: 160px;
+        border-radius: 50%;
+        background: rgba(232,98,26,.2);
+        top: -50px; right: -30px;
+    }
+
+    .my-header h1 {
+        font-family: 'Playfair Display', serif;
+        font-size: 20px;
+        color: #fff;
+        margin-bottom: 4px;
+        position: relative;
+        z-index: 1;
+    }
+
+    .my-header p {
+        font-size: 12px;
+        color: rgba(255,255,255,.5);
+        position: relative;
+        z-index: 1;
+    }
+
+    .btn-upload-new {
+        padding: 10px 20px;
+        background: #E8621A;
+        color: #fff;
+        border: none;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 700;
+        font-family: inherit;
+        cursor: pointer;
+        text-decoration: none;
+        white-space: nowrap;
+        position: relative;
+        z-index: 1;
+        transition: background .2s;
+        flex-shrink: 0;
+    }
+
+    .btn-upload-new:hover { background: #C84E0E; }
+
+    /* ── ALERT BOXES ── */
+    .alert-box {
+        border-radius: 14px;
+        padding: 14px 16px;
+        margin-bottom: 14px;
+        display: flex;
+        gap: 12px;
+        align-items: flex-start;
+        font-size: 13px;
+        line-height: 1.6;
+    }
+
+    .alert-box-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+
+    .alert-rejected {
+        background: #FDDEDE;
+        border: 1px solid #F5B7B1;
+        border-left: 4px solid #C62828;
+        color: #8B1A1A;
+    }
+
+    .alert-pending {
+        background: #FEF3C0;
+        border: 1px solid #FCD34D;
+        border-left: 4px solid #B08010;
+        color: #856404;
+    }
+
+    .alert-rejected-list { margin-top: 8px; }
+
+    .alert-rejected-item {
+        display: flex;
+        gap: 8px;
+        padding: 6px 0;
+        border-bottom: 1px solid rgba(198,40,40,.15);
+        font-size: 12px;
+    }
+
+    .alert-rejected-item:last-child { border-bottom: none; }
+
+    .arl-name { font-weight: 700; min-width: 120px; color: #8B1A1A; }
+    .arl-reason { color: #C62828; }
+
+    /* flash success */
+    .flash-success {
+        background: #D4F0E0;
+        border: 1px solid #A9DFBF;
+        border-radius: 14px;
+        padding: 12px 16px;
+        font-size: 13px;
+        font-weight: 600;
+        color: #1A6B3A;
+        margin-bottom: 16px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    /* ── RESEP CARDS ── */
+    .resep-list { display: flex; flex-direction: column; gap: 14px; }
+
+    .resep-item {
+        background: #FFFBF5;
+        border: 1px solid #EDE3D8;
+        border-radius: 18px;
+        overflow: hidden;
+        display: flex;
+        gap: 0;
+        transition: box-shadow .2s;
+    }
+
+    .resep-item:hover { box-shadow: 0 4px 20px rgba(61,32,16,.08); }
+
+    .resep-item.status-pending { border-left: 4px solid #B08010; }
+    .resep-item.status-rejected { border-left: 4px solid #C62828; }
+    .resep-item.status-approved { border-left: 4px solid #2E7D32; }
+
+    /* thumbnail */
+    .ri-thumb {
+        width: 110px;
+        flex-shrink: 0;
+        position: relative;
+        overflow: hidden;
+        background: #F0E8DC;
+    }
+
+    .ri-thumb img {
+        width: 100%; height: 100%;
+        object-fit: cover;
+    }
+
+    .ri-thumb-fallback {
+        width: 100%; height: 100%;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 32px;
+        min-height: 90px;
+    }
+
+    /* body */
+    .ri-body {
+        flex: 1;
+        padding: 14px 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    .ri-top {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 10px;
+    }
+
+    .ri-title {
+        font-family: 'Playfair Display', serif;
+        font-size: 15px;
+        color: #3D2010;
+        line-height: 1.35;
+    }
+
+    .status-pill {
         display: inline-flex;
         align-items: center;
         gap: 4px;
-        padding: 4px 10px;
-        border-radius: 99px;
-        font-size: 11px;
-        font-weight: 600;
-        white-space: nowrap;
-    }
-    .status-approved {
-        background: #D1FAE5;
-        color: #065F46;
-        border: 1px solid #6EE7B7;
-    }
-    .status-pending {
-        background: #FEF3C7;
-        color: #92400E;
-        border: 1px solid #FCD34D;
-    }
-    .status-rejected {
-        background: #FEE2E2;
-        color: #991B1B;
-        border: 1px solid #FCA5A5;
-    }
-
-    /* DIFFICULTY BADGES */
-    .badge {
-        display: inline-block;
         padding: 3px 10px;
-        border-radius: 12px;
-        font-size: 0.75rem;
-        font-weight: 600;
-    }
-    .badge-success { background: #d4edda; color: #155724; }
-    .badge-warning { background: #fff3cd; color: #856404; }
-    .badge-danger  { background: #f8d7da; color: #721c24; }
-
-    /* ALERT TOLAK */
-    .alert-tolak {
-        background: #FEF2F2;
-        border: 1px solid #FECACA;
-        border-left: 4px solid #EF4444;
         border-radius: 10px;
-        padding: 14px 18px;
-        margin-bottom: 1.5rem;
-    }
-    .alert-tolak-title {
-        font-size: 14px;
+        font-size: 10px;
         font-weight: 700;
-        color: #991B1B;
-        margin-bottom: 6px;
+        white-space: nowrap;
+        flex-shrink: 0;
+    }
+
+    .sp-approved { background: #D4F0E0; color: #1A6B3A; }
+    .sp-pending  { background: #FEF3C0; color: #856404; }
+    .sp-rejected { background: #FDDEDE; color: #8B1A1A; }
+
+    .ri-meta {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 11px;
+        color: #9A8070;
+        flex-wrap: wrap;
+    }
+
+    .ri-meta-chip { display: flex; align-items: center; gap: 4px; }
+
+    .diff-mini {
+        font-size: 10px;
+        font-weight: 700;
+        padding: 2px 8px;
+        border-radius: 8px;
+    }
+
+    .dm-mudah  { background: #D4F0E0; color: #1A6B3A; }
+    .dm-sedang { background: #FEF3C0; color: #856404; }
+    .dm-sulit  { background: #FDDEDE; color: #8B1A1A; }
+
+    /* alasan tolak inline */
+    .ri-reject-reason {
+        background: #FEF2F2;
+        border-left: 3px solid #C62828;
+        border-radius: 0 8px 8px 0;
+        padding: 6px 10px;
+        font-size: 11px;
+        color: #8B1A1A;
+        line-height: 1.5;
+    }
+
+    /* actions */
+    .ri-actions {
         display: flex;
         align-items: center;
         gap: 6px;
-    }
-    .alert-tolak-item {
-        font-size: 13px;
-        color: #7F1D1D;
-        padding: 4px 0;
-        border-bottom: 1px solid #FEE2E2;
-        display: flex;
-        align-items: flex-start;
-        gap: 8px;
-    }
-    .alert-tolak-item:last-child {
-        border-bottom: none;
-    }
-    .alert-tolak-resep-name {
-        font-weight: 600;
-        min-width: 140px;
-    }
-    .alert-tolak-alasan {
-        color: #991B1B;
+        margin-top: 4px;
     }
 
-    /* ALASAN TOLAK di dalam tabel */
-    .alasan-cell {
-        font-size: 12px;
-        color: #991B1B;
-        background: #FEF2F2;
-        border-radius: 6px;
-        padding: 5px 8px;
-        margin-top: 4px;
-        border-left: 3px solid #EF4444;
-        max-width: 200px;
+    .ri-btn {
+        padding: 6px 14px;
+        border-radius: 10px;
+        font-size: 11px;
+        font-weight: 700;
+        font-family: inherit;
+        cursor: pointer;
+        border: none;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        transition: all .2s;
+    }
+
+    .ri-btn-view   { background: #F5EDE3; color: #7A3D1A; }
+    .ri-btn-view:hover { background: #E8D5C0; }
+
+    .ri-btn-edit   { background: #FEF3C0; color: #856404; }
+    .ri-btn-edit:hover { background: #FDE68A; }
+
+    .ri-btn-delete { background: #FDDEDE; color: #8B1A1A; }
+    .ri-btn-delete:hover { background: #FCA5A5; }
+
+    /* ── EMPTY STATE ── */
+    .empty-state {
+        text-align: center;
+        padding: 60px 24px;
+        background: #FFFBF5;
+        border-radius: 20px;
+        border: 1px solid #EDE3D8;
+    }
+
+    .empty-icon { font-size: 52px; margin-bottom: 16px; }
+
+    .empty-title {
+        font-family: 'Playfair Display', serif;
+        font-size: 20px;
+        color: #3D2010;
+        margin-bottom: 8px;
+    }
+
+    .empty-sub { font-size: 13px; color: #9A8070; margin-bottom: 20px; }
+
+    .btn-empty {
+        padding: 12px 28px;
+        background: #E8621A;
+        color: #fff;
+        border: none;
+        border-radius: 24px;
+        font-size: 14px;
+        font-weight: 700;
+        font-family: inherit;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-block;
+        transition: background .2s;
+    }
+
+    .btn-empty:hover { background: #C84E0E; }
+
+    @media (max-width: 480px) {
+        .ri-thumb { width: 80px; }
+        .ri-title { font-size: 13px; }
+        .my-header { flex-direction: column; align-items: flex-start; }
     }
 </style>
-@endsection
+@endpush
 
 @section('content')
+<div class="my-page">
 
-{{-- NOTIFIKASI RESEP DITOLAK --}}
-@php
-    $resepDitolak = $reseps->where('status', 'rejected');
-@endphp
-
-@if($resepDitolak->count() > 0)
-    <div class="alert-tolak">
-        <div class="alert-tolak-title">
-            <i class='bx bx-x-circle' style="font-size:16px;"></i>
-            {{ $resepDitolak->count() }} resep kamu ditolak — silakan perbaiki dan upload ulang
+    {{-- HEADER --}}
+    <div class="my-header">
+        <div>
+            <h1>📋 Resep Saya</h1>
+            <p>{{ $reseps->count() }} resep · kelola semua resepmu di sini</p>
         </div>
-        @foreach($resepDitolak as $r)
-            <div class="alert-tolak-item">
-                <span class="alert-tolak-resep-name">{{ $r->judul }}:</span>
-                <span class="alert-tolak-alasan">
-                    {{ $r->alasan_tolak ?? 'Tidak ada alasan yang diberikan.' }}
-                </span>
-            </div>
-        @endforeach
+        <a href="{{ route('user.resep.create') }}" class="btn-upload-new">+ Upload Baru</a>
     </div>
-@endif
 
-{{-- NOTIFIKASI RESEP PENDING --}}
-@php
-    $resepPending = $reseps->where('status', 'pending');
-@endphp
-@if($resepPending->count() > 0)
-    <div style="background:#FFFBEB; border:1px solid #FDE68A; border-left:4px solid #F59E0B; border-radius:10px; padding:12px 18px; margin-bottom:1.5rem; font-size:13px; color:#92400E; display:flex; align-items:center; gap:10px;">
-        <i class='bx bx-time-five' style="font-size:18px; color:#F59E0B; flex-shrink:0;"></i>
-        <span>
-            <strong>{{ $resepPending->count() }} resep</strong> sedang menunggu persetujuan admin.
-            Kamu akan bisa melihatnya di beranda setelah disetujui.
-        </span>
-    </div>
-@endif
+    {{-- FLASH SUCCESS --}}
+    @if(session('success'))
+        <div class="flash-success">✓ {{ session('success') }}</div>
+    @endif
 
-<div class="page-header">
-    <h2><i class='bx bx-book-bookmark'></i> Resep Saya</h2>
-    <a href="{{ route('user.resep.create') }}" class="btn btn-primary">+ Upload Resep Baru</a>
-</div>
-
-@if(session('success'))
-    <div style="background:#D1FAE5; border:1px solid #6EE7B7; color:#065F46; padding:12px 16px; border-radius:10px; font-size:14px; font-weight:600; margin-bottom:1.25rem; display:flex; align-items:center; gap:8px;">
-        <i class='bx bx-check-circle' style="font-size:18px;"></i>
-        {{ session('success') }}
-    </div>
-@endif
-
-@if($reseps->count() > 0)
-    <div class="resep-table">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Gambar</th>
-                    <th>Judul</th>
-                    <th>Kategori</th>
-                    <th>Status</th>
-                    <th>Rating</th>
-                    <th>Suka</th>
-                    <th>Komentar</th>
-                    <th>Tingkat</th>
-                    <th>Aksi</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($reseps as $resep)
-                <tr style="{{ $resep->status === 'rejected' ? 'background:#FFF5F5;' : ($resep->status === 'pending' ? 'background:#FFFBEB;' : '') }}">
-                    <td>
-                        @if($resep->gambar)
-                            <img src="{{ asset('storage/' . $resep->gambar) }}" alt="{{ $resep->judul }}" class="resep-thumb">
-                        @else
-                            <div class="resep-thumb" style="background:#f0f0f0; display:flex; align-items:center; justify-content:center; font-size:1.5rem;">🍲</div>
-                        @endif
-                    </td>
-                    <td>
-                        <strong>{{ $resep->judul }}</strong>
-                        <div style="font-size:0.8rem; color:#999;">{{ $resep->created_at->format('d M Y') }}</div>
-                        {{-- Tampilkan alasan tolak langsung di bawah judul --}}
-                        @if($resep->status === 'rejected' && $resep->alasan_tolak)
-                            <div class="alasan-cell">
-                                <i class='bx bx-error-circle'></i>
-                                {{ Str::limit($resep->alasan_tolak, 80) }}
-                            </div>
-                        @endif
-                    </td>
-                    <td>{{ $resep->kategori->nama_kategori }}</td>
-                    <td>
-                        @if($resep->status === 'approved')
-                            <span class="status-badge status-approved">
-                                <i class='bx bx-check'></i> Disetujui
-                            </span>
-                        @elseif($resep->status === 'pending')
-                            <span class="status-badge status-pending">
-                                <i class='bx bx-time-five'></i> Menunggu
-                            </span>
-                        @else
-                            <span class="status-badge status-rejected">
-                                <i class='bx bx-x'></i> Ditolak
-                            </span>
-                        @endif
-                    </td>
-                    <td><i class='bx bxs-star' style='color:#ffd93d'></i> {{ number_format($resep->averageRating(), 1) }}</td>
-                    <td><i class='bx bxs-heart' style="color:red"></i> {{ $resep->totalSuka() }}</td>
-                    <td><i class='bx bx-message-dots'></i> {{ $resep->totalKomentar() }}</td>
-                    <td>
-                        @if($resep->tingkat_kesulitan == 'mudah')
-                            <span class="badge badge-success">Mudah</span>
-                        @elseif($resep->tingkat_kesulitan == 'sedang')
-                            <span class="badge badge-warning">Sedang</span>
-                        @else
-                            <span class="badge badge-danger">Sulit</span>
-                        @endif
-                    </td>
-                    <td>
-                        <div class="actions">
-                            {{-- Tombol lihat hanya untuk approved, atau milik sendiri --}}
-                            @if($resep->status === 'approved')
-                                <a href="{{ route('resep.show', $resep->id) }}" class="btn btn-sm btn-secondary" title="Lihat">
-                                    <i class='bx bx-show-alt'></i>
-                                </a>
-                            @endif
-                            <a href="{{ route('user.resep.edit', $resep->id) }}" class="btn btn-sm btn-warning" title="Edit">
-                                <i class='bx bx-edit'></i>
-                            </a>
-                            <form action="{{ route('user.resep.destroy', $resep->id) }}" method="POST"
-                                onsubmit="return confirm('Yakin ingin menghapus resep ini?')">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-sm btn-danger" title="Hapus">
-                                    <i class='bx bx-trash-alt'></i>
-                                </button>
-                            </form>
+    {{-- ALERT REJECTED --}}
+    @php $ditolak = $reseps->where('status', 'rejected'); @endphp
+    @if($ditolak->count())
+        <div class="alert-box alert-rejected">
+            <span class="alert-box-icon">✗</span>
+            <div>
+                <strong>{{ $ditolak->count() }} resep ditolak</strong> — silakan perbaiki dan upload ulang
+                <div class="alert-rejected-list">
+                    @foreach($ditolak as $r)
+                        <div class="alert-rejected-item">
+                            <span class="arl-name">{{ Str::limit($r->judul, 25) }}:</span>
+                            <span class="arl-reason">{{ $r->alasan_tolak ?? 'Tidak ada alasan.' }}</span>
                         </div>
-                    </td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
-    </div>
-@else
-    <div class="empty-state">
-        <h3>Kamu belum punya resep</h3>
-        <p>Mulai bagikan resep favorit kamu sekarang!</p>
-        <a href="{{ route('user.resep.create') }}" class="btn btn-primary">Upload Resep</a>
-    </div>
-@endif
+                    @endforeach
+                </div>
+            </div>
+        </div>
+    @endif
 
+    {{-- ALERT PENDING --}}
+    @php $pending = $reseps->where('status', 'pending'); @endphp
+    @if($pending->count())
+        <div class="alert-box alert-pending">
+            <span class="alert-box-icon">⏳</span>
+            <div>
+                <strong>{{ $pending->count() }} resep</strong> sedang menunggu persetujuan admin.
+                Akan tampil di beranda setelah disetujui.
+            </div>
+        </div>
+    @endif
+
+    {{-- RESEP LIST --}}
+    @if($reseps->count())
+        <div class="resep-list">
+            @foreach($reseps as $resep)
+            <div class="resep-item status-{{ $resep->status }}">
+
+                {{-- Thumbnail --}}
+                <div class="ri-thumb">
+                    @if($resep->gambar)
+                        <img src="{{ asset('storage/' . $resep->gambar) }}" alt="{{ $resep->judul }}" loading="lazy">
+                    @else
+                        @php
+                            $icons = ['🍛','🥗','🍜','🍮','🍳','🥘'];
+                            echo '<div class="ri-thumb-fallback">' . $icons[$loop->index % count($icons)] . '</div>';
+                        @endphp
+                    @endif
+                </div>
+
+                {{-- Body --}}
+                <div class="ri-body">
+                    <div class="ri-top">
+                        <div class="ri-title">{{ $resep->judul }}</div>
+                        <span class="status-pill sp-{{ $resep->status }}">
+                            @if($resep->status === 'approved') ✓ Disetujui
+                            @elseif($resep->status === 'pending') ⏳ Menunggu
+                            @else ✗ Ditolak
+                            @endif
+                        </span>
+                    </div>
+
+                    {{-- Meta --}}
+                    <div class="ri-meta">
+                        <span class="ri-meta-chip">📁 {{ $resep->kategori->nama_kategori }}</span>
+                        <span class="ri-meta-chip">⏱ {{ $resep->waktu_memasak }}mnt</span>
+                        <span class="ri-meta-chip">⭐ {{ number_format($resep->averageRating(), 1) }}</span>
+                        <span class="ri-meta-chip">❤️ {{ $resep->totalSuka() }}</span>
+                        <span class="diff-mini dm-{{ $resep->tingkat_kesulitan }}">
+                            {{ ucfirst($resep->tingkat_kesulitan) }}
+                        </span>
+                    </div>
+
+                    {{-- Alasan tolak --}}
+                    @if($resep->status === 'rejected' && $resep->alasan_tolak)
+                        <div class="ri-reject-reason">
+                            ✗ {{ $resep->alasan_tolak }}
+                        </div>
+                    @endif
+
+                    {{-- Actions --}}
+                    <div class="ri-actions">
+                        @if($resep->status === 'approved')
+                            <a href="{{ route('resep.show', $resep->id) }}" class="ri-btn ri-btn-view">👁 Lihat</a>
+                        @endif
+                        <a href="{{ route('user.resep.edit', $resep->id) }}" class="ri-btn ri-btn-edit">✏️ Edit</a>
+                        <form action="{{ route('user.resep.destroy', $resep->id) }}" method="POST"
+                              onsubmit="return confirm('Yakin hapus resep \'{{ addslashes($resep->judul) }}\'?')">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="ri-btn ri-btn-delete">🗑 Hapus</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            @endforeach
+        </div>
+
+    @else
+        <div class="empty-state">
+            <div class="empty-icon">🍳</div>
+            <div class="empty-title">Belum ada resep</div>
+            <p class="empty-sub">Mulai bagikan resep andalanmu ke komunitas DapurCeria!</p>
+            <a href="{{ route('user.resep.create') }}" class="btn-empty">+ Upload Resep Pertamamu</a>
+        </div>
+    @endif
+
+</div>
 @endsection
