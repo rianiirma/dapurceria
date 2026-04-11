@@ -25,6 +25,9 @@
             min-height: 100vh;
         }
 
+        /* =============================================
+           SIDEBAR
+        ============================================= */
         .sidebar {
             width: 250px;
             background: linear-gradient(180deg, #78350F 0%, #92400E 100%);
@@ -33,6 +36,7 @@
             height: 100vh;
             overflow-y: auto;
             z-index: 100;
+            transition: transform 0.3s ease;
         }
 
         .sidebar-brand {
@@ -112,6 +116,7 @@
             margin: 0.75rem 1.5rem;
         }
 
+        /* Footer sidebar — bisa diklik ke profil */
         .sidebar-footer {
             padding: 1rem 1.5rem;
             border-top: 1px solid rgba(245, 158, 11, 0.2);
@@ -124,30 +129,74 @@
         .sidebar-footer a {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
             color: #FEF3C7;
             text-decoration: none;
-            font-size: 0.85rem;
-            transition: color 0.2s;
+            font-size: 0.875rem;
+            transition: all 0.2s;
+            padding: 6px 8px;
+            border-radius: 8px;
         }
 
         .sidebar-footer a:hover {
+            background: rgba(245, 158, 11, 0.15);
             color: #FBBF24;
         }
 
-        .sidebar::-webkit-scrollbar {
-            width: 4px;
+        .sidebar-footer-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #F59E0B, #FBBF24);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 700;
+            color: white;
+            flex-shrink: 0;
+            overflow: hidden;
+            border: 2px solid rgba(255,255,255,0.25);
         }
 
-        .sidebar::-webkit-scrollbar-track {
-            background: transparent;
+        .sidebar-footer-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
-        .sidebar::-webkit-scrollbar-thumb {
-            background: #D97706;
-            border-radius: 99px;
+        .sidebar-footer-info {
+            flex: 1;
+            min-width: 0;
         }
 
+        .sidebar-footer-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: white;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .sidebar-footer-role {
+            font-size: 11px;
+            color: rgba(255,255,255,0.45);
+        }
+
+        .sidebar-footer-arrow {
+            font-size: 16px;
+            color: rgba(255,255,255,0.35);
+            flex-shrink: 0;
+        }
+
+        .sidebar::-webkit-scrollbar { width: 4px; }
+        .sidebar::-webkit-scrollbar-track { background: transparent; }
+        .sidebar::-webkit-scrollbar-thumb { background: #D97706; border-radius: 99px; }
+
+        /* =============================================
+           MAIN CONTENT
+        ============================================= */
         .main-content {
             margin-left: 250px;
             flex: 1;
@@ -155,6 +204,9 @@
             padding-bottom: 4rem;
         }
 
+        /* =============================================
+           TOPBAR
+        ============================================= */
         .topbar {
             background: linear-gradient(135deg, #F59E0B, #FBBF24);
             padding: 1rem 1.5rem;
@@ -165,16 +217,57 @@
             align-items: center;
         }
 
+        .topbar-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
         .topbar h1 {
             font-size: 1.25rem;
             color: white;
             font-weight: 600;
         }
 
+        /* Tombol hamburger mobile */
+        .hamburger-btn {
+            display: none;
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            font-size: 1.4rem;
+            border-radius: 6px;
+            width: 36px;
+            height: 36px;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .hamburger-btn:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
         .user-info {
             display: flex;
             align-items: center;
             gap: 0.75rem;
+        }
+
+        /* Avatar di topbar — bisa diklik ke profil */
+        .topbar-user-link {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            padding: 4px 8px;
+            border-radius: 8px;
+            transition: background 0.2s;
+        }
+
+        .topbar-user-link:hover {
+            background: rgba(255,255,255,0.15);
         }
 
         .user-avatar {
@@ -190,6 +283,7 @@
             font-size: 13px;
             border: 2px solid rgba(255, 255, 255, 0.5);
             overflow: hidden;
+            flex-shrink: 0;
         }
 
         .user-avatar img {
@@ -204,6 +298,9 @@
             font-weight: 500;
         }
 
+        /* =============================================
+           CARD
+        ============================================= */
         .card {
             background: white;
             border-radius: 10px;
@@ -236,6 +333,9 @@
             font-size: 1.1rem;
         }
 
+        /* =============================================
+           STATS
+        ============================================= */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -280,6 +380,9 @@
             margin-top: 0.4rem;
         }
 
+        /* =============================================
+           TABLE
+        ============================================= */
         .table {
             width: 100%;
             border-collapse: collapse;
@@ -305,14 +408,12 @@
             vertical-align: middle;
         }
 
-        .table tr:last-child td {
-            border-bottom: none;
-        }
+        .table tr:last-child td { border-bottom: none; }
+        .table tr:hover td { background: #FFFBEB; }
 
-        .table tr:hover td {
-            background: #FFFBEB;
-        }
-
+        /* =============================================
+           BUTTONS
+        ============================================= */
         .btn {
             padding: 0.5rem 1rem;
             border-radius: 8px;
@@ -339,6 +440,7 @@
             transform: translateY(-1px);
             box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4);
             color: white;
+            text-decoration: none;
         }
 
         .btn-success {
@@ -350,6 +452,7 @@
             background: linear-gradient(135deg, #059669, #10B981);
             transform: translateY(-1px);
             color: white;
+            text-decoration: none;
         }
 
         .btn-danger {
@@ -360,6 +463,7 @@
         .btn-danger:hover {
             background: linear-gradient(135deg, #DC2626, #EF4444);
             color: white;
+            text-decoration: none;
         }
 
         .btn-warning {
@@ -370,6 +474,7 @@
         .btn-warning:hover {
             background: linear-gradient(135deg, #F59E0B, #FBBF24);
             color: #78350F;
+            text-decoration: none;
         }
 
         .btn-secondary {
@@ -380,6 +485,7 @@
         .btn-secondary:hover {
             background: #78350F;
             color: white;
+            text-decoration: none;
         }
 
         .btn-sm {
@@ -388,9 +494,10 @@
             border-radius: 6px;
         }
 
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
+        /* =============================================
+           FORM
+        ============================================= */
+        .form-group { margin-bottom: 1.5rem; }
 
         .form-group label {
             display: block;
@@ -423,6 +530,9 @@
             min-height: 100px;
         }
 
+        /* =============================================
+           ALERT
+        ============================================= */
         .alert {
             padding: 0.875rem 1.25rem;
             margin-bottom: 1.25rem;
@@ -452,6 +562,9 @@
             border-color: #F59E0B;
         }
 
+        /* =============================================
+           BADGE
+        ============================================= */
         .badge {
             display: inline-block;
             padding: 0.2rem 0.65rem;
@@ -484,6 +597,9 @@
             border: 1px solid #FBBF24;
         }
 
+        /* =============================================
+           PAGINATION
+        ============================================= */
         .pagination {
             display: flex;
             gap: 4px;
@@ -508,13 +624,75 @@
             border-color: #F59E0B;
             color: white;
         }
+
+        /* =============================================
+           OVERLAY MOBILE
+        ============================================= */
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 99;
+        }
+
+        /* =============================================
+           RESPONSIVE
+        ============================================= */
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.sidebar-open {
+                transform: translateX(0);
+            }
+
+            .sidebar-overlay.overlay-open {
+                display: block;
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .hamburger-btn {
+                display: flex;
+            }
+
+            .user-name {
+                display: none;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .topbar {
+                padding: 0.75rem 1rem;
+                margin: -2rem -2rem 1.5rem -2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .main-content {
+                padding: 1rem;
+                padding-bottom: 3rem;
+            }
+        }
     </style>
     @yield('styles')
 </head>
 
 <body>
     <div class="admin-wrapper">
-        <aside class="sidebar">
+
+        {{-- ===== SIDEBAR ===== --}}
+        <aside class="sidebar" id="admin-sidebar">
             <div class="sidebar-brand">
                 <span style="font-size:1.5rem;">🍳</span>
                 <h2>Dapur Ceria</h2>
@@ -527,7 +705,7 @@
                         class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
                         <i class='bx bx-home-alt'></i> Dashboard
                         @php $pendingCount = \App\Models\Resep::where('status','pending')->count(); @endphp
-                        @if ($pendingCount > 0)
+                        @if($pendingCount > 0)
                             <span class="badge-count">{{ $pendingCount }}</span>
                         @endif
                     </a>
@@ -536,7 +714,7 @@
                     <a href="{{ route('admin.resep.index') }}"
                         class="{{ request()->routeIs('admin.resep.*') ? 'active' : '' }}">
                         <i class='bx bx-food-menu'></i> Resep
-                        @if ($pendingCount > 0)
+                        @if($pendingCount > 0)
                             <span class="badge-count">{{ $pendingCount }}</span>
                         @endif
                     </a>
@@ -552,7 +730,7 @@
                         class="{{ request()->routeIs('admin.komentar.*') ? 'active' : '' }}">
                         <i class='bx bx-message-square-dots'></i> Komentar
                         @php $unreadCount = \App\Models\Komentar::where('is_read', false)->count(); @endphp
-                        @if ($unreadCount > 0)
+                        @if($unreadCount > 0)
                             <span class="badge-count">{{ $unreadCount }}</span>
                         @endif
                     </a>
@@ -582,32 +760,44 @@
                 </li>
             </ul>
 
+            {{-- Footer sidebar — klik ke profil --}}
             <div class="sidebar-footer">
                 <a href="{{ route('profile.show') }}">
-                    {{-- Foto profil kalau ada, inisial kalau tidak --}}
-                    @if (auth()->user()->foto_profil)
-                        <img src="{{ asset('storage/' . auth()->user()->foto_profil) }}"
-                            style="width:28px; height:28px; border-radius:50%; object-fit:cover; border:2px solid #FBBF24;">
-                    @else
-                        <div
-                            style="width:28px; height:28px; border-radius:50%; background:linear-gradient(135deg,#F59E0B,#FBBF24); display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; color:white; flex-shrink:0;">
-                            {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
-                        </div>
-                    @endif
-                    <span
-                        style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">{{ auth()->user()->name }}</span>
+                    <div class="sidebar-footer-avatar">
+                        @if(auth()->user()->foto_profil)
+                            <img src="{{ asset('storage/' . auth()->user()->foto_profil) }}" alt="foto">
+                        @else
+                            {{ strtoupper(substr(auth()->user()->name, 0, 2)) }}
+                        @endif
+                    </div>
+                    <div class="sidebar-footer-info">
+                        <div class="sidebar-footer-name">{{ auth()->user()->name }}</div>
+                        <div class="sidebar-footer-role">Administrator</div>
+                    </div>
+                    <div class="sidebar-footer-arrow">›</div>
                 </a>
             </div>
         </aside>
 
+        {{-- Overlay mobile --}}
+        <div class="sidebar-overlay" id="sidebar-overlay" onclick="tutupSidebar()"></div>
+
+        {{-- ===== MAIN CONTENT ===== --}}
         <main class="main-content">
             <div class="topbar">
-                <h1>@yield('page-title', 'Dashboard')</h1>
+                <div class="topbar-left">
+                    {{-- Hamburger (mobile only) --}}
+                    <button class="hamburger-btn" onclick="toggleSidebar()" id="hamburger-btn">
+                        <i class='bx bx-menu'></i>
+                    </button>
+                    <h1>@yield('page-title', 'Dashboard')</h1>
+                </div>
+
                 <div class="user-info">
-                    <a href="{{ route('profile.show') }}"
-                        style="text-decoration:none; display:flex; align-items:center; gap:8px;">
+                    {{-- Avatar topbar — klik ke profil --}}
+                    <a href="{{ route('profile.show') }}" class="topbar-user-link">
                         <div class="user-avatar">
-                            @if (auth()->user()->foto_profil)
+                            @if(auth()->user()->foto_profil)
                                 <img src="{{ asset('storage/' . auth()->user()->foto_profil) }}" alt="foto">
                             @else
                                 {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
@@ -615,27 +805,29 @@
                         </div>
                         <span class="user-name">{{ auth()->user()->name }}</span>
                     </a>
+
                     <form action="{{ route('logout') }}" method="POST">
                         @csrf
-                        <button type="submit" class="btn btn-outline"
-                            style="border:2px solid white; color:white; background:transparent; padding:0.3rem 0.75rem; font-size:0.8rem;">
+                        <button type="submit" class="btn btn-sm"
+                            style="border: 2px solid white; color: white; background: transparent; font-size: 0.8rem;">
                             <i class='bx bx-log-out'></i> Logout
                         </button>
                     </form>
                 </div>
             </div>
 
-            @if (session('success'))
+            {{-- Flash messages --}}
+            @if(session('success'))
                 <div class="alert alert-success">
                     <i class='bx bx-check-circle'></i> {{ session('success') }}
                 </div>
             @endif
-            @if (session('error'))
+            @if(session('error'))
                 <div class="alert alert-error">
                     <i class='bx bx-error-circle'></i> {{ session('error') }}
                 </div>
             @endif
-            @if (session('warning'))
+            @if(session('warning'))
                 <div class="alert alert-warning">
                     <i class='bx bx-info-circle'></i> {{ session('warning') }}
                 </div>
@@ -644,6 +836,30 @@
             @yield('content')
         </main>
     </div>
+
+    <script>
+        function toggleSidebar() {
+            const sidebar  = document.getElementById('admin-sidebar');
+            const overlay  = document.getElementById('sidebar-overlay');
+            const hamburger = document.getElementById('hamburger-btn');
+            const terbuka  = sidebar.classList.toggle('sidebar-open');
+            overlay.classList.toggle('overlay-open', terbuka);
+            hamburger.innerHTML = terbuka
+                ? "<i class='bx bx-x'></i>"
+                : "<i class='bx bx-menu'></i>";
+        }
+
+        function tutupSidebar() {
+            document.getElementById('admin-sidebar').classList.remove('sidebar-open');
+            document.getElementById('sidebar-overlay').classList.remove('overlay-open');
+            document.getElementById('hamburger-btn').innerHTML = "<i class='bx bx-menu'></i>";
+        }
+
+        // Tutup sidebar kalau layar diperbesar lagi
+        window.addEventListener('resize', function () {
+            if (window.innerWidth > 768) tutupSidebar();
+        });
+    </script>
 
     @stack('scripts')
 </body>
