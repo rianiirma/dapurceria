@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -20,12 +19,10 @@
 
         .admin-wrapper { display: flex; min-height: 100vh; }
 
-        /* ── TOPBAR — sticky di atas ── */
+        /* ── TOPBAR ── */
         .topbar {
-            position: fixed;            /* ← fixed bukan sticky */
-            top: 0;
-            left: 250px;               /* sejajar setelah sidebar */
-            right: 0;
+            position: fixed;
+            top: 0; left: 250px; right: 0;
             z-index: 200;
             background: linear-gradient(135deg, #F59E0B, #FBBF24);
             padding: 0 1.5rem;
@@ -37,46 +34,35 @@
         }
 
         .topbar-left { display: flex; align-items: center; gap: 12px; }
-
         .topbar h1 { font-size: 1.1rem; color: white; font-weight: 600; }
 
         .hamburger-btn {
             display: none;
             background: rgba(255,255,255,.2);
-            border: none;
-            color: white;
-            font-size: 1.4rem;
-            border-radius: 6px;
+            border: none; color: white;
+            font-size: 1.4rem; border-radius: 6px;
             width: 36px; height: 36px;
-            align-items: center;
-            justify-content: center;
+            align-items: center; justify-content: center;
             cursor: pointer;
         }
-
         .hamburger-btn:hover { background: rgba(255,255,255,.3); }
 
         .user-info { display: flex; align-items: center; gap: .75rem; }
-
         .topbar-user-link {
             display: flex; align-items: center; gap: 8px;
             text-decoration: none; padding: 4px 8px;
             border-radius: 8px; transition: background .2s;
         }
-
         .topbar-user-link:hover { background: rgba(255,255,255,.15); }
-
         .user-avatar {
             width: 32px; height: 32px;
-            background: rgba(255,255,255,.3);
-            border-radius: 50%;
+            background: rgba(255,255,255,.3); border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
             color: white; font-weight: 700; font-size: 12px;
             border: 2px solid rgba(255,255,255,.5);
             overflow: hidden; flex-shrink: 0;
         }
-
         .user-avatar img { width: 100%; height: 100%; object-fit: cover; }
-
         .user-name { font-size: .875rem; color: white; font-weight: 500; }
 
         /* ── SIDEBAR ── */
@@ -99,9 +85,8 @@
             background: linear-gradient(135deg, #F59E0B, #FBBF24);
             display: flex; align-items: center; gap: 10px;
             flex-shrink: 0;
-            height: 56px; /* sama tinggi dengan topbar */
+            height: 56px;
         }
-
         .sidebar-brand h2 { font-size: 1.1rem; color: white; font-weight: 700; }
 
         .sidebar-section {
@@ -118,14 +103,11 @@
             color: #FEF3C7; text-decoration: none;
             font-size: .875rem; transition: all .2s;
         }
-
         .sidebar-menu li a i { font-size: 1.05rem; width: 20px; }
-
         .sidebar-menu li a:hover {
             background: rgba(245,158,11,.2);
             color: #FBBF24;
         }
-
         .sidebar-menu li a.active {
             background: rgba(245,158,11,.25);
             color: #FCD34D;
@@ -135,8 +117,7 @@
 
         .sidebar-menu li a .badge-count {
             margin-left: auto;
-            background: #EF4444;
-            color: white;
+            background: #EF4444; color: white;
             border-radius: 99px;
             font-size: 10px; font-weight: 700;
             min-width: 18px; height: 18px;
@@ -149,29 +130,99 @@
             margin: .5rem 1.5rem;
         }
 
-        /* pending sub-item */
-        .sidebar-menu li a.pending-link {
-            padding-left: 2.5rem;
-            font-size: .8rem;
-            color: #FDE68A;
+        /* ── ACCORDION — Resep + Pending ── */
+        .accordion-trigger {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: .65rem 1.5rem;
+            color: #FEF3C7;
+            text-decoration: none;
+            font-size: .875rem;
+            cursor: pointer;
+            transition: all .2s;
+            user-select: none;
+            width: 100%;
+            background: none;
+            border: none;
+            font-family: inherit;
+            text-align: left;
         }
 
-        .sidebar-menu li a.pending-link:hover { color: #FBBF24; }
+        .accordion-trigger:hover { background: rgba(245,158,11,.2); color: #FBBF24; }
 
+        .accordion-trigger.active-parent {
+            background: rgba(245,158,11,.25);
+            color: #FCD34D;
+            border-left: 3px solid #FBBF24;
+            font-weight: 600;
+        }
+
+        .accordion-trigger .acc-icon {
+            font-size: 1.05rem; width: 20px; flex-shrink: 0;
+        }
+
+        .accordion-trigger .acc-arrow {
+            margin-left: auto;
+            font-size: 14px;
+            transition: transform .25s ease;
+            flex-shrink: 0;
+        }
+
+        .accordion-trigger.open .acc-arrow {
+            transform: rotate(180deg);
+        }
+
+        /* Sub-menu wrapper — collapsible */
+        .accordion-body {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height .3s ease;
+            background: rgba(0,0,0,.15);
+        }
+
+        .accordion-body.open {
+            max-height: 200px; /* cukup untuk isi sub-menu */
+        }
+
+        .accordion-body a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: .55rem 1.5rem .55rem 2.75rem;
+            color: #FDE68A;
+            text-decoration: none;
+            font-size: .8rem;
+            transition: all .2s;
+            border-left: 3px solid transparent;
+        }
+
+        .accordion-body a:hover {
+            background: rgba(245,158,11,.15);
+            color: #FBBF24;
+        }
+
+        .accordion-body a.active {
+            color: #FCD34D;
+            border-left-color: #FBBF24;
+            font-weight: 600;
+        }
+
+        .accordion-body a i { font-size: .95rem; width: 18px; }
+
+        /* ── SIDEBAR FOOTER ── */
         .sidebar-footer {
             padding: .75rem 1.25rem;
             border-top: 1px solid rgba(245,158,11,.2);
             margin-top: auto;
             background: #78350F;
         }
-
         .sidebar-footer a {
             display: flex; align-items: center; gap: 10px;
             color: #FEF3C7; text-decoration: none;
             font-size: .8rem; padding: 5px 6px; border-radius: 8px;
             transition: all .2s;
         }
-
         .sidebar-footer a:hover { background: rgba(245,158,11,.15); color: #FBBF24; }
 
         .sidebar-footer-avatar {
@@ -182,7 +233,6 @@
             flex-shrink: 0; overflow: hidden;
             border: 2px solid rgba(255,255,255,.2);
         }
-
         .sidebar-footer-avatar img { width: 100%; height: 100%; object-fit: cover; }
         .sidebar-footer-name { font-size: 12px; font-weight: 600; color: white; }
         .sidebar-footer-role { font-size: 10px; color: rgba(255,255,255,.4); }
@@ -193,7 +243,7 @@
         /* ── MAIN CONTENT ── */
         .main-content {
             margin-left: 250px;
-            margin-top: 56px;      /* ruang untuk topbar fixed */
+            margin-top: 56px;
             flex: 1;
             padding: 1.5rem;
             padding-bottom: 4rem;
@@ -202,26 +252,22 @@
 
         /* ── CARD ── */
         .card {
-            background: white;
-            border-radius: 10px;
+            background: white; border-radius: 10px;
             box-shadow: 0 2px 8px rgba(245,158,11,.1);
             margin-bottom: 1.25rem;
             border: 1px solid #FDE68A;
             overflow: hidden;
         }
-
         .card-header {
             border-bottom: 1px solid #FDE68A;
             padding: .875rem 1.25rem;
             display: flex; justify-content: space-between; align-items: center;
             background: linear-gradient(135deg, #FFFBEB, #FEF3C7);
         }
-
         .card-header h3 {
             font-size: .9rem; color: #78350F; font-weight: 600;
             display: flex; align-items: center; gap: 8px;
         }
-
         .card-header h3 i { color: #F59E0B; font-size: 1rem; }
 
         /* ── STATS ── */
@@ -230,7 +276,6 @@
             grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
             gap: 1rem; margin-bottom: 1.25rem;
         }
-
         .stat-card {
             background: white; padding: 1rem 1.25rem;
             border-radius: 10px;
@@ -239,32 +284,26 @@
             border-top: 1px solid #FDE68A;
             transition: transform .2s, box-shadow .2s;
         }
-
         .stat-card:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(245,158,11,.2); }
-
         .stat-card h4 {
             color: #92400E; font-size: .7rem; font-weight: 600;
             text-transform: uppercase; letter-spacing: .05em; margin-bottom: .4rem;
         }
-
         .stat-card .stat-value { font-size: 1.75rem; font-weight: 700; color: #78350F; line-height: 1; }
         .stat-card p { color: #A8A29E; font-size: .7rem; margin-top: .3rem; }
 
         /* ── TABLE ── */
         .table { width: 100%; border-collapse: collapse; }
-
         .table th {
             padding: .625rem 1rem; text-align: left;
             border-bottom: 1px solid #FDE68A; background: #FFFBEB;
             font-weight: 600; font-size: .7rem; color: #92400E;
             text-transform: uppercase; letter-spacing: .04em;
         }
-
         .table td {
             padding: .75rem 1rem; border-bottom: 1px solid #FEF9EE;
             font-size: .825rem; color: #44403C; vertical-align: middle;
         }
-
         .table tr:last-child td { border-bottom: none; }
         .table tr:hover td { background: #FFFBEB; }
 
@@ -275,44 +314,34 @@
             transition: all .2s; border: none; cursor: pointer;
             font-size: .825rem; font-weight: 500; font-family: inherit;
         }
-
         .btn-primary { background: linear-gradient(135deg, #F59E0B, #FBBF24); color: white; }
         .btn-primary:hover { background: linear-gradient(135deg, #D97706, #F59E0B); color: white; text-decoration: none; }
-
         .btn-success { background: linear-gradient(135deg, #10B981, #34D399); color: white; }
         .btn-success:hover { background: linear-gradient(135deg, #059669, #10B981); color: white; text-decoration: none; }
-
         .btn-danger { background: linear-gradient(135deg, #EF4444, #F87171); color: white; }
         .btn-danger:hover { background: linear-gradient(135deg, #DC2626, #EF4444); color: white; text-decoration: none; }
-
         .btn-warning { background: linear-gradient(135deg, #FBBF24, #FCD34D); color: #78350F; }
         .btn-warning:hover { background: linear-gradient(135deg, #F59E0B, #FBBF24); color: #78350F; text-decoration: none; }
-
         .btn-secondary { background: #92400E; color: white; }
         .btn-secondary:hover { background: #78350F; color: white; text-decoration: none; }
-
         .btn-sm { padding: .25rem .55rem; font-size: .7rem; border-radius: 6px; }
 
         /* ── FORM ── */
         .form-group { margin-bottom: 1.25rem; }
-
         .form-group label {
             display: block; margin-bottom: .4rem;
             font-weight: 600; font-size: .825rem; color: #78350F;
         }
-
         .form-control {
             width: 100%; padding: .55rem .8rem;
             border: 1px solid #FDE68A; border-radius: 8px;
             font-size: .875rem; font-family: inherit; color: #333;
             background: white; transition: border-color .2s, box-shadow .2s;
         }
-
         .form-control:focus {
             outline: none; border-color: #F59E0B;
             box-shadow: 0 0 0 3px rgba(245,158,11,.15);
         }
-
         textarea.form-control { resize: vertical; min-height: 100px; }
 
         /* ── ALERT ── */
@@ -321,7 +350,6 @@
             border-radius: 10px; font-size: .825rem;
             display: flex; align-items: center; gap: 8px; border-left: 4px solid;
         }
-
         .alert-success { background: #D1FAE5; color: #065F46; border-color: #10B981; }
         .alert-error   { background: #FEE2E2; color: #991B1B; border-color: #EF4444; }
         .alert-warning { background: #FEF3C7; color: #92400E; border-color: #F59E0B; }
@@ -331,25 +359,22 @@
             display: inline-block; padding: .18rem .6rem;
             border-radius: 99px; font-size: .68rem; font-weight: 600;
         }
-
         .badge-success { background: #D1FAE5; color: #065F46; border: 1px solid #6EE7B7; }
         .badge-danger  { background: #FEE2E2; color: #991B1B; border: 1px solid #FCA5A5; }
         .badge-warning { background: #FEF3C7; color: #92400E; border: 1px solid #FCD34D; }
         .badge-primary { background: #FDE68A; color: #78350F; border: 1px solid #FBBF24; }
 
-        /* ── PAGINATION (custom — tidak pakai SVG bawaan Laravel) ── */
+        /* ── PAGINATION ── */
         .pagination {
             display: flex; gap: 4px;
             justify-content: center; padding: 1rem;
             border-top: 1px solid #FDE68A;
         }
-
         .pagination .page-link {
             padding: 6px 12px; border-radius: 6px;
             border: 1px solid #FDE68A; color: #92400E;
             text-decoration: none; font-size: 13px; transition: all .2s;
         }
-
         .pagination .page-link:hover,
         .pagination .page-item.active .page-link {
             background: linear-gradient(135deg, #F59E0B, #FBBF24);
@@ -367,8 +392,7 @@
             .sidebar { transform: translateX(-100%); }
             .sidebar.sidebar-open { transform: translateX(0); }
             .sidebar-overlay.overlay-open { display: block; }
-
-            .topbar { left: 0; } /* topbar full width di mobile */
+            .topbar { left: 0; }
             .main-content { margin-left: 0; }
             .hamburger-btn { display: flex; }
             .user-name { display: none; }
@@ -393,57 +417,83 @@
         </div>
 
         <p class="sidebar-section">Menu Utama</p>
+
+        @php
+            $pendingCount = \App\Models\Resep::where('status','pending')->count();
+            $unreadCount  = \App\Models\Komentar::where('is_read', false)->count();
+            $isResepActive = request()->routeIs('admin.resep.*');
+        @endphp
+
         <ul class="sidebar-menu">
+
+            {{-- Dashboard --}}
             <li>
                 <a href="{{ route('admin.dashboard') }}"
                    class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
                     <i class='bx bx-home-alt'></i> Dashboard
-                    @php $pendingCount = \App\Models\Resep::where('status','pending')->count(); @endphp
                     @if($pendingCount > 0)
                         <span class="badge-count">{{ $pendingCount }}</span>
                     @endif
                 </a>
             </li>
 
-            {{-- Resep + sub-menu Pending --}}
+            {{-- Resep (Accordion) --}}
             <li>
-                <a href="{{ route('admin.resep.index') }}"
-                   class="{{ request()->routeIs('admin.resep.index') || request()->routeIs('admin.resep.create') || request()->routeIs('admin.resep.edit') ? 'active' : '' }}">
-                    <i class='bx bx-food-menu'></i> Resep
-                </a>
-            </li>
-            <li>
-                <a href="{{ route('admin.resep.pending') }}"
-                   class="pending-link {{ request()->routeIs('admin.resep.pending') ? 'active' : '' }}">
-                    <i class='bx bx-time-five'></i> ↳ Pending
+                <button
+                    class="accordion-trigger {{ $isResepActive ? 'active-parent open' : '' }}"
+                    id="acc-resep-btn"
+                    onclick="toggleAccordion('acc-resep')"
+                >
+                    <i class='bx bx-food-menu acc-icon'></i>
+                    <span style="flex:1;">Resep</span>
                     @if($pendingCount > 0)
                         <span class="badge-count">{{ $pendingCount }}</span>
                     @endif
-                </a>
+                    <i class='bx bx-chevron-down acc-arrow'></i>
+                </button>
+
+                <div class="accordion-body {{ $isResepActive ? 'open' : '' }}" id="acc-resep">
+                    <a href="{{ route('admin.resep.index') }}"
+                       class="{{ request()->routeIs('admin.resep.index') || request()->routeIs('admin.resep.create') || request()->routeIs('admin.resep.edit') ? 'active' : '' }}">
+                        <i class='bx bx-list-ul'></i> Semua Resep
+                    </a>
+                    <a href="{{ route('admin.resep.pending') }}"
+                       class="{{ request()->routeIs('admin.resep.pending') ? 'active' : '' }}">
+                        <i class='bx bx-time-five'></i> Pending
+                        @if($pendingCount > 0)
+                            <span class="badge-count" style="margin-left:auto;">{{ $pendingCount }}</span>
+                        @endif
+                    </a>
+                </div>
             </li>
 
+            {{-- Kategori --}}
             <li>
                 <a href="{{ route('admin.kategori.index') }}"
                    class="{{ request()->routeIs('admin.kategori.*') ? 'active' : '' }}">
                     <i class='bx bx-category'></i> Kategori
                 </a>
             </li>
+
+            {{-- Komentar --}}
             <li>
                 <a href="{{ route('admin.komentar.index') }}"
                    class="{{ request()->routeIs('admin.komentar.*') ? 'active' : '' }}">
                     <i class='bx bx-message-square-dots'></i> Komentar
-                    @php $unreadCount = \App\Models\Komentar::where('is_read', false)->count(); @endphp
                     @if($unreadCount > 0)
                         <span class="badge-count">{{ $unreadCount }}</span>
                     @endif
                 </a>
             </li>
+
+            {{-- Pengguna --}}
             <li>
                 <a href="{{ route('admin.user.index') }}"
                    class="{{ request()->routeIs('admin.user.*') ? 'active' : '' }}">
                     <i class='bx bx-group'></i> Pengguna
                 </a>
             </li>
+
         </ul>
 
         <hr class="sidebar-divider">
@@ -465,7 +515,7 @@
             @endif
         </ul>
 
-        {{-- Footer sidebar --}}
+        {{-- Sidebar footer --}}
         @if(Route::has('profile.show'))
         <div class="sidebar-footer">
             <a href="{{ route('profile.show') }}">
@@ -492,7 +542,7 @@
     {{-- ── MAIN CONTENT ── --}}
     <main class="main-content">
 
-        {{-- TOPBAR fixed --}}
+        {{-- TOPBAR --}}
         <div class="topbar">
             <div class="topbar-left">
                 <button class="hamburger-btn" onclick="toggleSidebar()" id="hamburger-btn">
@@ -500,7 +550,6 @@
                 </button>
                 <h1>@yield('page-title', 'Dashboard')</h1>
             </div>
-
             <div class="user-info">
                 <a href="{{ Route::has('profile.show') ? route('profile.show') : '#' }}" class="topbar-user-link">
                     <div class="user-avatar">
@@ -512,7 +561,6 @@
                     </div>
                     <span class="user-name">{{ auth()->user()->name }}</span>
                 </a>
-
                 <form action="{{ route('logout') }}" method="POST">
                     @csrf
                     <button type="submit" class="btn btn-sm"
@@ -539,13 +587,24 @@
 </div>
 
 <script>
+/* ── Accordion sidebar ── */
+function toggleAccordion(id) {
+    const body = document.getElementById(id);
+    const btn  = document.getElementById(id + '-btn');
+    const isOpen = body.classList.contains('open');
+
+    body.classList.toggle('open', !isOpen);
+    btn.classList.toggle('open', !isOpen);
+}
+
+/* ── Hamburger mobile ── */
 function toggleSidebar() {
-    const sidebar  = document.getElementById('admin-sidebar');
-    const overlay  = document.getElementById('sidebar-overlay');
-    const btn      = document.getElementById('hamburger-btn');
-    const terbuka  = sidebar.classList.toggle('sidebar-open');
+    const sidebar = document.getElementById('admin-sidebar');
+    const overlay = document.getElementById('sidebar-overlay');
+    const btn     = document.getElementById('hamburger-btn');
+    const terbuka = sidebar.classList.toggle('sidebar-open');
     overlay.classList.toggle('overlay-open', terbuka);
-    btn.innerHTML  = terbuka ? "<i class='bx bx-x'></i>" : "<i class='bx bx-menu'></i>";
+    btn.innerHTML = terbuka ? "<i class='bx bx-x'></i>" : "<i class='bx bx-menu'></i>";
 }
 
 function tutupSidebar() {
