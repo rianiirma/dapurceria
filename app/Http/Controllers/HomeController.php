@@ -1,51 +1,42 @@
 <?php
+
 namespace App\Http\Controllers;
 
-use App\Models\Kategori;
-use App\Models\Resep;
 use Illuminate\Http\Request;
+use App\Models\Resep;
+use App\Models\Kategori;
+use App\Models\User;
+use App\Models\Komentar;
 
 class HomeController extends Controller
 {
     public function index(Request $request)
     {
-        $kategoris = Kategori::all();
-
         $query = Resep::with(['user', 'kategori'])
-            ->where('status', 'approved');
+                      ->withCount('sukas')
+                      ->where('status', 'approved');
 
+        // Filter search
         if ($request->filled('search')) {
             $search = $request->search;
             $query->where(function ($q) use ($search) {
-                $q->where('judul', 'like', "%{$search}%")
-                    ->orWhere('deskripsi', 'like', "%{$search}%")
-                    ->orWhere('bahan', 'like', "%{$search}%");
+                $q->where('judul', 'like', '%'.$search.'%')
+                  ->orWhere('deskripsi', 'like', '%'.$search.'%');
             });
         }
 
+        // Filter kategori
         if ($request->filled('kategori')) {
-            $query->where('id_kategori', $request->kategori);
+            $query->where('kategori_id', $request->kategori);
         }
 
-        $reseps = $query->latest()->paginate(12);
+        // Urutkan terbaru
+        $query->latest();
+
+        // ★ 10 resep per halaman — ke-11 masuk halaman 2
+        $reseps    = $query->paginate(10)->withQueryString();
+        $kategoris = Kategori::orderBy('nama_kategori')->get();
 
         return view('home', compact('reseps', 'kategoris'));
-    }
-
-    public function show($id)
-    {
-        $resep = Resep::with(['user', 'kategori', 'komentars.user', 'ratings'])
-            ->findOrFail($id);
-
-        if ($resep->status !== 'approved') {
-            $isOwner = auth()->check() && auth()->id() === $resep->id_user;
-            $isAdmin = auth()->check() && auth()->user()->role === 'admin';
-
-            if (! $isOwner && ! $isAdmin) {
-                abort(404);
-            }
-        }
-
-        return view('resep.show', compact('resep'));
     }
 }
