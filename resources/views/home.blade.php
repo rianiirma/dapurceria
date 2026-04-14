@@ -817,21 +817,101 @@
     .mb-10 { margin-bottom: 40px; }
 
     /* ══════════════════════════════
-       RESPONSIVE
+       RESPONSIVE — TABLET
+    ══════════════════════════════ */
+    @media (max-width: 900px) {
+        .resep-grid { grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    }
+
+    /* ══════════════════════════════
+       RESPONSIVE — MOBILE
     ══════════════════════════════ */
     @media (max-width: 768px) {
-        .hero-inner { grid-template-columns: 1fr; gap: 32px; }
+        /* Hero */
+        .hero { padding: 28px 0 24px; }
+        .hero-inner { grid-template-columns: 1fr; gap: 0; padding: 0 16px; }
         .hero-visual { display: none; }
-        .hero h1 { font-size: 28px; }
-        .search-card { flex-direction: column; }
-        .search-field, .filter-field { width: 100%; }
-        .search-submit { width: 100%; }
-        .carousel-wrap { height: 240px; }
-        .carousel-overlay { padding: 24px; }
-        .carousel-overlay h2 { font-size: 20px; }
-        .cta-banner { padding: 36px 24px; }
-        .cta-banner h2 { font-size: 22px; }
-        .resep-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
+        .hero h1 { font-size: 24px; margin-bottom: 10px; }
+        .hero-desc { font-size: 13px; margin-bottom: 18px; }
+        .btn-hero-primary, .btn-hero-secondary { padding: 10px 20px; font-size: 13px; }
+        .hero-stats { gap: 16px; margin-top: 18px; padding-top: 16px; }
+        .hero-stat-val { font-size: 18px; }
+        .hero-stat-lbl { font-size: 10px; }
+
+        /* Search */
+        .search-wrap { padding: 0 16px; margin: -18px auto 0; }
+        .search-card { flex-direction: column; gap: 10px; padding: 14px 16px; border-radius: 14px; }
+        .search-field, .filter-field { width: 100%; flex: none; }
+        .search-submit { width: 100%; padding: 12px; }
+
+        /* Section */
+        .section { padding: 0 16px; }
+        .section-head h2 { font-size: 18px; }
+        .section-head p { font-size: 12px; }
+        .mt-12 { margin-top: 28px; }
+        .mt-8 { margin-top: 20px; }
+        .mb-10 { margin-bottom: 20px; }
+
+        /* Category pills */
+        .cat-scroll { margin-bottom: 20px; gap: 8px; }
+        .cat-pill { padding: 8px 12px; min-width: 58px; border-radius: 12px; }
+        .cat-pill-icon { font-size: 16px; }
+        .cat-pill-name { font-size: 10px; }
+
+        /* Carousel */
+        .carousel-wrap { height: 180px; border-radius: 14px; margin-bottom: 24px; }
+        .carousel-overlay { padding: 14px 16px; }
+        .carousel-overlay h2 { font-size: 15px; margin-bottom: 4px; }
+        .carousel-overlay p { display: none; }
+        .btn-carousel { padding: 7px 14px; font-size: 11px; margin-bottom: 0; }
+        .carousel-prev, .carousel-next { width: 32px; height: 32px; font-size: 16px; }
+        .carousel-dots { bottom: 12px; right: 14px; }
+
+        /* ★ RECIPE GRID — 2 kolom compact di mobile ★ */
+        .resep-grid {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        /* Recipe card — kompak di mobile */
+        .resep-img-wrap { height: 120px; }
+        .resep-img-fallback { font-size: 32px; }
+        .resep-category-badge { font-size: 9px; padding: 3px 7px; top: 8px; left: 8px; }
+        .resep-rating-badge { font-size: 9px; padding: 3px 7px; top: 8px; right: 8px; }
+        .resep-body { padding: 9px 10px 11px; }
+        .resep-title { font-size: 12px; margin-bottom: 0; -webkit-line-clamp: 2; }
+        .resep-desc { display: none; } /* sembunyi di mobile biar card muat 2 kolom */
+        .resep-lock-hint { font-size: 9px; margin-top: 5px; }
+        .resep-footer { padding-top: 7px; margin-top: 6px; }
+        .resep-chip { font-size: 9px; gap: 2px; }
+        .resep-meta-chips { gap: 6px; }
+        .resep-author-name { display: none; }
+        .resep-author-avatar { width: 18px; height: 18px; font-size: 8px; }
+
+        /* Pagination */
+        .pagination { gap: 4px; margin-bottom: 24px; }
+        .pagination a, .pagination span { padding: 6px 11px; font-size: 12px; border-radius: 8px; }
+
+        /* CTA Banner */
+        .cta-banner { padding: 28px 20px; border-radius: 16px; margin-bottom: 28px; }
+        .cta-banner-emoji { font-size: 32px; margin-bottom: 8px; }
+        .cta-banner h2 { font-size: 18px; margin-bottom: 8px; }
+        .cta-banner p { font-size: 13px; margin-bottom: 20px; }
+        .btn-cta { padding: 11px 24px; font-size: 13px; }
+    }
+
+    /* ══════════════════════════════
+       RESPONSIVE — SMALL MOBILE (< 400px)
+    ══════════════════════════════ */
+    @media (max-width: 400px) {
+        .hero h1 { font-size: 21px; }
+        .resep-grid { gap: 8px; }
+        .resep-img-wrap { height: 105px; }
+        .resep-title { font-size: 11px; }
+        .resep-category-badge, .resep-rating-badge { font-size: 8px; padding: 2px 6px; }
+        .resep-body { padding: 7px 8px 9px; }
+        .resep-chip { font-size: 8px; }
     }
 </style>
 @endpush
