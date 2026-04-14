@@ -124,9 +124,52 @@
         </tbody>
     </table>
 
-    {{-- Pagination --}}
-    <div style="padding:14px 16px;border-top:1px solid #EDE3D8;">
-        {{ $reseps->withQueryString()->links() }}
+    {{-- Pagination Custom --}}
+    <div style="padding:16px;border-top:1px solid #EDE3D8;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;">
+        <div style="font-size:12px;color:#9A8070;">
+            Menampilkan {{ $reseps->firstItem() }}–{{ $reseps->lastItem() }} dari {{ $reseps->total() }} resep
+        </div>
+        <div style="display:flex;gap:6px;align-items:center;">
+            {{-- Prev --}}
+            @if($reseps->onFirstPage())
+                <span style="padding:7px 14px;border:1.5px solid #E0D0C0;border-radius:10px;font-size:13px;color:#C0A090;cursor:default;">←</span>
+            @else
+                <a href="{{ $reseps->previousPageUrl() }}" style="padding:7px 14px;border:1.5px solid #E0D0C0;border-radius:10px;font-size:13px;color:#7A3D1A;text-decoration:none;transition:all .2s;" onmouseover="this.style.background='#FDE8D0';this.style.borderColor='#E8621A'" onmouseout="this.style.background='';this.style.borderColor='#E0D0C0'">← Sebelumnya</a>
+            @endif
+
+            {{-- Page numbers --}}
+            @php
+                $current = $reseps->currentPage();
+                $last    = $reseps->lastPage();
+                $start   = max(1, $current - 2);
+                $end     = min($last, $current + 2);
+            @endphp
+
+            @if($start > 1)
+                <a href="{{ $reseps->url(1) }}" style="padding:7px 12px;border:1.5px solid #E0D0C0;border-radius:10px;font-size:13px;color:#7A3D1A;text-decoration:none;">1</a>
+                @if($start > 2)<span style="padding:7px 4px;font-size:13px;color:#9A8070;">...</span>@endif
+            @endif
+
+            @for($i = $start; $i <= $end; $i++)
+                @if($i == $current)
+                    <span style="padding:7px 13px;background:#E8621A;color:#fff;border-radius:10px;font-size:13px;font-weight:700;border:1.5px solid #E8621A;">{{ $i }}</span>
+                @else
+                    <a href="{{ $reseps->url($i) }}" style="padding:7px 13px;border:1.5px solid #E0D0C0;border-radius:10px;font-size:13px;color:#7A3D1A;text-decoration:none;" onmouseover="this.style.background='#FDE8D0';this.style.borderColor='#E8621A'" onmouseout="this.style.background='';this.style.borderColor='#E0D0C0'">{{ $i }}</a>
+                @endif
+            @endfor
+
+            @if($end < $last)
+                @if($end < $last - 1)<span style="padding:7px 4px;font-size:13px;color:#9A8070;">...</span>@endif
+                <a href="{{ $reseps->url($last) }}" style="padding:7px 12px;border:1.5px solid #E0D0C0;border-radius:10px;font-size:13px;color:#7A3D1A;text-decoration:none;">{{ $last }}</a>
+            @endif
+
+            {{-- Next --}}
+            @if($reseps->hasMorePages())
+                <a href="{{ $reseps->nextPageUrl() }}" style="padding:7px 14px;border:1.5px solid #E0D0C0;border-radius:10px;font-size:13px;color:#7A3D1A;text-decoration:none;transition:all .2s;" onmouseover="this.style.background='#FDE8D0';this.style.borderColor='#E8621A'" onmouseout="this.style.background='';this.style.borderColor='#E0D0C0'">Berikutnya →</a>
+            @else
+                <span style="padding:7px 14px;border:1.5px solid #E0D0C0;border-radius:10px;font-size:13px;color:#C0A090;cursor:default;">→</span>
+            @endif
+        </div>
     </div>
 
     @else
