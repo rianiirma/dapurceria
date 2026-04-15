@@ -165,6 +165,163 @@
         /* logout form inline */
         .logout-form { display: inline; }
 
+        /* ── HAMBURGER BUTTON ── */
+        .navbar-hamburger {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 5px;
+            width: 36px;
+            height: 36px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 4px;
+        }
+
+        .navbar-hamburger span {
+            display: block;
+            width: 22px;
+            height: 2px;
+            background: rgba(255,255,255,.85);
+            border-radius: 2px;
+            transition: all .3s;
+        }
+
+        /* ── MOBILE SIDEBAR OVERLAY ── */
+        .mobile-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,.45);
+            z-index: 1100;
+        }
+
+        .mobile-overlay.open { display: block; }
+
+        /* ── MOBILE SIDEBAR ── */
+        .mobile-sidebar {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 78%;
+            max-width: 300px;
+            height: 100%;
+            background: #3D2010;
+            z-index: 1200;
+            transition: right .3s ease;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        .mobile-sidebar.open { right: 0; }
+
+        .mobile-sidebar-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 18px 12px;
+            border-bottom: 1px solid rgba(255,255,255,.08);
+        }
+
+        .mobile-sidebar-brand {
+            font-family: 'Playfair Display', serif;
+            font-size: 18px;
+            font-weight: 700;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            text-decoration: none;
+        }
+
+        .mobile-sidebar-close {
+            background: rgba(255,255,255,.12);
+            border: none;
+            color: #fff;
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+        }
+
+        /* user profile block in sidebar */
+        .mobile-sidebar-user {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 18px 18px 14px;
+            border-bottom: 1px solid rgba(255,255,255,.08);
+        }
+
+        .mobile-sidebar-avatar {
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            background: #E8621A;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: 700;
+            border: 2px solid rgba(255,255,255,.25);
+            flex-shrink: 0;
+        }
+
+        .mobile-sidebar-user-info { display: flex; flex-direction: column; gap: 2px; }
+        .mobile-sidebar-user-name { font-size: 15px; font-weight: 700; color: #fff; }
+        .mobile-sidebar-user-email { font-size: 11px; color: rgba(255,255,255,.5); }
+
+        /* sidebar nav links */
+        .mobile-sidebar-nav { list-style: none; padding: 10px 0; flex: 1; }
+
+        .mobile-sidebar-nav li a,
+        .mobile-sidebar-nav li button {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            width: 100%;
+            padding: 13px 18px;
+            color: rgba(255,255,255,.75);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            background: none;
+            border: none;
+            font-family: inherit;
+            cursor: pointer;
+            text-align: left;
+            transition: background .2s, color .2s;
+            border-left: 3px solid transparent;
+        }
+
+        .mobile-sidebar-nav li a:hover,
+        .mobile-sidebar-nav li button:hover {
+            background: rgba(255,255,255,.06);
+            color: #fff;
+        }
+
+        .mobile-sidebar-nav li.active-sidebar a {
+            background: rgba(232,98,26,.15);
+            color: #F9946A;
+            border-left-color: #E8621A;
+            font-weight: 600;
+        }
+
+        .mobile-sidebar-nav li.logout-item button {
+            color: #F9946A;
+        }
+
+        .mobile-sidebar-nav .sidebar-icon { font-size: 18px; width: 22px; text-align: center; }
+
         /* ── GLOBAL ALERTS ── */
         .global-alerts {
             padding: 12px 0 0;
@@ -255,6 +412,7 @@
         @media (max-width: 680px) {
             .navbar-menu .nav-hide-sm { display: none; }
             .navbar-brand { font-size: 17px; }
+            .navbar-hamburger { display: flex; }
         }
     </style>
 
@@ -311,7 +469,7 @@
                             </span>
                         </div>
                     </li>
-                    <li>
+                    <li class="nav-hide-sm">
                         <form action="{{ route('logout') }}" method="POST" class="logout-form">
                             @csrf
                             <button type="submit" class="btn-nav-outline">Keluar</button>
@@ -322,8 +480,122 @@
                     <li><a href="{{ route('register') }}" class="btn-nav-fill">Daftar</a></li>
                 @endauth
             </ul>
+
+            {{-- Hamburger (mobile only, shown when logged in) --}}
+            @auth
+            <button class="navbar-hamburger" id="hamburgerBtn" aria-label="Buka menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            @endauth
         </div>
     </nav>
+
+    {{-- ── MOBILE SIDEBAR ── --}}
+    @auth
+    <div class="mobile-overlay" id="mobileOverlay"></div>
+    <div class="mobile-sidebar" id="mobileSidebar">
+
+        {{-- Sidebar header --}}
+        <div class="mobile-sidebar-header">
+            <a href="{{ route('home') }}" class="mobile-sidebar-brand">
+                <div class="navbar-brand-dot"></div>
+                DapurCeria
+            </a>
+            <button class="mobile-sidebar-close" id="sidebarClose">&#x2715;</button>
+        </div>
+
+        {{-- User info --}}
+        <div class="mobile-sidebar-user">
+            <div class="mobile-sidebar-avatar">
+                {{ strtoupper(substr(auth()->user()->name, 0, 2)) }}
+            </div>
+            <div class="mobile-sidebar-user-info">
+                <span class="mobile-sidebar-user-name">{{ auth()->user()->name }}</span>
+                <span class="mobile-sidebar-user-email">{{ auth()->user()->email }}</span>
+            </div>
+        </div>
+
+        {{-- Nav links --}}
+        <ul class="mobile-sidebar-nav">
+            <li>
+                <a href="{{ route('home') }}">
+                    <span class="sidebar-icon">🏠</span> Beranda
+                </a>
+            </li>
+
+            @if(auth()->user()->role === 'admin')
+                @if(Route::has('admin.dashboard'))
+                <li>
+                    <a href="{{ route('admin.dashboard') }}">
+                        <span class="sidebar-icon">📊</span> Dashboard
+                    </a>
+                </li>
+                @endif
+                @if(Route::has('admin.resep.index'))
+                <li>
+                    <a href="{{ route('admin.resep.index') }}">
+                        <span class="sidebar-icon">📋</span> Kelola Resep
+                    </a>
+                </li>
+                @endif
+                @if(Route::has('admin.resep.pending'))
+                <li>
+                    <a href="{{ route('admin.resep.pending') }}">
+                        <span class="sidebar-icon">✅</span> Approval
+                    </a>
+                </li>
+                @endif
+            @else
+                @if(Route::has('user.resep.create'))
+                <li>
+                    <a href="{{ route('user.resep.create') }}">
+                        <span class="sidebar-icon">📤</span> Upload Resep
+                    </a>
+                </li>
+                @endif
+                @if(Route::has('user.resep.my'))
+                <li>
+                    <a href="{{ route('user.resep.my') }}">
+                        <span class="sidebar-icon">📝</span> Resep Saya
+                    </a>
+                </li>
+                @endif
+                @if(Route::has('favorit.index'))
+                <li class="{{ request()->routeIs('favorit.*') ? 'active-sidebar' : '' }}">
+                    <a href="{{ route('favorit.index') }}">
+                        <span class="sidebar-icon">❤️</span> Favorit
+                    </a>
+                </li>
+                @endif
+            @endif
+
+            <li class="logout-item">
+                <form action="{{ route('logout') }}" method="POST">
+                    @csrf
+                    <button type="submit">
+                        <span class="sidebar-icon">🚪</span> Keluar
+                    </button>
+                </form>
+            </li>
+        </ul>
+    </div>
+
+    <script>
+        const hamburger  = document.getElementById('hamburgerBtn');
+        const sidebar    = document.getElementById('mobileSidebar');
+        const overlay    = document.getElementById('mobileOverlay');
+        const closeBtn   = document.getElementById('sidebarClose');
+
+        function openSidebar()  { sidebar.classList.add('open'); overlay.classList.add('open'); document.body.style.overflow = 'hidden'; }
+        function closeSidebar() { sidebar.classList.remove('open'); overlay.classList.remove('open'); document.body.style.overflow = ''; }
+
+        hamburger?.addEventListener('click', openSidebar);
+        closeBtn?.addEventListener('click', closeSidebar);
+        overlay?.addEventListener('click', closeSidebar);
+    </script>
+    @endauth
 
     {{-- ── CONTENT ── --}}
     <div class="content">
