@@ -122,10 +122,19 @@
             border-color: #C84E0E;
         }
 
-        .nav-user {
+        /* Nav User Link (Desktop) */
+        .nav-user-link {
             display: flex;
             align-items: center;
             gap: 10px;
+            text-decoration: none;
+            padding: 4px 8px;
+            border-radius: 10px;
+            transition: background .2s;
+        }
+
+        .nav-user-link:hover {
+            background: rgba(255,255,255,.08);
         }
 
         .nav-avatar {
@@ -141,6 +150,13 @@
             font-weight: 700;
             border: 2px solid rgba(255,255,255,.25);
             flex-shrink: 0;
+            overflow: hidden; /* Biar foto tidak keluar lingkaran */
+        }
+
+        .nav-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         .nav-user-name {
@@ -248,14 +264,13 @@
             line-height: 1;
         }
 
-        /* user profile block in sidebar */
         .mobile-sidebar-user {
             display: flex;
             align-items: center;
             gap: 12px;
             padding: 18px 18px 14px;
             border-bottom: 1px solid rgba(255,255,255,.08);
-            text-decoration: none; /* Biar link ga ada garis bawah */
+            text-decoration: none;
             transition: background .2s;
         }
 
@@ -276,13 +291,19 @@
             font-weight: 700;
             border: 2px solid rgba(255,255,255,.25);
             flex-shrink: 0;
+            overflow: hidden;
+        }
+
+        .mobile-sidebar-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         .mobile-sidebar-user-info { display: flex; flex-direction: column; gap: 2px; }
         .mobile-sidebar-user-name { font-size: 15px; font-weight: 700; color: #fff; }
         .mobile-sidebar-user-email { font-size: 11px; color: rgba(255,255,255,.5); }
 
-        /* sidebar nav links */
         .mobile-sidebar-nav { list-style: none; padding: 10px 0; flex: 1; }
 
         .mobile-sidebar-nav li a,
@@ -311,7 +332,6 @@
             color: #fff;
         }
 
-        /* Efek Active Link */
         .mobile-sidebar-nav li.active-sidebar a {
             background: rgba(232,98,26,.15);
             color: #F9946A;
@@ -319,7 +339,6 @@
             font-weight: 600;
         }
 
-        /* Garis Pemisah untuk Logout */
         .mobile-sidebar-nav li.logout-item {
             border-top: 1px solid rgba(255,255,255,.08);
             margin-top: 10px;
@@ -335,7 +354,6 @@
         /* ── RESPONSIVE ── */
         @media (max-width: 680px) {
             .navbar-menu .nav-hide-sm { display: none; }
-            /* Menghilangkan avatar user di navbar mobile */
             .navbar-menu .nav-user-item { display: none; } 
             .navbar-brand { font-size: 17px; }
             .navbar-hamburger { display: flex; }
@@ -366,16 +384,20 @@
                         <li class="nav-hide-sm"><a href="{{ route('favorit.index') }}">Favorit</a></li>
                     @endif
 
-                    {{-- User info (disembunyikan di mobile lewat class nav-user-item) --}}
+                    {{-- Link User Profile Laptop --}}
                     <li class="nav-user-item">
-                        <div class="nav-user">
+                        <a href="{{ route('profile.edit') }}" class="nav-user-link">
                             <div class="nav-avatar">
-                                {{ strtoupper(substr(auth()->user()->name, 0, 2)) }}
+                                @if(auth()->user()->foto)
+                                    <img src="{{ asset('storage/' . auth()->user()->foto) }}" alt="Profile">
+                                @else
+                                    {{ strtoupper(substr(auth()->user()->name, 0, 2)) }}
+                                @endif
                             </div>
                             <span class="nav-user-name nav-hide-sm">
                                 {{ auth()->user()->name }}
                             </span>
-                        </div>
+                        </a>
                     </li>
                     <li class="nav-hide-sm">
                         <form action="{{ route('logout') }}" method="POST" class="logout-form">
@@ -412,10 +434,13 @@
             <button class="mobile-sidebar-close" id="sidebarClose">&#x2715;</button>
         </div>
 
-        {{-- Info User bisa diklik ke Profile --}}
         <a href="{{ route('profile.edit') }}" class="mobile-sidebar-user">
             <div class="mobile-sidebar-avatar">
-                {{ strtoupper(substr(auth()->user()->name, 0, 2)) }}
+                @if(auth()->user()->foto)
+                    <img src="{{ asset('storage/' . auth()->user()->foto) }}" alt="Profile">
+                @else
+                    {{ strtoupper(substr(auth()->user()->name, 0, 2)) }}
+                @endif
             </div>
             <div class="mobile-sidebar-user-info">
                 <span class="mobile-sidebar-user-name">{{ auth()->user()->name }}</span>
@@ -436,7 +461,6 @@
                         <span class="sidebar-icon">📊</span> Dashboard
                     </a>
                 </li>
-                {{-- Tambahkan menu admin lainnya dengan pengecekan active-sidebar --}}
             @else
                 <li class="{{ request()->routeIs('user.resep.create') ? 'active-sidebar' : '' }}">
                     <a href="{{ route('user.resep.create') }}">
@@ -471,7 +495,6 @@
         @yield('content')
     </div>
 
-    {{-- Footer & Scripts tetap sama --}}
     <script>
         const hamburger  = document.getElementById('hamburgerBtn');
         const sidebar    = document.getElementById('mobileSidebar');

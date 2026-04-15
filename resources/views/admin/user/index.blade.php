@@ -68,8 +68,13 @@
                 </td>
                 <td>
                     <div style="display:flex;align-items:center;gap:10px;">
-                        <div style="width:36px;height:36px;border-radius:50%;background:{{ $user->role === 'admin' ? '#E8621A' : '#8AAB7A' }};color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;">
-                            {{ strtoupper(substr($user->name, 0, 2)) }}
+                        {{-- DIV FOTO/INISIAL --}}
+                        <div style="width:36px;height:36px;border-radius:50%;background:{{ $user->role === 'admin' ? '#E8621A' : '#8AAB7A' }};color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;overflow:hidden;">
+                            @if($user->foto)
+                                <img src="{{ asset('storage/' . $user->foto) }}" alt="" style="width:100%;height:100%;object-fit:cover;">
+                            @else
+                                {{ strtoupper(substr($user->name, 0, 2)) }}
+                            @endif
                         </div>
                         <div>
                             <div style="font-weight:600;font-size:13px;color:#3D2010;">{{ $user->name }}</div>
