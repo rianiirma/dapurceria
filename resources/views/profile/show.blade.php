@@ -16,6 +16,7 @@
     .profile-page-wrap {
         max-width: 640px;
         margin: 0 auto;
+        padding-bottom: 2rem;
     }
 
     /* ── KARTU PROFIL ── */
@@ -28,7 +29,6 @@
         margin-bottom: 1.25rem;
     }
 
-    /* Baris atas: avatar kiri + info kanan */
     .profile-top {
         display: flex;
         align-items: center;
@@ -59,7 +59,6 @@
         width: 100%;
         height: 100%;
         object-fit: cover;
-        border-radius: 50%;
     }
 
     .profile-top-info {
@@ -80,7 +79,6 @@
         font-size: 13px;
         color: rgba(255,255,255,0.85);
         margin: 0 0 8px;
-        word-break: break-all;
     }
 
     .profile-badge {
@@ -89,15 +87,6 @@
         border-radius: 99px;
         font-size: 11px;
         font-weight: 700;
-    }
-
-    .badge-admin {
-        background: rgba(255,255,255,0.25);
-        color: #fff;
-        border: 1px solid rgba(255,255,255,0.4);
-    }
-
-    .badge-member {
         background: rgba(255,255,255,0.25);
         color: #fff;
         border: 1px solid rgba(255,255,255,0.4);
@@ -109,7 +98,6 @@
         right: 1rem;
         background: rgba(255,255,255,0.9);
         color: #D97706;
-        border: none;
         padding: 6px 14px;
         border-radius: 8px;
         font-size: 12px;
@@ -118,14 +106,6 @@
         display: inline-flex;
         align-items: center;
         gap: 5px;
-        transition: all 0.15s;
-        white-space: nowrap;
-    }
-
-    .btn-edit-profile:hover {
-        background: #fff;
-        color: #B45309;
-        text-decoration: none;
     }
 
     /* Stats */
@@ -142,16 +122,11 @@
         padding: 14px 20px;
     }
 
-    .stat-item:first-child {
-        border-right: 1px solid #FDE68A;
-    }
-
     .stat-item-label {
         font-size: 10px;
         font-weight: 700;
         color: #92400E;
         text-transform: uppercase;
-        letter-spacing: 0.06em;
         margin-bottom: 4px;
     }
 
@@ -161,16 +136,17 @@
         color: #1C1917;
     }
 
-    /* ── KARTU PASSWORD ── */
-    .password-card {
+    /* ── KARTU FORM (Password & Danger Zone) ── */
+    .password-card, .danger-card {
         background: #fff;
         border-radius: 16px;
         border: 1px solid #FDE68A;
         box-shadow: 0 2px 12px rgba(245,158,11,0.06);
         overflow: hidden;
+        margin-bottom: 1.25rem;
     }
 
-    .password-card-header {
+    .card-header-custom {
         padding: 1rem 1.5rem;
         border-bottom: 1px solid #FEF3C7;
         display: flex;
@@ -182,12 +158,7 @@
         background: #FFFBEB;
     }
 
-    .password-card-header i {
-        font-size: 17px;
-        color: #D97706;
-    }
-
-    .password-card-body {
+    .card-body-custom {
         padding: 1.25rem 1.5rem;
     }
 
@@ -207,26 +178,7 @@
         border-radius: 8px;
         padding: 9px 13px;
         font-size: 14px;
-        color: #1C1917;
-        background: #FAFAF9;
-        transition: border-color 0.15s;
         outline: none;
-        box-sizing: border-box;
-        font-family: inherit;
-    }
-
-    .form-input-custom:focus {
-        border-color: #F59E0B;
-        background: #fff;
-    }
-
-    .form-input-custom::placeholder { color: #A8A29E; }
-
-    .error-text {
-        color: #EF4444;
-        font-size: 12px;
-        margin-top: 4px;
-        display: block;
     }
 
     .btn-submit-custom {
@@ -243,42 +195,35 @@
         align-items: center;
         justify-content: center;
         gap: 7px;
-        margin-top: 0.5rem;
-        transition: opacity 0.15s;
-        font-family: inherit;
     }
 
-    .btn-submit-custom:hover { opacity: 0.9; }
+    /* ── DANGER ZONE (Hapus Akun) ── */
+    .danger-card { border-color: #FEE2E2; }
+    .danger-header { background: #FEF2F2; color: #991B1B; border-bottom-color: #FEE2E2; }
+    .danger-header i { color: #DC2626; }
+    
+    .danger-text { font-size: 13px; color: #7F1D1D; margin-bottom: 1rem; line-height: 1.5; }
 
-    /* Responsive mobile */
-    @media (max-width: 480px) {
-        .profile-top {
-            padding: 1.25rem;
-            gap: 14px;
-        }
-        .profile-avatar {
-            width: 60px;
-            height: 60px;
-            font-size: 1.25rem;
-        }
-        .profile-name { font-size: 1.1rem; }
-        .btn-edit-profile {
-            top: 0.75rem;
-            right: 0.75rem;
-            padding: 5px 10px;
-            font-size: 11px;
-        }
-        .stat-item { padding: 12px 16px; }
-        .password-card-body { padding: 1rem; }
+    .btn-danger-custom {
+        width: 100%;
+        background: #EF4444;
+        color: #fff;
+        border: none;
+        padding: 11px;
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: background 0.2s;
     }
+
+    .btn-danger-custom:hover { background: #DC2626; }
 </style>
 
 <div class="profile-page-wrap">
 
     {{-- KARTU PROFIL --}}
     <div class="profile-main-card">
-
-        {{-- Baris atas: avatar + info --}}
         <div class="profile-top">
             <div class="profile-avatar">
                 @if($user->foto_profil)
@@ -290,7 +235,7 @@
             <div class="profile-top-info">
                 <h2 class="profile-name">{{ $user->name }}</h2>
                 <p class="profile-email">{{ $user->email }}</p>
-                <span class="profile-badge {{ $user->role === 'admin' ? 'badge-admin' : 'badge-member' }}">
+                <span class="profile-badge">
                     {{ $user->role === 'admin' ? '👑 Administrator' : '✓ Member' }}
                 </span>
             </div>
@@ -299,7 +244,6 @@
             </a>
         </div>
 
-        {{-- Stats --}}
         <div class="profile-stats">
             <div class="stat-item">
                 <div class="stat-item-label">Bergabung Sejak</div>
@@ -314,40 +258,47 @@
 
     {{-- UBAH PASSWORD --}}
     <div class="password-card">
-        <div class="password-card-header">
-            <i class='bx bx-lock-alt'></i> Ubah Password
+        <div class="card-header-custom">
+            <i class='bx bx-lock-alt' style="color: #D97706;"></i> Ubah Password
         </div>
-        <div class="password-card-body">
+        <div class="card-body-custom">
             <form action="{{ route('profile.password') }}" method="POST">
                 @csrf
                 @method('PUT')
 
                 <div class="form-group-custom">
                     <label class="form-label-custom">Password Lama</label>
-                    <input type="password" name="password_lama" class="form-input-custom"
-                        placeholder="Masukkan password lama">
-                    @error('password_lama')
-                        <span class="error-text">{{ $message }}</span>
-                    @enderror
+                    <input type="password" name="password_lama" class="form-input-custom" placeholder="Masukkan password lama">
+                    @error('password_lama') <span style="color:#EF4444; font-size:12px;">{{ $message }}</span> @enderror
                 </div>
 
                 <div class="form-group-custom">
                     <label class="form-label-custom">Password Baru</label>
-                    <input type="password" name="password_baru" class="form-input-custom"
-                        placeholder="Minimal 8 karakter">
-                    @error('password_baru')
-                        <span class="error-text">{{ $message }}</span>
-                    @enderror
-                </div>
-
-                <div class="form-group-custom">
-                    <label class="form-label-custom">Konfirmasi Password Baru</label>
-                    <input type="password" name="password_baru_confirmation" class="form-input-custom"
-                        placeholder="Ulangi password baru">
+                    <input type="password" name="password_baru" class="form-input-custom" placeholder="Minimal 8 karakter">
+                    @error('password_baru') <span style="color:#EF4444; font-size:12px;">{{ $message }}</span> @enderror
                 </div>
 
                 <button type="submit" class="btn-submit-custom">
-                    <i class='bx bx-lock-open-alt'></i> Ubah Password
+                    <i class='bx bx-lock-open-alt'></i> Simpan Password Baru
+                </button>
+            </form>
+        </div>
+    </div>
+
+    {{-- DANGER ZONE: HAPUS AKUN --}}
+    <div class="danger-card">
+        <div class="card-header-custom danger-header">
+            <i class='bx bx-error-circle'></i> Zona Bahaya
+        </div>
+        <div class="card-body-custom">
+            <p class="danger-text">
+                Menghapus akun akan menghapus seluruh data resep dan informasi profil Anda secara permanen. Tindakan ini tidak dapat dibatalkan.
+            </p>
+            <form action="{{ route('profile.destroy') }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus akun ini? Semua data resep Anda juga akan hilang selamanya.')">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="btn-danger-custom">
+                    <i class='bx bx-trash'></i> Hapus Akun Saya
                 </button>
             </form>
         </div>
