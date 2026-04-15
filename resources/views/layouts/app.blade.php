@@ -84,7 +84,6 @@
             background: rgba(255,255,255,.08);
         }
 
-        /* nav buttons */
         .btn-nav-outline {
             padding: 6px 16px;
             border: 1.5px solid rgba(255,255,255,.4);
@@ -123,7 +122,6 @@
             border-color: #C84E0E;
         }
 
-        /* user dropdown area */
         .nav-user {
             display: flex;
             align-items: center;
@@ -151,7 +149,6 @@
             color: rgba(255,255,255,.85);
         }
 
-        /* admin badge in nav */
         .nav-admin-badge {
             background: #E8621A;
             color: #fff;
@@ -162,7 +159,6 @@
             letter-spacing: .5px;
         }
 
-        /* logout form inline */
         .logout-form { display: inline; }
 
         /* ── HAMBURGER BUTTON ── */
@@ -259,6 +255,12 @@
             gap: 12px;
             padding: 18px 18px 14px;
             border-bottom: 1px solid rgba(255,255,255,.08);
+            text-decoration: none; /* Biar link ga ada garis bawah */
+            transition: background .2s;
+        }
+
+        .mobile-sidebar-user:hover {
+            background: rgba(255,255,255,.03);
         }
 
         .mobile-sidebar-avatar {
@@ -309,11 +311,19 @@
             color: #fff;
         }
 
+        /* Efek Active Link */
         .mobile-sidebar-nav li.active-sidebar a {
             background: rgba(232,98,26,.15);
             color: #F9946A;
             border-left-color: #E8621A;
             font-weight: 600;
+        }
+
+        /* Garis Pemisah untuk Logout */
+        .mobile-sidebar-nav li.logout-item {
+            border-top: 1px solid rgba(255,255,255,.08);
+            margin-top: 10px;
+            padding-top: 5px;
         }
 
         .mobile-sidebar-nav li.logout-item button {
@@ -322,101 +332,15 @@
 
         .mobile-sidebar-nav .sidebar-icon { font-size: 18px; width: 22px; text-align: center; }
 
-        /* ── GLOBAL ALERTS ── */
-        .global-alerts {
-            padding: 12px 0 0;
-        }
-
-        .alert {
-            padding: 12px 18px;
-            border-radius: 12px;
-            border-left: 4px solid;
-            font-size: 13px;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: flex-start;
-            gap: 8px;
-        }
-
-        .alert-success {
-            background: #D4F0E0;
-            color: #1A6B3A;
-            border-color: #2E7D32;
-        }
-
-        .alert-error {
-            background: #FDDEDE;
-            color: #8B1A1A;
-            border-color: #C62828;
-        }
-
-        .alert-warning {
-            background: #FEF3C0;
-            color: #856404;
-            border-color: #B08010;
-        }
-
-        /* ── CONTENT ── */
-        .content {
-            min-height: calc(100vh - 60px - 64px);
-        }
-
-        /* ── BUTTONS (global helpers) ── */
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 9px 18px;
-            border-radius: 10px;
-            font-size: 13px;
-            font-weight: 600;
-            font-family: inherit;
-            cursor: pointer;
-            border: none;
-            text-decoration: none;
-            transition: all .2s;
-        }
-
-        .btn-primary   { background: #E8621A; color: #fff; }
-        .btn-primary:hover { background: #C84E0E; }
-
-        .btn-success   { background: #2E7D32; color: #fff; }
-        .btn-success:hover { background: #1B5E20; }
-
-        .btn-danger    { background: #C62828; color: #fff; }
-        .btn-danger:hover { background: #8B1A1A; }
-
-        .btn-warning   { background: #B08010; color: #fff; }
-        .btn-secondary { background: #7A3D1A; color: #fff; }
-        .btn-outline-br {
-            background: none;
-            border: 1.5px solid #E0D0C0;
-            color: #7A3D1A;
-        }
-
-        /* ── FOOTER ── */
-        .footer {
-            background: #3D2010;
-            color: rgba(255,255,255,.5);
-            text-align: center;
-            padding: 20px 0;
-            font-size: 12px;
-        }
-
-        .footer a {
-            color: #F9946A;
-            text-decoration: none;
-        }
-
         /* ── RESPONSIVE ── */
         @media (max-width: 680px) {
             .navbar-menu .nav-hide-sm { display: none; }
+            /* Menghilangkan avatar user di navbar mobile */
+            .navbar-menu .nav-user-item { display: none; } 
             .navbar-brand { font-size: 17px; }
             .navbar-hamburger { display: flex; }
         }
     </style>
-
-    {{-- Per-page styles --}}
     @stack('styles')
 </head>
 <body>
@@ -433,33 +357,17 @@
                 <li class="nav-hide-sm"><a href="{{ route('home') }}">Beranda</a></li>
 
                 @auth
-                    {{-- Admin menu --}}
                     @if(auth()->user()->role === 'admin')
-                        @if(Route::has('admin.dashboard'))
-                            <li class="nav-hide-sm"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-                        @endif
-                        @if(Route::has('admin.resep.index'))
-                            <li class="nav-hide-sm"><a href="{{ route('admin.resep.index') }}">Kelola Resep</a></li>
-                        @endif
-                        @if(Route::has('admin.resep.pending'))
-                            <li class="nav-hide-sm"><a href="{{ route('admin.resep.pending') }}">Approval</a></li>
-                        @endif
+                        <li class="nav-hide-sm"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
                         <li><span class="nav-admin-badge">ADMIN</span></li>
                     @else
-                        {{-- User menu --}}
-                        @if(Route::has('user.resep.create'))
-                            <li class="nav-hide-sm"><a href="{{ route('user.resep.create') }}">Upload Resep</a></li>
-                        @endif
-                        @if(Route::has('user.resep.my'))
-                            <li class="nav-hide-sm"><a href="{{ route('user.resep.my') }}">Resep Saya</a></li>
-                        @endif
-                        @if(Route::has('favorit.index'))
-                            <li class="nav-hide-sm"><a href="{{ route('favorit.index') }}">Favorit</a></li>
-                        @endif
+                        <li class="nav-hide-sm"><a href="{{ route('user.resep.create') }}">Upload Resep</a></li>
+                        <li class="nav-hide-sm"><a href="{{ route('user.resep.my') }}">Resep Saya</a></li>
+                        <li class="nav-hide-sm"><a href="{{ route('favorit.index') }}">Favorit</a></li>
                     @endif
 
-                    {{-- User info + logout --}}
-                    <li>
+                    {{-- User info (disembunyikan di mobile lewat class nav-user-item) --}}
+                    <li class="nav-user-item">
                         <div class="nav-user">
                             <div class="nav-avatar">
                                 {{ strtoupper(substr(auth()->user()->name, 0, 2)) }}
@@ -481,7 +389,6 @@
                 @endauth
             </ul>
 
-            {{-- Hamburger (mobile only, shown when logged in) --}}
             @auth
             <button class="navbar-hamburger" id="hamburgerBtn" aria-label="Buka menu">
                 <span></span>
@@ -497,7 +404,6 @@
     <div class="mobile-overlay" id="mobileOverlay"></div>
     <div class="mobile-sidebar" id="mobileSidebar">
 
-        {{-- Sidebar header --}}
         <div class="mobile-sidebar-header">
             <a href="{{ route('home') }}" class="mobile-sidebar-brand">
                 <div class="navbar-brand-dot"></div>
@@ -506,8 +412,8 @@
             <button class="mobile-sidebar-close" id="sidebarClose">&#x2715;</button>
         </div>
 
-        {{-- User info --}}
-        <div class="mobile-sidebar-user">
+        {{-- Info User bisa diklik ke Profile --}}
+        <a href="{{ route('profile.edit') }}" class="mobile-sidebar-user">
             <div class="mobile-sidebar-avatar">
                 {{ strtoupper(substr(auth()->user()->name, 0, 2)) }}
             </div>
@@ -515,60 +421,38 @@
                 <span class="mobile-sidebar-user-name">{{ auth()->user()->name }}</span>
                 <span class="mobile-sidebar-user-email">{{ auth()->user()->email }}</span>
             </div>
-        </div>
+        </a>
 
-        {{-- Nav links --}}
         <ul class="mobile-sidebar-nav">
-            <li>
+            <li class="{{ request()->routeIs('home') ? 'active-sidebar' : '' }}">
                 <a href="{{ route('home') }}">
                     <span class="sidebar-icon">🏠</span> Beranda
                 </a>
             </li>
 
             @if(auth()->user()->role === 'admin')
-                @if(Route::has('admin.dashboard'))
-                <li>
+                <li class="{{ request()->routeIs('admin.dashboard') ? 'active-sidebar' : '' }}">
                     <a href="{{ route('admin.dashboard') }}">
                         <span class="sidebar-icon">📊</span> Dashboard
                     </a>
                 </li>
-                @endif
-                @if(Route::has('admin.resep.index'))
-                <li>
-                    <a href="{{ route('admin.resep.index') }}">
-                        <span class="sidebar-icon">📋</span> Kelola Resep
-                    </a>
-                </li>
-                @endif
-                @if(Route::has('admin.resep.pending'))
-                <li>
-                    <a href="{{ route('admin.resep.pending') }}">
-                        <span class="sidebar-icon">✅</span> Approval
-                    </a>
-                </li>
-                @endif
+                {{-- Tambahkan menu admin lainnya dengan pengecekan active-sidebar --}}
             @else
-                @if(Route::has('user.resep.create'))
-                <li>
+                <li class="{{ request()->routeIs('user.resep.create') ? 'active-sidebar' : '' }}">
                     <a href="{{ route('user.resep.create') }}">
                         <span class="sidebar-icon">📤</span> Upload Resep
                     </a>
                 </li>
-                @endif
-                @if(Route::has('user.resep.my'))
-                <li>
+                <li class="{{ request()->routeIs('user.resep.my') ? 'active-sidebar' : '' }}">
                     <a href="{{ route('user.resep.my') }}">
                         <span class="sidebar-icon">📝</span> Resep Saya
                     </a>
                 </li>
-                @endif
-                @if(Route::has('favorit.index'))
                 <li class="{{ request()->routeIs('favorit.*') ? 'active-sidebar' : '' }}">
                     <a href="{{ route('favorit.index') }}">
                         <span class="sidebar-icon">❤️</span> Favorit
                     </a>
                 </li>
-                @endif
             @endif
 
             <li class="logout-item">
@@ -581,7 +465,13 @@
             </li>
         </ul>
     </div>
+    @endauth
 
+    <div class="content">
+        @yield('content')
+    </div>
+
+    {{-- Footer & Scripts tetap sama --}}
     <script>
         const hamburger  = document.getElementById('hamburgerBtn');
         const sidebar    = document.getElementById('mobileSidebar');
@@ -595,45 +485,5 @@
         closeBtn?.addEventListener('click', closeSidebar);
         overlay?.addEventListener('click', closeSidebar);
     </script>
-    @endauth
-
-    {{-- ── CONTENT ── --}}
-    <div class="content">
-        <div class="container">
-
-            {{-- Global flash messages --}}
-            @if(session('success'))
-                <div class="global-alerts">
-                    <div class="alert alert-success">✓ {{ session('success') }}</div>
-                </div>
-            @endif
-
-            @if(session('error'))
-                <div class="global-alerts">
-                    <div class="alert alert-error">⚠ {{ session('error') }}</div>
-                </div>
-            @endif
-
-            @if(session('warning'))
-                <div class="global-alerts">
-                    <div class="alert alert-warning">⚠ {{ session('warning') }}</div>
-                </div>
-            @endif
-
-        </div>
-
-        {{-- Content tanpa container (full-width pages bisa atur sendiri) --}}
-        @yield('content')
-    </div>
-
-    {{-- ── FOOTER ── --}}
-    <footer class="footer">
-        <div class="container">
-            <p>&copy; 2024 DapurCeria. Semua hak dilindungi.</p>
-        </div>
-    </footer>
-
-    {{-- Per-page scripts --}}
-    @stack('scripts')
 </body>
 </html>
