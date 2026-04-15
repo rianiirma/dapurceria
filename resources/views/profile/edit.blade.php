@@ -1,17 +1,19 @@
 @extends(auth()->user()->role === 'admin' ? 'layouts.admin' : 'layouts.app')
 
-@section('title', 'Edit Profil')
+@section('title', 'Edit Profil - DapurCeria')
 @section('page-title', 'Edit Profil')
 
 @section('content')
 
 <style>
     .edit-profile-wrap {
-        max-width: 500px;
+        max-width: 600px;
         margin: 0 auto;
+        padding-bottom: 2rem;
     }
 
-    .edit-profile-card {
+    /* ── KARTU FORM UTAMA ── */
+    .edit-card {
         background: #fff;
         border-radius: 16px;
         border: 1px solid #FDE68A;
@@ -22,11 +24,10 @@
     .edit-card-header {
         padding: 1rem 1.5rem;
         border-bottom: 1px solid #FEF3C7;
-        background: #FFFBEB;
         display: flex;
         align-items: center;
         justify-content: space-between;
-        gap: 10px;
+        background: #FFFBEB;
     }
 
     .edit-card-title {
@@ -35,138 +36,123 @@
         color: #1C1917;
         display: flex;
         align-items: center;
-        gap: 7px;
-        margin: 0;
+        gap: 8px;
     }
 
-    .edit-card-title i { font-size: 17px; color: #D97706; }
+    .edit-card-title i {
+        font-size: 18px;
+        color: #D97706;
+    }
 
     .btn-back {
-        background: white;
-        color: #92400E;
-        border: 1px solid #FDE68A;
-        padding: 6px 12px;
-        border-radius: 7px;
         font-size: 12px;
         font-weight: 600;
+        color: #92400E;
         text-decoration: none;
-        display: inline-flex;
-        align-items: center;
-        gap: 4px;
-        white-space: nowrap;
-        flex-shrink: 0;
-        transition: all 0.15s;
-    }
-
-    .btn-back:hover {
-        background: #FEF3C7;
-        text-decoration: none;
-        color: #78350F;
-    }
-
-    .edit-card-body { padding: 1.5rem; }
-
-    /* AVATAR */
-    .avatar-section {
         display: flex;
         align-items: center;
-        gap: 16px;
+        gap: 4px;
+    }
+
+    .btn-back:hover { text-decoration: underline; }
+
+    .edit-card-body {
+        padding: 1.5rem;
+    }
+
+    /* ── UPLOAD FOTO ── */
+    .upload-photo-section {
+        display: flex;
+        align-items: center;
+        gap: 20px;
         margin-bottom: 1.5rem;
         padding-bottom: 1.5rem;
         border-bottom: 1px solid #FEF3C7;
     }
 
-    .avatar-container {
-        position: relative;
-        width: 72px;
-        height: 72px;
-        flex-shrink: 0;
-    }
-
-    .avatar-display {
-        width: 72px;
-        height: 72px;
+    .photo-preview-wrap {
+        width: 80px;
+        height: 80px;
         border-radius: 50%;
-        background: linear-gradient(135deg, #F59E0B, #FBBF24);
+        background: #F3F4F6;
         border: 3px solid #FDE68A;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 1.4rem;
-        color: #fff;
-        font-weight: 700;
         overflow: hidden;
+        flex-shrink: 0;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
     }
 
-    .avatar-display img {
+    .photo-preview-wrap img {
         width: 100%;
         height: 100%;
         object-fit: cover;
-        border-radius: 50%;
     }
 
-    .avatar-overlay {
-        position: absolute;
-        bottom: 0;
-        right: 0;
-        width: 24px;
-        height: 24px;
-        background: #F59E0B;
-        border-radius: 50%;
-        border: 2px solid #fff;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        transition: background 0.15s;
-    }
-
-    .avatar-overlay:hover { background: #D97706; }
-    .avatar-overlay i { font-size: 12px; color: #fff; }
-
-    .avatar-info { flex: 1; }
-
-    .avatar-info-name {
-        font-size: 15px;
+    .photo-preview-wrap .inisial {
+        font-size: 2rem;
         font-weight: 700;
-        color: #1C1917;
-        margin-bottom: 4px;
+        color: #A8A29E;
     }
 
-    .change-photo-label {
+    .upload-controls {
+        flex: 1;
+    }
+
+    .btn-choose-file {
+        display: inline-block;
+        padding: 8px 16px;
+        background: #FFFBEB;
+        color: #92400E;
+        border: 1.5px solid #FDE68A;
+        border-radius: 8px;
         font-size: 12px;
-        color: #D97706;
         font-weight: 600;
         cursor: pointer;
-        display: inline-flex;
-        align-items: center;
-        gap: 4px;
-        background: none;
-        border: none;
-        padding: 0;
-        transition: color 0.15s;
+        transition: all 0.15s;
     }
 
-    .change-photo-label:hover { color: #B45309; }
+    .btn-choose-file:hover {
+        background: #FDE68A;
+        border-color: #FBBF24;
+    }
 
-    /* FORM */
-    .form-field { margin-bottom: 1rem; }
+    /* Input file disembunyikan, di-trigger via label */
+    .input-file-hidden {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0,0,0,0);
+        border: 0;
+    }
 
-    .form-field-label {
+    .upload-help-text {
         display: block;
-        font-size: 12px;
+        font-size: 11px;
+        color: #78716C;
+        margin-top: 6px;
+    }
+
+    /* ── FORM INPUT ── */
+    .form-group-custom { margin-bottom: 1rem; }
+
+    .form-label-custom {
+        display: block;
+        font-size: 13px;
         font-weight: 600;
         color: #57534E;
         margin-bottom: 5px;
-        text-transform: uppercase;
-        letter-spacing: 0.04em;
     }
 
     .form-input-custom {
         width: 100%;
         border: 1.5px solid #E7E5E4;
         border-radius: 8px;
-        padding: 9px 13px;
+        padding: 10px 14px;
         font-size: 14px;
         color: #1C1917;
         background: #FAFAF9;
@@ -181,94 +167,50 @@
         background: #fff;
     }
 
-    .form-input-custom::placeholder { color: #A8A29E; }
-
-    .form-input-disabled {
-        width: 100%;
-        background: #FFFBEB;
-        color: #92400E;
-        border: 1.5px solid #FDE68A;
-        border-radius: 8px;
-        padding: 9px 13px;
-        font-size: 14px;
-        font-weight: 600;
-        box-sizing: border-box;
-        cursor: not-allowed;
-    }
-
-    .error-text {
-        color: #EF4444;
-        font-size: 11px;
-        margin-top: 4px;
-        display: block;
-    }
-
-    .form-divider {
-        border: none;
+    /* ── TOMBOL AKSI ── */
+    .edit-action-bar {
+        margin-top: 1.5rem;
+        padding-top: 1rem;
         border-top: 1px solid #FEF3C7;
-        margin: 1.25rem 0;
+        display: flex;
+        justify-content: flex-end;
     }
 
-    /* TOMBOL */
     .btn-submit-custom {
-        width: 100%;
         background: linear-gradient(135deg, #F59E0B, #FBBF24);
         color: #fff;
         border: none;
-        padding: 11px;
+        padding: 10px 24px;
         border-radius: 8px;
         font-size: 14px;
         font-weight: 700;
         cursor: pointer;
         display: flex;
         align-items: center;
-        justify-content: center;
-        gap: 6px;
+        gap: 7px;
         transition: opacity 0.15s;
         font-family: inherit;
-        margin-bottom: 8px;
     }
 
     .btn-submit-custom:hover { opacity: 0.9; }
 
-    .btn-cancel-custom {
-        width: 100%;
-        background: #fff;
-        color: #78716C;
-        border: 1.5px solid #E7E5E4;
-        padding: 10px;
-        border-radius: 8px;
-        font-size: 14px;
-        font-weight: 600;
-        text-decoration: none;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: all 0.15s;
-        font-family: inherit;
-    }
-
-    .btn-cancel-custom:hover {
-        background: #FAFAF9;
-        color: #57534E;
-        text-decoration: none;
-    }
-
+    /* Responsive */
     @media (max-width: 480px) {
-        .edit-card-body { padding: 1.25rem; }
-        .avatar-section { gap: 12px; }
+        .edit-card-body { padding: 1rem; }
+        .upload-photo-section { gap: 14px; }
+        .photo-preview-wrap { width: 64px; height: 64px; font-size: 1.5rem; }
     }
 </style>
 
 <div class="edit-profile-wrap">
-    <div class="edit-profile-card">
 
+    <div class="edit-card">
         <div class="edit-card-header">
             <h3 class="edit-card-title">
-                <i class='bx bx-user-circle'></i> Edit Profil
+                <i class='bx bx-user-circle'></i> Perbarui Informasi Profil
             </h3>
             <a href="{{ route('profile.show') }}" class="btn-back">
-                <i class='bx bx-arrow-back'></i> Kembali
+                <i class='bx bx-chevron-left'></i> Batal
             </a>
         </div>
 
@@ -277,89 +219,76 @@
                 @csrf
                 @method('PUT')
 
-                {{-- AVATAR -- rata kiri, info nama di kanan avatar --}}
-                <div class="avatar-section">
-                    <div class="avatar-container">
-                        <div class="avatar-display">
-                            @if($user->foto_profil)
-                                <img id="preview" src="{{ asset('storage/' . $user->foto_profil) }}" alt="Foto Profil">
-                            @else
-                                <span id="preview-initial">{{ strtoupper(substr($user->name, 0, 2)) }}</span>
-                                <img id="preview" src="" style="display:none; width:100%; height:100%; object-fit:cover; border-radius:50%;">
-                            @endif
-                        </div>
-                        <label for="foto_profil" class="avatar-overlay" title="Ganti foto">
-                            <i class='bx bx-camera'></i>
+                {{-- SEKSI UPLOAD FOTO --}}
+                <div class="upload-photo-section">
+                    <div class="photo-preview-wrap" id="photoPreview">
+                        @if($user->foto_profil)
+                            <img src="{{ asset('storage/' . $user->foto_profil) }}" alt="Pratinjau Foto" class="image-preview">
+                        @else
+                            <span class="inisial">{{ strtoupper(substr($user->name, 0, 2)) }}</span>
+                        @endif
+                    </div>
+                    <div class="upload-controls">
+                        <label for="foto_profil" class="btn-choose-file">
+                            <i class='bx bx-image-add'></i> Pilih Foto Baru
                         </label>
-                    </div>
-                    <div class="avatar-info">
-                        <div class="avatar-info-name">{{ $user->name }}</div>
-                        <label for="foto_profil" class="change-photo-label">
-                            <i class='bx bx-camera'></i> Ganti Foto Profil
-                        </label>
-                    </div>
-                    <input type="file" id="foto_profil" name="foto_profil" accept="image/*"
-                           style="display:none;" onchange="previewFoto(this)">
-                </div>
-
-                {{-- NAMA --}}
-                <div class="form-field">
-                    <label class="form-field-label">Nama Lengkap</label>
-                    <input type="text" name="name" class="form-input-custom"
-                        value="{{ old('name', $user->name) }}" required
-                        placeholder="Masukkan nama lengkap">
-                    @error('name')
-                        <span class="error-text">{{ $message }}</span>
-                    @enderror
-                </div>
-
-                {{-- EMAIL --}}
-                <div class="form-field">
-                    <label class="form-field-label">Email</label>
-                    <input type="email" name="email" class="form-input-custom"
-                        value="{{ old('email', $user->email) }}" required
-                        placeholder="Masukkan email">
-                    @error('email')
-                        <span class="error-text">{{ $message }}</span>
-                    @enderror
-                </div>
-
-                {{-- ROLE --}}
-                <div class="form-field">
-                    <label class="form-field-label">Role</label>
-                    <div class="form-input-disabled">
-                        {{ $user->role === 'admin' ? '👑 Administrator' : '✓ Member' }}
+                        <input type="file" name="foto_profil" id="foto_profil" class="input-file-hidden" accept="image/jpeg,image/png,image/jpg">
+                        <span class="upload-help-text">JPG, PNG, atau JPEG. Maksimal 2MB.</span>
+                        @error('foto_profil') <span style="color:#EF4444; font-size:11px;">{{ $message }}</span> @enderror
                     </div>
                 </div>
 
-                <hr class="form-divider">
+                {{-- FORM INPUT NAMA --}}
+                <div class="form-group-custom">
+                    <label class="form-label-custom" for="name">Nama Lengkap</label>
+                    <input type="text" name="name" id="name" class="form-input-custom" value="{{ old('name', $user->name) }}" required>
+                    @error('name') <span style="color:#EF4444; font-size:12px;">{{ $message }}</span> @enderror
+                </div>
 
-                <button type="submit" class="btn-submit-custom">
-                    <i class='bx bx-save'></i> Simpan Perubahan
-                </button>
-                <a href="{{ route('profile.show') }}" class="btn-cancel-custom">Batal</a>
+                {{-- FORM INPUT EMAIL --}}
+                <div class="form-group-custom">
+                    <label class="form-label-custom" for="email">Alamat Email</label>
+                    <input type="email" name="email" id="email" class="form-input-custom" value="{{ old('email', $user->email) }}" required>
+                    @error('email') <span style="color:#EF4444; font-size:12px;">{{ $message }}</span> @enderror
+                </div>
+
+                {{-- TOMBOL SUBMIT --}}
+                <div class="edit-action-bar">
+                    <button type="submit" class="btn-submit-custom">
+                        <i class='bx bx-check-double'></i> Simpan Perubahan
+                    </button>
+                </div>
 
             </form>
         </div>
     </div>
+
 </div>
 
-@endsection
-
-@push('scripts')
+{{-- SCRIPT UNTUK PREVIEW FOTO INSTAN --}}
 <script>
-function previewFoto(input) {
-    if (input.files && input.files[0]) {
+    document.getElementById('foto_profil').addEventListener('change', function(e) {
+        const file = e.target.files[0];
         const reader = new FileReader();
-        reader.onload = function(e) {
-            const preview = document.getElementById('preview');
-            const initial = document.getElementById('preview-initial');
-            preview.src = e.target.result;
-            preview.style.display = 'block';
-            if (initial) initial.style.display = 'none';
+        const previewWrap = document.getElementById('photoPreview');
+
+        if (file) {
+            reader.onload = function(event) {
+                // Hapus konten lama (inisial atau img lama)
+                previewWrap.innerHTML = '';
+                
+                // Buat elemen img baru
+                const img = document.createElement('img');
+                img.setAttribute('src', event.target.result);
+                img.setAttribute('alt', 'Pratinjau Foto');
+                img.setAttribute('class', 'image-preview');
+                
+                // Tambahkan ke wrap
+                previewWrap.appendChild(img);
+            }
+            reader.readAsDataURL(file);
         }
-        reader.readAsDataURL(input.files[0]);
-    }
-}
+    });
 </script>
-@endpush
+
+@endsection

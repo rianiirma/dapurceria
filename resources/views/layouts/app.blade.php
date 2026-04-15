@@ -508,5 +508,6 @@
         closeBtn?.addEventListener('click', closeSidebar);
         overlay?.addEventListener('click', closeSidebar);
     </script>
+@stack('scripts')
 </body>
 </html>
